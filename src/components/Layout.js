@@ -12,9 +12,9 @@ class Layout extends React.Component {
     theme: null,
   };
   componentDidMount() {
-    // this.setState({ theme: window.__theme });
+    this.setState({ theme: window.__theme });
     window.__onThemeChange = () => {
-      // this.setState({ theme: window.__theme });
+      this.setState({ theme: window.__theme });
     };
   }
   renderHeader() {

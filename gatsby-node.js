@@ -116,8 +116,6 @@ exports.createPages = ({ graphql, actions }) => {
             translationsByDirectory[_.get(post, 'node.fields.directoryName')] ||
             [];
 
-          console.log('blogPost', blogPost, post)
-
           createPage({
             path: post.node.fields.slug,
             component: blogPost,
@@ -140,9 +138,26 @@ exports.createPages = ({ graphql, actions }) => {
             // Record which links to internal posts have translated versions
             // into this language. We'll replace them before rendering HTML.
             let translatedLinks = [];
-
-            console.log('blogpost', blogPost);
-            console.log('post', post);
+            const { langKey, maybeAbsoluteLinks } = post.node.fields;
+            maybeAbsoluteLinks.forEach(link => {
+              if (allSlugs.has(link)) {
+                if (allSlugs.has('/' + langKey + link)) {
+                  // This is legit an internal post link,
+                  // and it has been already translated.
+                  translatedLinks.push(link);
+                } else if (link.startsWith('/' + langKey + '/')) {
+                  console.log('-----------------');
+                  console.error(
+                    `It looks like "${langKey}" translation of "${
+                      post.node.frontmatter.title
+                    }" ` +
+                      `is linking to a translated link: ${link}. Don't do this. Use the original link. ` +
+                      `The blog post renderer will automatically use a translation if it is available.`
+                  );
+                  console.log('-----------------');
+                }
+              }
+            });
 
             createPage({
               path: post.node.fields.slug,

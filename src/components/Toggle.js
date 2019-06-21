@@ -47,7 +47,7 @@ export default class Toggle extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     if ('checked' in nextProps) {
-      // this.setState({ checked: !!nextProps.checked });
+      this.setState({ checked: !!nextProps.checked });
       this.previouslyChecked = !!nextProps.checked;
     }
   }
@@ -62,14 +62,14 @@ export default class Toggle extends PureComponent {
       return;
     }
 
-    // this.setState({ checked: checkbox.checked });
+    this.setState({ checked: checkbox.checked });
   }
 
   handleTouchStart(event) {
     this.startX = pointerCoord(event).x;
     this.touchStarted = true;
     this.hadFocusAtTouchStart = this.state.hasFocus;
-    // this.setState({ hasFocus: true });
+    this.setState({ hasFocus: true });
   }
 
   handleTouchMove(event) {
@@ -79,10 +79,10 @@ export default class Toggle extends PureComponent {
     if (this.startX != null) {
       let currentX = pointerCoord(event).x;
       if (this.state.checked && currentX + 15 < this.startX) {
-        // this.setState({ checked: false });
+        this.setState({ checked: false });
         this.startX = currentX;
       } else if (!this.state.checked && currentX - 15 > this.startX) {
-        // this.setState({ checked: true });
+        this.setState({ checked: true });
         this.startX = currentX;
       }
     }
@@ -104,7 +104,7 @@ export default class Toggle extends PureComponent {
     }
 
     if (!this.hadFocusAtTouchStart) {
-      // this.setState({ hasFocus: false });
+      this.setState({ hasFocus: false });
     }
   }
 
@@ -116,7 +116,7 @@ export default class Toggle extends PureComponent {
     }
 
     if (!this.hadFocusAtTouchStart) {
-      // this.setState({ hasFocus: false });
+      this.setState({ hasFocus: false });
     }
   }
 
@@ -128,7 +128,7 @@ export default class Toggle extends PureComponent {
     }
 
     this.hadFocusAtTouchStart = true;
-    // this.setState({ hasFocus: true });
+    this.setState({ hasFocus: true });
   }
 
   handleBlur(event) {
@@ -139,7 +139,7 @@ export default class Toggle extends PureComponent {
     }
 
     this.hadFocusAtTouchStart = false;
-    // this.setState({ hasFocus: false });
+    this.setState({ hasFocus: false });
   }
 
   getIcon(type) {

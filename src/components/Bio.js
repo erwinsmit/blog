@@ -12,8 +12,8 @@ class Bio extends React.Component {
         }}
       >
         <img
-          src="https://pbs.twimg.com/profile_images/461249241952706560/aXScqorc_400x400.jpeg"
-          alt={`Erwin Smit`}
+          src={profilePic}
+          alt={`Dan Abramov`}
           style={{
             marginRight: rhythm(1 / 2),
             marginBottom: 0,
@@ -24,8 +24,8 @@ class Bio extends React.Component {
         />
         <p style={{ maxWidth: 310 }}>
           Personal blog by{' '}
-          <a href="https://mobile.twitter.com/rwinsmit">Erwin Smit</a>.{' '}<br />
-          I'm still trying to draw the rest of the <a href="https://i.redd.it/auobn0jcerwy.jpg">f*cking owl...</a>
+          <a href="https://mobile.twitter.com/dan_abramov">Dan Abramov</a>.{' '}
+          I&nbsp;explain with words and code.
         </p>
       </div>
     );
