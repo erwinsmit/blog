@@ -1,11 +1,11 @@
 module.exports = {
   siteMetadata: {
-    title: 'Overreacted',
-    author: 'Dan Abramov',
-    description: 'Personal blog by Dan Abramov. I explain with words and code.',
-    siteUrl: 'https://overreacted.io',
+    title: 'Erwin Smit blog',
+    author: 'Erwin Smit',
+    description: 'Writing about coding and things.',
+    siteUrl: 'https://erwinsmit.nl',
     social: {
-      twitter: '@dan_abramov',
+      twitter: '@rwinsmit',
     },
   },
   pathPrefix: '/',
@@ -118,7 +118,6 @@ module.exports = {
                       frontmatter {
                         title
                         date
-                        spoiler
                       }
                     }
                   }
@@ -134,8 +133,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Overreacted`,
-        short_name: `Overreacted`,
+        name: `Erwin Smit blog`,
+        short_name: `erwinsmit`,
         start_url: `/`,
         background_color: `#ffffff`,
         theme_color: `#ffa7c4`,

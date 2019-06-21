@@ -1,6 +1,7 @@
 ---
 title: Azure devops create pipeline "Cannot read property 'childFolders' of undefined"
 date: '2019-06-21'
+spoiler: Fix this azure devops bug with some fiddler hackery
 ---
 
 ## Problems creating a new release pipeline in Azure Devops

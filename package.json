@@ -1,12 +1,9 @@
 {
-  "name": "overreacted",
+  "name": "erwinsmitblog",
   "private": true,
-  "description": "Overreacted",
+  "description": "Blog by Erwin Smit",
   "version": "1.0.0",
-  "author": "Dan Abramov <dan.abramov@me.com>",
-  "bugs": {
-    "url": "https://github.com/gaearon/overreacted.io/issues"
-  },
+  "author": "Erwin Smit",
   "dependencies": {
     "gatsby": "^2.9.6",
     "gatsby-plugin-catch-links": "^2.0.15",
@@ -46,7 +43,7 @@
     "gh-pages": "^2.0.1",
     "prettier": "^1.18.2"
   },
-  "homepage": "https://overreacted.io",
+  "homepage": "https://erwinsmit.nl",
   "license": "MIT",
   "scripts": {
     "dev": "gatsby develop",
@@ -54,10 +51,7 @@
     "format": "prettier --write '{gatsby-*.js,src/**/*.{js,jsx,json,css}}'",
     "develop": "gatsby develop",
     "start": "npm run develop",
-    "build": "rm -rf public && rm -rf .cache && gatsby build",
-    "now-build": "gatsby build",
-    "deploy": "yarn build && cp now.json public/ && cd public && now alias $(now) overreacted.io",
-    "dry": "yarn build && cp now.json public/ && cd public && now"
+    "build": "rm -rf public && rm -rf .cache && gatsby build"
   },
   "husky": {
     "hooks": {
