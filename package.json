@@ -51,7 +51,8 @@
     "format": "prettier --write '{gatsby-*.js,src/**/*.{js,jsx,json,css}}'",
     "develop": "gatsby develop",
     "start": "npm run develop",
-    "build": "rimraf public && rimraf .cache && gatsby build"
+    "build": "rimraf public && rimraf .cache && gatsby build",
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public"
   },
   "husky": {
     "hooks": {
