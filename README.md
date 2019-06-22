@@ -1,1 +1,0 @@
-Personal weblog build by gatsby, originally forked from Dan Abramov's Overreacted blog and tweaked a bit.

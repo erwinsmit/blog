@@ -34,7 +34,7 @@ class Layout extends React.Component {
             style={{
               boxShadow: 'none',
               textDecoration: 'none',
-              color: '#000',
+              color: 'var(--blue)',
             }}
             to={'/'}
           >
@@ -57,7 +57,7 @@ class Layout extends React.Component {
             style={{
               boxShadow: 'none',
               textDecoration: 'none',
-              color: '#000',
+              color: 'var(--blue)',
             }}
             to={'/'}
           >
@@ -104,38 +104,6 @@ class Layout extends React.Component {
             }}
           >
             {this.renderHeader()}
-            {this.state.theme !== null ? (
-              <Toggle
-                icons={{
-                  checked: (
-                    <img
-                      src={moon}
-                      width="16"
-                      height="16"
-                      role="presentation"
-                      style={{ pointerEvents: 'none' }}
-                    />
-                  ),
-                  unchecked: (
-                    <img
-                      src={sun}
-                      width="16"
-                      height="16"
-                      role="presentation"
-                      style={{ pointerEvents: 'none' }}
-                    />
-                  ),
-                }}
-                checked={this.state.theme === 'dark'}
-                onChange={e =>
-                  window.__setPreferredTheme(
-                    e.target.checked ? 'dark' : 'light'
-                  )
-                }
-              />
-            ) : (
-              <div style={{ height: '24px' }} />
-            )}
           </header>
           {children}
         </div>
