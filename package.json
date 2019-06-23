@@ -52,7 +52,7 @@
     "develop": "gatsby develop",
     "start": "npm run develop",
     "build": "rimraf public && rimraf .cache && gatsby build",
-    "deploy": "gatsby build --prefix-paths && gh-pages -d public"
+    "deploy": "gatsby build --prefix-paths && node ./copy-cname.js && gh-pages -d public"
   },
   "husky": {
     "hooks": {
