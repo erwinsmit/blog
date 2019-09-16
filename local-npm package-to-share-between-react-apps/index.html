@@ -84,92 +84,92 @@ So if you want to share code between multiple react applications the only (non-h
 <p>The tool we use to transpile our “ClientCore” package is Rollup. Let’s get started with that!</p>
 <h3 id="rollup-config"><a href="#rollup-config" aria-label="rollup config permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rollup config</h3>
 <p>I prefer to set all the rollup configuration in a separate file and link to it in your package.json.</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&quot;scripts&quot;: {
-    &quot;transpile&quot;: &quot;rollup --config ./rollup.config.js&quot;
-},</code></pre></div>
+<div class="gatsby-highlight" data-language="json"><pre class="language-json"><code class="language-json"><span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"transpile"</span><span class="token operator">:</span> <span class="token string">"rollup --config ./rollup.config.js"</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span></code></pre></div>
 <p>The basic rollup configuration can look like this</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">export default {
-    input: &#39;index.ts&#39;,
-    output: [
-        {
-            file: &#39;dist/index.js&#39; ,
-            format: &#39;cjs&#39;,
-        },
-        {
-            file: &#39;dist/index.es.js&#39;
-            format: &#39;esm&#39;
-        }
-    ]
-}</code></pre></div>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+    input<span class="token punctuation">:</span> <span class="token string">'index.ts'</span><span class="token punctuation">,</span>
+    output<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            file<span class="token punctuation">:</span> <span class="token string">'dist/index.js'</span> <span class="token punctuation">,</span>
+            format<span class="token punctuation">:</span> <span class="token string">'cjs'</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            file<span class="token punctuation">:</span> <span class="token string">'dist/index.es.js'</span>
+            format<span class="token punctuation">:</span> <span class="token string">'esm'</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span></code></pre></div>
 <p>This is all you need to transpile your bundle to CommonJS and ES modules. I find this enough because I don’t need to support applications that want a UMD/IFFE build which can load straight into the browser. If you are writing a NPM module for the whole world to use you can consider adding these formats as well. </p>
 <p>Next add the pointer to the dist map to the package.json file:</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">  &quot;main&quot;: &quot;dist/index.js&quot;,
-  &quot;module&quot;: &quot;dist/index.es.js&quot;,</code></pre></div>
+<div class="gatsby-highlight" data-language="json"><pre class="language-json"><code class="language-json">  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token string">"dist/index.js"</span><span class="token punctuation">,</span>
+  <span class="token property">"module"</span><span class="token operator">:</span> <span class="token string">"dist/index.es.js"</span><span class="token punctuation">,</span></code></pre></div>
 <p>Main refers to the CJS build and module to the ES build.</p>
 <h3 id="typescript-support"><a href="#typescript-support" aria-label="typescript support permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Typescript support</h3>
 <p>Because we use typescript we also need a plugin to transpile this correctly and give us errors when make a mistake. To add typescript support you can add this to the top of the configuration file (and install the dependency).</p>
 <p><code class="language-text">import typescript from &#39;rollup-plugin-typescript2&#39;</code></p>
 <p>Next you add a new entry to the rollup config to specify the plugins.</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">plugins: [ typescript() ] </code></pre></div>
+<div class="gatsby-highlight" data-language="json"><pre class="language-json"><code class="language-json">plugins<span class="token operator">:</span> <span class="token punctuation">[</span> typescript() <span class="token punctuation">]</span> </code></pre></div>
 <p>To also automatically generate type definitions (d.ts files) add these two lines to your tsconfig.json:</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&quot;declaration&quot;: true,
-&quot;declarationDir&quot;: &quot;./dist&quot; </code></pre></div>
+<div class="gatsby-highlight" data-language="json"><pre class="language-json"><code class="language-json"><span class="token property">"declaration"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+<span class="token property">"declarationDir"</span><span class="token operator">:</span> <span class="token string">"./dist"</span> </code></pre></div>
 <h3 id="gotchas---lazy-loading--commonjs"><a href="#gotchas---lazy-loading--commonjs" aria-label="gotchas   lazy loading  commonjs permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Gotcha’s - lazy loading &#x26; commonJS</h3>
 <p>When using a client side application the only reason to use the CJS build is for dynamic imports (lazy loading) as far as I’m aware. The big difference between the CJS and ES build is that everything will always be imported. </p>
 <p>For example, when your module exports 2 functions:</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">export function test() {
-    return &#39;testing 12&#39;
-}
+<div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token string">'testing 12'</span>
+<span class="token punctuation">}</span>
 
-export default () =&gt; {
-    return &#39;default&#39;
-}</code></pre></div>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token string">'default'</span>
+<span class="token punctuation">}</span></code></pre></div>
 <p>And in your react application you import test</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">const test = require(&#39;ClientCore&#39;).test</code></pre></div>
+<div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">const</span> test <span class="token operator">=</span> <span class="token keyword">require</span><span class="token punctuation">(</span><span class="token string">'ClientCore'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>test</code></pre></div>
 <p>You also get the all the other stuff from that javascript file. But when you import <code class="language-text">test</code> using ES modules you only get the code you actually need.</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">import { test } from &#39;ClientCore&#39;;</code></pre></div>
+<div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">{</span> test <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ClientCore'</span></code></pre></div>
 <p>So always keep this in mind when you want to lazy-load javascript or when you are changing modules that could be lazy loaded somewhere! A misplaced import could suddenly make your lazy loading strategy worthless.</p>
-<h3 id="gotchas-circular-dependencies"><a href="#gotchas-circular-dependencies" aria-label="gotchas circular dependencies permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Gotcha’s circular dependencies</h3>
+<h3 id="gotchas---circular-dependencies"><a href="#gotchas---circular-dependencies" aria-label="gotchas   circular dependencies permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Gotcha’s - circular dependencies</h3>
 <p>What’s a circular dependency? The most simple case of a circular dependecy looks like this:</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">- Dep1.ts
+<div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token operator">-</span> Dep1<span class="token punctuation">.</span>ts
 
-import { dep2Function } from &#39;./dep2.ts&#39;);
+<span class="token keyword">import</span> <span class="token punctuation">{</span> dep2Function <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./dep2.ts'</span>
 
-export function dep1Function() {
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">dep1Function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-}
+<span class="token punctuation">}</span>
 
 
-- Dep2.ts
+<span class="token operator">-</span> Dep2<span class="token punctuation">.</span>ts
 
-import { dep1Function  } from &#39;./dep2.ts&#39;;
+<span class="token keyword">import</span> <span class="token punctuation">{</span> dep1Function  <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./dep2.ts'</span>
 
-export function dep2Function() {
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">dep2Function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-}</code></pre></div>
+<span class="token punctuation">}</span></code></pre></div>
 <p>This is the most simple case of circular dependency. You should of course avoid to write code like this but there are also much more complicated cases of circular dependencies. Rollup will give you warnings about this and rightly so. Circular dependencies can create very hard to track down bugs when the dependencies hold some state or when they extend classes. </p>
 <p>To tackle these bugs I found this great <a href="https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de" target="_blank" rel="nofollow noopener noreferrer">blogpost</a> that explains how to use the <code class="language-text">internal module pattern</code> to resolve this.</p>
 <p>Basically all you have to do is to handle all the exports / imports using an internal.ts file.</p>
 <p>So to fix our case from above the code should be:</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">- Dep1.ts
+<div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token operator">-</span> Dep1<span class="token punctuation">.</span>ts
 
-import { dep2Function } from &#39;./internal.ts&#39;);
+<span class="token keyword">import</span> <span class="token punctuation">{</span> dep2Function <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./internal.ts'</span>
 
-export function dep1Function() {
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">dep1Function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-}
+<span class="token punctuation">}</span>
 
-- Dep2.ts
+<span class="token operator">-</span> Dep2<span class="token punctuation">.</span>ts
 
-import { dep1Function  } from &#39;./internal.ts&#39;;
+<span class="token keyword">import</span> <span class="token punctuation">{</span> dep1Function  <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./internal.ts'</span>
 
-export function dep2Function() {
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">dep2Function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-}
+<span class="token punctuation">}</span>
 
-- internal.ts
-export * from &#39;./dep1.ts&#39;;
-export * from &#39;./dep2.ts&#39;;</code></pre></div></div><footer><p><a href="https://mobile.twitter.com/search?q=https%3A%2F%2Ferwinsmit.nl%2Flocal-npm%20package-to-share-between-react-apps%2F" target="_blank" rel="noopener noreferrer">Discuss on Twitter</a> • <a href="https://github.com/erwinsmit/blog/edit/master/src/pages/local-npm package-to-share-between-react-apps/index.md" target="_blank" rel="noopener noreferrer">Edit on GitHub</a></p></footer></article></main><aside><h3 style="font-family:Montserrat, sans-serif;margin-top:0.4375rem"><a style="box-shadow:none;text-decoration:none;color:var(--blue)" href="/">Erwin Smit blog</a></h3><div style="display:flex;margin-bottom:3.5rem"><img src="https://pbs.twimg.com/profile_images/461249241952706560/aXScqorc_400x400.jpeg" alt="Erwin Smit" style="margin-right:0.875rem;margin-bottom:0;width:3.5rem;height:3.5rem;border-radius:50%"/><p style="max-width:310px">Personal blog by<!-- --> <a href="https://mobile.twitter.com/rwinsmit">Erwin Smit</a>.<!-- --> <!-- -->Writing about coding and things.</p></div><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" style="margin-right:20px" href="/azure-devops-create-pipeline-error/">← <!-- -->Azure devops create pipeline &quot;Cannot read property &#x27;childFolders&#x27; of undefined&quot;</a></li><li></li></ul></nav></aside></div></div></div></div><script>
+<span class="token operator">-</span> internal<span class="token punctuation">.</span>ts
+<span class="token keyword">export</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token string">'./dep1.ts'</span>
+<span class="token keyword">export</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token string">'./dep2.ts'</span></code></pre></div></div><footer><p><a href="https://mobile.twitter.com/search?q=https%3A%2F%2Ferwinsmit.nl%2Flocal-npm%20package-to-share-between-react-apps%2F" target="_blank" rel="noopener noreferrer">Discuss on Twitter</a> • <a href="https://github.com/erwinsmit/blog/edit/master/src/pages/local-npm package-to-share-between-react-apps/index.md" target="_blank" rel="noopener noreferrer">Edit on GitHub</a></p></footer></article></main><aside><h3 style="font-family:Montserrat, sans-serif;margin-top:0.4375rem"><a style="box-shadow:none;text-decoration:none;color:var(--blue)" href="/">Erwin Smit blog</a></h3><div style="display:flex;margin-bottom:3.5rem"><img src="https://pbs.twimg.com/profile_images/461249241952706560/aXScqorc_400x400.jpeg" alt="Erwin Smit" style="margin-right:0.875rem;margin-bottom:0;width:3.5rem;height:3.5rem;border-radius:50%"/><p style="max-width:310px">Personal blog by<!-- --> <a href="https://mobile.twitter.com/rwinsmit">Erwin Smit</a>.<!-- --> <!-- -->Writing about coding and things.</p></div><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" style="margin-right:20px" href="/azure-devops-create-pipeline-error/">← <!-- -->Azure devops create pipeline &quot;Cannot read property &#x27;childFolders&#x27; of undefined&quot;</a></li><li></li></ul></nav></aside></div></div></div></div><script>
   
   
   if(true) {
