@@ -64,7 +64,7 @@ Because we use typescript we also need a plugin to transpile this correctly and 
 `import typescript from 'rollup-plugin-typescript2'`
 
 Next you add a new entry to the rollup config to specify the plugins.
-```json
+```javascript
 plugins: [ typescript() ] 
 ```
 To also automatically generate type definitions (d.ts files) add these two lines to your tsconfig.json:
