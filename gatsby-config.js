@@ -24,7 +24,7 @@ module.exports = {
           {
             resolve: `gatsby-remark-images`,
             options: {
-              maxWidth: 590,
+              maxWidth: 900,
             },
           },
           {
@@ -125,7 +125,7 @@ module.exports = {
               }
             `,
             output: '/rss.xml',
-            title: "Erwin Smit Blog RSS Feed",
+            title: 'Erwin Smit Blog RSS Feed',
           },
         ],
       },
