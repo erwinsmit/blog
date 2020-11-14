@@ -31,7 +31,7 @@ I included some comments on why you would not want the respective library loaded
 KB | Library | Comments
 --- | --- | ---
 332 | 'xaquery.min.js' | This is jQuery wrapped in the XA (eXperience Accelerator) namespace. So if you don't need/use it, this results in 332kb of unused JavaScript
-212 |  fullcalendar.min.js | Required for the calendar component of SXA. How many pages have a caledar on them. Because there is no lazy-loading available, in most pages you will have 212kb of unused JavaScript
+212 |  fullcalendar.min.js | Required for the calendar component of SXA. How many pages have a calendar on them. Because there is no lazy-loading available, in most pages you will have 212kb of unused JavaScript
 156 | 'mediaelement-and-player.min.js' | This library is a very old wrapper around the HTML5 video element, unnecessary in this day and age
  72 |  galleria-157.min.js | This library is used by the carousel component. Do you want a carousel on every page? [Do you even need a carousel](http://shouldiuseacarousel.com/)?
  72 |  lo-dash.min.js | Lodash is a JavaScript utility library. With lodash you usually only need a couple of functions, however in the core-libraries base theme they are nearly all included
@@ -61,7 +61,7 @@ So with all the above code we are already above 1MB, and that's just library cod
 Remove everything so you start can with a nice clean slate.
 I know that it feels strange to do this. But if you want to unclutter, you have to ask yourself: does it [spark joy](https://knowyourmeme.com/memes/does-it-spark-joy)? If it doesn't, thank Sitecore for all the unused code and trash it! 
 
-![alt text](./does-it-spark-joy.png "Does is spark joy?")
+![alt text](./does-it-spark-joy.jpg "Does is spark joy?")
 
 You can still use the standard components from SXA, but you just need to add (or copy from SXA if you must) the specific component Javascript and CSS.
 
