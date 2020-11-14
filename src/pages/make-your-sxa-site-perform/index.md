@@ -30,7 +30,7 @@ I included some comments on why you would not want the respective library loaded
 
 KB | Library | Comments
 --- | --- | ---
-332 | 'xaquery.min.js' | This is jQuery wrapped in the XA (eXperience Accelerator) namespace. So if you don't need/use it, thir results in 332kb of unused JavaScript
+332 | 'xaquery.min.js' | This is jQuery wrapped in the XA (eXperience Accelerator) namespace. So if you don't need/use it, their results in 332kb of unused JavaScript
 212 |  fullcalendar.min.js | Required for the calendar component of SXA. How many pages have a caledar on them. Because there is no lazy-loading available, in most pages you will have 212kb of unused JavaScript
 156 | 'mediaelement-and-player.min.js' | This library is a very old wrapper around the HTML5 video element, unnecessary in this day and age
  72 |  galleria-157.min.js | This library is used by the carousel component. Do you want a carousel on every page? [Do you even need a carousel](http://shouldiuseacarousel.com/)?
