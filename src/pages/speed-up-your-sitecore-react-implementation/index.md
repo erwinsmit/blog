@@ -4,7 +4,7 @@ date: '2021-02-11'
 spoiler: With 2 easy fixes
 ---
 
-On a lot of Sitecore sites that jumped on the React bandwagon a while ago I notice some performance issues. In this post I will explain how to fix this and make your Sitecore/React implementation almost as fast as a site build with [Stencil components](https://www.erwinsmit.com/make-your-sxa-site-perform/)
+On a lot of Sitecore sites that jumped on the React bandwagon a while ago I notice some performance issues. In this post I will explain how to fix this and make your Sitecore/React implementation almost as fast as a site built with [Stencil components](https://www.erwinsmit.com/make-your-sxa-site-perform/)
 
 The two main issues with these websites are **Render blocking script tags** and **unused javascript**. Let's fix it!
 
@@ -15,7 +15,7 @@ I created a static [html page](https://www.erwinsmit.com/performancepoc) that re
 
 It's no exception to have about 20 of these inline script tags on the page to hydrate all the necessary React components. There are two issues with this approach. Every script tag that is not at the absolute bottom of the page **blocks the rendering** of the HTML that follows, so the footer will not be rendered **until** the script tags in the main section are executed. The same applies for the rendering of the main section, this will not happen until the hydration of the header navigation is completed. For performance reasons this is not ideal, the HTML of the components is already server side rendered meaning that the user can see and interact with most of the HTML. 
 
-The **second issue** with this approach is the the dependency on global modules within the script tags, "ClientX.default.Navigation" needs to be registered on the Window object otherwise runtime exceptions will occur. Therefor the JavaScript bundle responsible for registering these components is at the top of the page. As a result the browser first needs to load and execute this script before it can render the HTML. You can imagine tools like Google Lighthouse are not happy with this!
+The **second issue** with this approach is the dependency on global modules within the script tags, "ClientX.default.Navigation" needs to be registered on the Window object otherwise runtime exceptions will occur. Therefore the JavaScript bundle responsible for registering these components is at the top of the page. As a result the browser first needs to load and execute this script before it can render the HTML. You can imagine tools like Google Lighthouse are not happy with this!
 
 ![](./lighthouse-not-happy.jpg "Lighthouse isn't happy!") 
 
@@ -28,7 +28,7 @@ import "expose-loader?exposes=ReactDOM!react-dom";
 import "expose-loader?exposes=ClientX!../src/components";
 ```
 
-React & ReactDOM are exposed to the window object and src/components refers to a entrypoint for all the components used within the sitecore rendering. That entrypoint is usually build up with a lot of imports and exports:
+React & ReactDOM are exposed to the window object and src/components refers to a entrypoint for all the components used within the sitecore rendering. That entrypoint is usually built up with a lot of imports and exports:
 ```javascript
 import SearchResults from './30_Organisms/Blog/BlogPostsOverview';
 import SearchBox from './30_Organisms/SearchBox/container';
@@ -87,7 +87,7 @@ It's still complaining about the css bundle blocking things, to fix that usually
 
 ## Unused JavaScript
 As discussed above, the entrypoint imports all the components to be exported and exposed to the Window object. Because not all pages use the same set of components, you will always have a lot of unused JavaScript sitting on the page. 
-Google Lighthouse is not happy with this
+Google Lighthouse is not happy with this.
 
 ![](./lighthouse-unused-javascript.jpg "Google Lighthouse unused JavaScript")
 
@@ -179,7 +179,7 @@ async function loadComponents() {
     }
 }
 ```
-Now, if all is well, you will see a whole bunch of JavaScript files loaded in your requests instead of the one big bundle
+Now, if all is well, you will see a whole bunch of JavaScript files loaded in your requests instead of the one big bundle.
 
 ![](./codesplitting-requests.jpg "Code splitting requests")
 
