@@ -183,7 +183,7 @@ Now, if all is well, you will see a whole bunch of JavaScript files loaded in yo
 
 ![](./codesplitting-requests.jpg "Code splitting requests")
 
-This is all great, and the amount of JavaScript loaded in total is already lower. But when running the [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer) I notice there is some duplicate code across the bundles.
+This is all great, and the amount of JavaScript loaded in total is already lower. But when running the [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer) I noticed there is some duplicate code across the bundles.
 
 ![](./duplicate-code.jpg "Duplicate code")
 
@@ -197,8 +197,6 @@ My preference is to figure out which components are most likely re-used within a
 optimization: {
     splitChunks: {
         cacheGroups: {
-            // custom cache group to force all components files
-            // in /components/common into their own chunk
             atoms: {
                 name: "atoms",
                 test: /[\\/]components[\\/]10_Atoms[\\/]/,
