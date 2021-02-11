@@ -5,6 +5,7 @@
   "version": "1.0.0",
   "author": "Erwin Smit",
   "dependencies": {
+    "fs-extra": "^9.1.0",
     "gatsby": "^2.10.0",
     "gatsby-plugin-catch-links": "^2.1.0",
     "gatsby-plugin-feed": "^2.3.0",
@@ -52,7 +53,7 @@
     "develop": "gatsby develop",
     "start": "npm run develop",
     "build": "rimraf public && rimraf .cache && gatsby build",
-    "deploy": "gatsby build --prefix-paths && node ./copy-cname.js && gh-pages -d public"
+    "deploy": "gatsby build --prefix-paths && node ./copy-stuff.js && gh-pages -d public"
   },
   "husky": {
     "hooks": {
