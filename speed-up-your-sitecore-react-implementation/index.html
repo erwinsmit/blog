@@ -345,7 +345,7 @@ For fixing this we need to <strong>think outside of the React box</strong>. This
       />
   </span>
   </a></p>
-<p>This is all great, and the amount of JavaScript loaded in total is already lower. But when running the <a href="https://www.npmjs.com/package/webpack-bundle-analyzer" target="_blank" rel="nofollow noopener noreferrer">webpack-bundle-analyzer</a> I notice there is some duplicate code across the bundles.</p>
+<p>This is all great, and the amount of JavaScript loaded in total is already lower. But when running the <a href="https://www.npmjs.com/package/webpack-bundle-analyzer" target="_blank" rel="nofollow noopener noreferrer">webpack-bundle-analyzer</a> I noticed there is some duplicate code across the bundles.</p>
 <p><a
     class="gatsby-resp-image-link"
     href="/static/e91d48a6bb3ce82fe69908a553412216/c84ab/duplicate-code.jpg"
@@ -382,8 +382,6 @@ For fixing this we need to <strong>think outside of the React box</strong>. This
 <div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript">optimization<span class="token punctuation">:</span> <span class="token punctuation">{</span>
     splitChunks<span class="token punctuation">:</span> <span class="token punctuation">{</span>
         cacheGroups<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-            <span class="token comment">// custom cache group to force all components files</span>
-            <span class="token comment">// in /components/common into their own chunk</span>
             atoms<span class="token punctuation">:</span> <span class="token punctuation">{</span>
                 name<span class="token punctuation">:</span> <span class="token string">"atoms"</span><span class="token punctuation">,</span>
                 test<span class="token punctuation">:</span> <span class="token regex">/[\\/]components[\\/]10_Atoms[\\/]/</span><span class="token punctuation">,</span>
