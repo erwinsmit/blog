@@ -159,27 +159,30 @@
 <span class="token punctuation">}</span></code></pre></div>
 <p>This causes the components to be registered on the window object like “window.ClientX.default.FAQ”</p>
 <p>To fix the render blocking we first put HTML comments <!-- --> around all the hydration script. I also added a react-data-hydrate attribute so they are easily distinguishable from other inline scripts (e.g. Google tag manager).</p>
-<div class="gatsby-highlight" data-language="html"><pre class="language-html"><code class="language-html"><span class="token comment">&lt;!--
-    &lt;script data-react-hydrate>
+<div class="gatsby-highlight" data-language="html"><pre class="language-html"><code class="language-html"><span class="token comment">&lt;!--&lt;script data-react-hydrate>
         ReactDOM.hydrate(React.createElement(ClientX.default.Navigation, 
         { "module": "ClientX.default.Navigation", "id": "a2feda75-fd69-4811-962a-dd5411e3e7dd", "name": "Main Navigation", "variant": "vertical", "editing": false, "datasource": { "id": "518f590a-a4cc-446a-be85-b44efc8e4f6c" } } ))
-    &lt;/script>    
---></span>     </code></pre></div>
+    &lt;/script>--></span>     </code></pre></div>
 <p>Now let’s change the entrypoint to the following:</p>
 <div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token string">"expose-loader?exposes=React!react"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token string">"expose-loader?exposes=ReactDOM!react-dom"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token string">"expose-loader?exposes=ClientX!../src/components"</span><span class="token punctuation">;</span>
 
 <span class="token keyword">const</span> bodyHtml <span class="token operator">=</span> document<span class="token punctuation">.</span>body<span class="token punctuation">.</span>innerHTML<span class="token punctuation">;</span>
-bodyHtml<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex">/(?=&lt;!--&lt;script data-react-hydrate)([\s\S]*?)-->/gm</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">match</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
-    <span class="token keyword">const</span> scriptTag <span class="token operator">=</span> match<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex">/^&lt;!--|-->$|&lt;script data-react-hydrate>|&lt;\/script>/g</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> scriptTagExpression <span class="token operator">=</span> <span class="token regex">/(?=&lt;!--&lt;script data-react-hydrate)([\s\S]*?)-->/gm</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> scriptTagContentsExpression <span class="token operator">=</span> <span class="token regex">/^&lt;!--|-->$|&lt;script data-react-hydrate>|&lt;\/script>/g</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> matches <span class="token operator">=</span> scriptTagExpression<span class="token punctuation">.</span><span class="token function">exec</span><span class="token punctuation">(</span>bodyHtml<span class="token punctuation">)</span><span class="token punctuation">;</span>
+matches<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">match</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> scriptTag <span class="token operator">=</span> match<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span>scriptTagContentsExpression<span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
         <span class="token function">Function</span><span class="token punctuation">(</span>scriptTag<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'hydrating error:'</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'hydrating error:'</span><span class="token punctuation">,</span> e<span class="token punctuation">,</span> scriptTag<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
     <span class="token keyword">return</span> <span class="token string">""</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
+<span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre></div>
 <p>With a regex we collect all the hydration scripts, and execute them by creating a function from the string and execute it directly. Now we can also move the reference to the client bundle to the bottom of the page as done <a href="https://www.erwinsmit.com/performancepoc/without-render-blockers.html" target="_blank" rel="nofollow noopener noreferrer">here</a>. </p>
 <p>As a result, the Google Lighthouse warning is almost gone!</p>
 <p><a
