@@ -51,12 +51,10 @@ This causes the components to be registered on the window object like "window.Cl
 
 To fix the render blocking we first put HTML comments <!-- --> around all the hydration script. I also added a react-data-hydrate attribute so they are easily distinguishable from other inline scripts (e.g. Google tag manager).
 ```html
-<!--
-    <script data-react-hydrate>
+<!--<script data-react-hydrate>
         ReactDOM.hydrate(React.createElement(ClientX.default.Navigation, 
         { "module": "ClientX.default.Navigation", "id": "a2feda75-fd69-4811-962a-dd5411e3e7dd", "name": "Main Navigation", "variant": "vertical", "editing": false, "datasource": { "id": "518f590a-a4cc-446a-be85-b44efc8e4f6c" } } ))
-    </script>    
--->     
+    </script>-->     
 ```
 
 Now let's change the entrypoint to the following:
@@ -66,15 +64,20 @@ import "expose-loader?exposes=ReactDOM!react-dom";
 import "expose-loader?exposes=ClientX!../src/components";
 
 const bodyHtml = document.body.innerHTML;
-bodyHtml.replace(/(?=<!--<script data-react-hydrate)([\s\S]*?)-->/gm, (match) => {
-    const scriptTag = match.replace(/^<!--|-->$|<script data-react-hydrate>|<\/script>/g, "")
+const scriptTagExpression = /(?=<!--<script data-react-hydrate)([\s\S]*?)-->/gm;
+const scriptTagContentsExpression = /^<!--|-->$|<script data-react-hydrate>|<\/script>/g;
+
+const matches = scriptTagExpression.exec(bodyHtml);
+matches?.forEach((match) => {
+    const scriptTag = match.replace(scriptTagContentsExpression, "");
+
     try {
         Function(scriptTag)();
     } catch(e) {
-        console.error('hydrating error:', e);
+        console.error('hydrating error:', e, scriptTag);
     }
     return "";
-});
+})
 ```
 
 With a regex we collect all the hydration scripts, and execute them by creating a function from the string and execute it directly. Now we can also move the reference to the client bundle to the bottom of the page as done [here](https://www.erwinsmit.com/performancepoc/without-render-blockers.html). 
@@ -146,11 +149,11 @@ Instead, create a component loader object that adds a async function to every co
 
 ```javascript
 const componentLoader = {
-    Navigation: async () => import('../src/components/20_Molecules/NavigationMenu/container'),
-    Section: async () => import('../src/components/02_Wrappers/structure/Section'),
-    HeroTeaser: async () => import('../src/components/30_Organisms/HeroTeaser/container'),
-    USPHeader: async () => import('../src/components/20_Molecules/Headers/USPHeader'),
-    BannerTeaser: async () => import('../src/components/20_Molecules/Teasers/BannerTeaser')
+    Navigation: () => import('../src/components/20_Molecules/NavigationMenu/container'),
+    Section: () => import('../src/components/02_Wrappers/structure/Section'),
+    HeroTeaser: () => import('../src/components/30_Organisms/HeroTeaser/container'),
+    USPHeader: () => import('../src/components/20_Molecules/Headers/USPHeader'),
+    BannerTeaser:  () => import('../src/components/20_Molecules/Teasers/BannerTeaser')
 }
 ```
 
@@ -167,16 +170,32 @@ const reactWindow = window as unknown as ReactWindow;
 
 async function loadComponents() {
     reactWindow[namespace] = { default: {} }
-    const regex = new RegExp(String.raw`${namespace}.default.+?(?=\W)`, 'gm');
+    const componentNamesExpression = new RegExp(`${namespace}.default.+?(?=\\W)`, 'gm');
 
-    const allComponents = [...new Set(bodyHtml.match(regex))];
+    const allComponents = [...new Set(bodyHtml.match(componentNamesExpression))];
+    const componentPromises: Array<() => Promise<{ default: any }>> = [];
 
     for (const component of allComponents) {
         const componentsSplit = component.split('.');
         const componentName = componentsSplit[componentsSplit.length - 1];
-       
-        reactWindow[namespace].default[componentName] = (await componentLoader[componentName]()).default;
+        const componentPromise: () => Promise<any> = componentLoader[componentName];
+
+        if (componentPromise) {
+            componentPromises.push(componentPromise);
+        }
     }
+
+    const tasks  = componentPromises.map((task) => task()); // Run all the imports in parallel
+    const components = await Promise.all(tasks);  // get the results
+
+    components.forEach((component, i) => {
+        const componentsSplit = allComponents[i].split('.');
+        const componentName = componentsSplit[componentsSplit.length - 1];
+        
+        if (component) {
+            reactWindow[namespace].default[componentName] = component.default;
+        }
+    });  
 }
 ```
 Now, if all is well, you will see a whole bunch of JavaScript files loaded in your requests instead of the one big bundle.
@@ -217,6 +236,7 @@ As a result the amount of JavaScript loaded has more than halved in size on most
 ### Why is webpack not splitting the bundles?
 While working on a project that hasn't updated for a while these things where stopping webpack from splitting the bundles:
 
+- Old version of webpack
 - Old version of typescript
 - Deprecated loader "awesome-typescript-loader" was used, replace with [https://github.com/TypeStrong/ts-loader](ts-loader)
 - Module was not set to "esnext" in the tsconfig.json
@@ -252,22 +272,43 @@ const componentLoader = {
 // 1. Only load the components that are present on the page
 async function loadComponents() {
     reactWindow[namespace] = { default: {} }
-    const regex = new RegExp(String.raw`${namespace}.default.+?(?=\W)`, 'gm');
+    const componentNamesExpression = new RegExp(`${namespace}.default.+?(?=\\W)`, 'gm');
 
-    const allComponents = [...new Set(bodyHtml.match(regex))];
+    const allComponents = [...new Set(bodyHtml.match(componentNamesExpression))];
+    const componentPromises: Array<() => Promise<{ default: any }>> = [];
 
     for (const component of allComponents) {
         const componentsSplit = component.split('.');
         const componentName = componentsSplit[componentsSplit.length - 1];
-       
-        reactWindow[namespace].default[componentName] = (await componentLoader[componentName]()).default;
+        const componentPromise: () => Promise<any> = componentLoader[componentName];
+
+        if (componentPromise) {
+            componentPromises.push(componentPromise);
+        }
     }
+
+    const tasks  = componentPromises.map((task) => task()); // Run all the imports in parallel
+    const components = await Promise.all(tasks);  // get the results
+
+    components.forEach((component, i) => {
+        const componentsSplit = allComponents[i].split('.');
+        const componentName = componentsSplit[componentsSplit.length - 1];
+        
+        if (component) {
+            reactWindow[namespace].default[componentName] = component.default;
+        }
+    });  
 }
 
 // 2. Execute the react hydrate after the page is loaded... 
 loadComponents().then(() => {
-    bodyHtml.replace(/(?=<!--<script data-react-hydrate)([\s\S]*?)-->/gm, (match) => {
-        const scriptTag = match.replace(/^<!--|-->$|<script data-react-hydrate>|<\/script>/g, "")
+    const scriptTagExpression = /(?=<!--<script data-react-hydrate)([\s\S]*?)-->/gm;
+    const scriptTagContentsExpression = /^<!--|-->$|<script data-react-hydrate>|<\/script>/g;
+
+    const matches = scriptTagExpression.exec(bodyHtml);
+    matches?.forEach((match) => {
+        const scriptTag = match.replace(scriptTagContentsExpression, "");
+
         try {
             Function(scriptTag)();
         } catch(e) {
