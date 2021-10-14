@@ -1,47 +1,47 @@
 ---
 title: Next.js on Azure Functions
 date: '2021-10-13'
-spoiler: How to setup a Next.js custom server hosted on Azure Functions 
+spoiler: How to set up a Next.js custom server hosted on Azure Functions 
 ---
 
-Next.js is a great framework for creating react applications. I was always a fan of SSG (Static Site Generation) using for example Gatsby (this blog is using Gatsby too). 
-Websites using SSG have very low hosting costs, no computing power is needed for rendering stuff to the end-user. With the great tooling available it still feels dynamic, you can still use a CMS, you just need to run a new build when some content has changed.
+Next.js is a great framework for creating react applications. I was always a fan of **SSG (Static Site Generation)** using for example Gatsby (this blog is using Gatsby too). 
+Websites using **SSG** have low hosting costs. No computing power is needed for rendering stuff to the end-user. With the great tooling available it still feels dynamic, you can still use a CMS, you just need to run a new build when some content has changed.
 
 This is all great but when you make content changes all the time it is not that scalable. Sometimes you also still need SSR (Server Side Rendering). With Next.js you can have both at the same time! For me the key advantages of Next.js are:
 
-- ***SSG*** (Build pages as static assets on build-time)
-- ***SSR*** (Serve pages server side rendered on request)
-- ***ISG*** (Incremental Static Generation) 
+- **SSG** (Build pages as static assets on build-time)
+- **SSR** (Serve pages server-side rendered on request)
+- **ISG** (Incremental Static Generation) 
 
-**ISG** is a great feature, a page that is statically rendered using SSG can still update on request when the *revalidate* time on a page has expired. A real life scenario would be
+**ISG** is a great feature, a page that is statically rendered using SSG can still update on request when the [*revalidate*](https://nextjs.org/docs/basic-features/data-fetching) time on a page has expired. A real-life scenario would be:
 
-1. User 1 requests the /contact page where revalidate is set to 10 (seconds). The page is not generated on build time so a static asset is created on the server containing the HTML.
-2. User 2 enter the contact page a few seconds later, it will receive the statically generated html triggered by event ***1*** above.
+1. User 1 requests the "/contact" page where revalidate is set to 10 (seconds). The page is not generated on build time so a static asset is created on the server containing the HTML.
+2. User 2 enters the contact page a few seconds later, it will receive the statically generated HTML triggered by event **1** above.
 3. User 1 refreshes the page 10 seconds later, the page will update itself and will be served as a static asset to the next user that enters the page within 10 seconds.
 
-With the use case described above you wonder why you would ever need SSR. I'm also not sure when you still need it, you could say it's necessary when the content is unique per visitor (price information for example). 
-But if that's the case, you could also fetch the data using client-side calls, unique content specific for a user should not be important for SEO. 
+With the use case described above, you wonder why you would ever need SSR. I'm also not sure when you still need it, you could say it's necessary when the content is unique per visitor (price information for example). 
+But if that's the case, you could also fetch the data using client-side calls, unique content specifically for a user should not be important for SEO. 
 
 At Macaw we build a lot of stuff with Sitecore so I'm excited to see Sitecore JSS supports Next.js out of the box! However, there are some challenges...
 
 ## Hosting Next.js without Vercel
-Next.js recommends you to host your Next.js application on Vercel, this makes perfect sense because Vercel is the company behind Next.js. In Vercel you simply link your Next.js Github repository, click next a few times and you have a Next.js site up and running!
+Next.js recommends you host your Next.js application on Vercel, this makes perfect sense because Vercel is the company behind Next.js. In Vercel you simply link your Next.js Github repository, click next a few times and you have a Next.js site up and running!
 
-But... Vercel is not easy to sell to clients. For a developer creating a hobby website it's free which is great. For a bit more bandwidth you pay $20 per member (I assume developer team member). Anything above that is a big mystery because you will fall into the Enterprise bracket. I heard some mixed [experiences](https://www.reddit.com/r/nextjs/comments/ikr8jv/understanding_optimizing_nextjs_usage_on_vercel/) about that.
+Most of our clients already pay for an Azure subscription, so it doesn't always make sense for the clients to also pay for Vercel. This makes their IT landscape less consistent. 
 
-Also, most of the clients we serve already pay for Azure for various services. So it makes more sense to the client to have everything running within Azure. 
+Also the pricing is hard to calculate. For a developer creating a hobby website, it's free which is great. For a bit more bandwidth you pay $20 per member (I assume developer team member). Anything above that is a big mystery because you will fall into the Enterprise bracket. I heard some mixed [experiences](https://www.reddit.com/r/nextjs/comments/ikr8jv/understanding_optimizing_nextjs_usage_on_vercel/) about that.
 
-In other projects we learned that you get the most bang for buck performance hosting your application in (consumption based) Azure Functions. You only pay for the amount of requests you actually get and it can scale up to infinity. 
+In other projects, we learned that you get the most bang for buck performance hosting your application in (consumption-based) Azure Functions. You only pay for the number of requests you get and it can scale up to infinity. 
 
-So how do you actually run Next.js on a Azure function? We decided to figure this out first with a basic Next.js website before diving into the Sitecore JSS implementation. 
+So how do you run Next.js on an Azure function? We decided to figure this out first with a basic Next.js website before diving into the Sitecore JSS implementation. 
 
-## Next.js custom server within a Azure Function
-Our project is setup with Lerna using the following folder structure:
+## Next.js custom server within an Azure Function
+Our project is set up with Lerna using the following folder structure:
 
-packages/nextjs-app
-packages/nextjs-azure-functions
+- `packages/nextjs-app`
+- `packages/nextjs-azure-functions`
 
-Within the `nextjs-app` package we have a app generated by default using the Next.JS CLI. For demonstration purposes we have a page that's generated using `getServerSideProps` for SSR and a page using `getStaticProps` for SSG. 
+Within the `nextjs-app` package we have an app generated by default using the Next.JS CLI. For demonstration purposes, we have a page that's generated using `getServerSideProps` for SSR and a page using `getStaticProps` for SSG. 
 
 In the `nextjs-azure-functions` we have created a function for the custom server. The custom server is based on the examples provided by Next.js and placed in the context of an Azure Function. A custom server is required because you can't just run `next start` within an Azure Function. 
 
@@ -98,7 +98,7 @@ Using this proxy the subpath after the baseurl is passed as a parameter. So when
 But... The static assets from Next.js are not showing up. E.g. when `_next/static/css/0c24874fa9ebf63f8a34.css` is requested, it will try to render a route within Next.js instead of serving the static file. 
 
 ## Resolving static assets
-Also this challenge can be solved with proxies:
+Also, this challenge can be solved with proxies:
 
 ```json
 {
@@ -118,7 +118,7 @@ Also this challenge can be solved with proxies:
 
 ```
 
-With this configuration we catch all the requests that start with `next/static` and catch everything after that in parameter called path. This parameter is passed to an azure function called `serveStaticFile` which looks like this:
+With this configuration, we catch all the requests that start with `next/static` and catch everything after that in a parameter called path. This parameter is passed to an azure function called `serveStaticFile` which looks like this:
 
 ```javascript
 import { Context, HttpRequest } from "@azure/functions";
@@ -153,7 +153,7 @@ While picking the CDN for your Azure Function it's important to pick one that su
 
 `cache-control: s-maxage=10,stale-while-revalidate`
 
-You want the s-maxage value to be the same value as configured in `getStaticProps`
+You want the s-maxage value to be the same value as configured for `revalidate` in `getStaticProps`
 
 ```javascript
 // static site generation...
@@ -177,7 +177,7 @@ Not all [CDN's](https://docs.microsoft.com/en-us/azure/cdn/cdn-features) in Azur
 ## What's next?
 This is my first post about my investigation on Next.js on azure and Sitecore JSS. Coming up are posts about:
 
-- Deploying Azure Functions using github actions
+- Deploying Azure Functions using Github actions
 - Sitecore JSS on azure functions
 - Creating components in Sitecore JSS
 - Integrate Sitecore OrderCloud and other services in Sitecore JSS
