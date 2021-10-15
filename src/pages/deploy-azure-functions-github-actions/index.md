@@ -42,7 +42,7 @@ Personally, I like to use the `workflow_dispatch` event. I don't like to run a f
 
 
 ```yml
-name: Deploy basic nextjs build
+name: Deploy Azure Function
 
 on:
   [workflow_dispatch]
