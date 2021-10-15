@@ -1,4 +1,217 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Erwin Smit blog]]></title><description><![CDATA[Writing about coding and things.]]></description><link>https://erwinsmit.nl</link><generator>RSS for Node</generator><lastBuildDate>Thu, 14 Oct 2021 08:09:59 GMT</lastBuildDate><item><title><![CDATA[Next.js on Azure Functions]]></title><link>https://erwinsmit.nl/nextjs-on-azure-functions/</link><guid isPermaLink="false">https://erwinsmit.nl/nextjs-on-azure-functions/</guid><pubDate>Wed, 13 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Next.js is a great framework for creating react applications. I was always a fan of &lt;strong&gt;SSG (Static Site Generation)&lt;/strong&gt; using for example Gatsby (this blog is using Gatsby too).
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Erwin Smit blog]]></title><description><![CDATA[Writing about coding and things.]]></description><link>https://erwinsmit.nl</link><generator>RSS for Node</generator><lastBuildDate>Fri, 15 Oct 2021 14:30:17 GMT</lastBuildDate><item><title><![CDATA[Deploy Azure Functions with GitHub Actions using AzCopy]]></title><link>https://erwinsmit.nl/deploy-azure-functions-github-actions/</link><guid isPermaLink="false">https://erwinsmit.nl/deploy-azure-functions-github-actions/</guid><pubDate>Fri, 15 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;When deploying Azure Functions the most straightforward approach is to use the &lt;strong&gt;actions/checkout@v2&lt;/strong&gt; &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-github-actions&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;recommended by Azure&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;However, there are some restrictions with this approach. Using this approach. The Azure Functions will only work using the &lt;strong&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/azure-functions/run-functions-from-deployment-package&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Run from package option&lt;/a&gt;&lt;/strong&gt;. There are two reasons why this wasn’t great for a &lt;a href=&quot;https://erwinsmit.nl/nextjs-on-azure-functions&quot;&gt;Next.js custom server&lt;/a&gt;.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Next.js requires to have write access for its &lt;a href=&quot;https://nextjs.org/docs/basic-features/data-fetching#incremental-static-regeneration&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Incremental Static Generation&lt;/a&gt;. With the &lt;strong&gt;Run from package option&lt;/strong&gt; you can’t use this feature.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Because there is no write access it’s also not possible to use the &lt;a href=&quot;https://social.technet.microsoft.com/wiki/contents/articles/36467.understanding-the-azure-app-service-editor.aspx&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Azure App Service Editor&lt;/a&gt;. During development I love this feature to test changes quickly without having to wait for deployments.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;alternative-ways-for-deploying-azure-function-with-github-actions&quot;&gt;&lt;a href=&quot;#alternative-ways-for-deploying-azure-function-with-github-actions&quot; aria-label=&quot;alternative ways for deploying azure function with github actions permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Alternative ways for deploying Azure Function with Github Actions&lt;/h2&gt;
+&lt;h3 id=&quot;using-the-azure-cli&quot;&gt;&lt;a href=&quot;#using-the-azure-cli&quot; aria-label=&quot;using the azure cli permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Using the Azure CLI&lt;/h3&gt;
+&lt;p&gt;Instead of using the recommended &lt;strong&gt;actions/checkout@v2&lt;/strong&gt; it’s also possible to use the Azure CLI directly in the .yml file. Before doing so, it’s required to run a &lt;a href=&quot;https://github.com/marketplace/actions/azure-login&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;login command&lt;/a&gt; first. To run this you’ll need deployment credentials which can be generated through the &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Azure Cloud Shell&lt;/a&gt; for example. &lt;/p&gt;
+&lt;p&gt;If you have the required permissions within your organisation you’re in business! Now you can run all the &lt;a href=&quot;https://docs.microsoft.com/en-us/cli/azure/functionapp/deployment&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;deploy commands&lt;/a&gt; available for Azure Functions. &lt;/p&gt;
+&lt;p&gt;I did not have the required permissions to create deployment credentials. Also, when trying to run this locally I found the deployments pretty slow. Just the Azure Functions are deployed quickly but with the Azure Functions also came a big Next.js build folder and their NPM dependencies (with and without remote builds). &lt;/p&gt;
+&lt;h3 id=&quot;using-az-copy&quot;&gt;&lt;a href=&quot;#using-az-copy&quot; aria-label=&quot;using az copy permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Using AZ Copy&lt;/h3&gt;
+&lt;p&gt;This is the solution I picked for deploying Azure Functions. It’s reasonably quick for big projects and I have full access to the Azure App Service Editor and write access. Let’s show the implementation step by step.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Create the Function App&lt;/strong&gt;
+&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.nl/static/dbf604721ca528d625b5b3fd6189af7c/050a5/create-function-app.jpg&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 809px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 86.03213844252163%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAARABQDASIAAhEBAxEB/8QAGQABAAMBAQAAAAAAAAAAAAAAAAECBAMF/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAL/2gAMAwEAAhADEAAAAfX6XoSkZtRUyJr/xAAcEAABBQADAAAAAAAAAAAAAAABAAIDEBIRITL/2gAIAQEAAQUCEbAstWW1noDhR+hX/8QAFhEBAQEAAAAAAAAAAAAAAAAAEAIx/9oACAEDAQE/AScP/8QAFhEBAQEAAAAAAAAAAAAAAAAAEAIx/9oACAECAQE/AStP/8QAGxAAAQQDAAAAAAAAAAAAAAAAAAECECExMkH/2gAIAQEABj8CpiGpiLVTo6f/xAAeEAACAQMFAAAAAAAAAAAAAAABEQAgYZEhMVFxgf/aAAgBAQABPyEswPJaYlriLeAihR5GkQTLs0Z//9oADAMBAAIAAwAAABCACDz/xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAEDAQE/EBf/xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAECAQE/EBf/xAAeEAACAQQDAQAAAAAAAAAAAAAAAREhMVFxEEGhwf/aAAgBAQABPxCUiWFICJhlggqBibnVBMCovIz2/Wdt8f/Z&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Function setup&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.nl/static/dbf604721ca528d625b5b3fd6189af7c/050a5/create-function-app.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/dbf604721ca528d625b5b3fd6189af7c/f0518/create-function-app.jpg 225w,https://erwinsmit.nl/static/dbf604721ca528d625b5b3fd6189af7c/b3492/create-function-app.jpg 450w,https://erwinsmit.nl/static/dbf604721ca528d625b5b3fd6189af7c/050a5/create-function-app.jpg 809w&quot;
+        sizes=&quot;(max-width: 809px) 100vw, 809px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Select or create a new storage account&lt;/strong&gt;
+&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.nl/static/fe16700e90f24b836db9680226192453/25f26/storage-account.jpg&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 883px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 89.46772366930918%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAASABQDASIAAhEBAxEB/8QAGAABAAMBAAAAAAAAAAAAAAAAAAECAwX/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAHszoKriQAf/8QAGhAAAgIDAAAAAAAAAAAAAAAAAAIBAxESIP/aAAgBAQABBQKK0gwhqvf/xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAEDAQE/AR//xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAECAQE/AR//xAAYEAADAQEAAAAAAAAAAAAAAAAAATEgMv/aAAgBAQAGPwLlERN//8QAGxABAAICAwAAAAAAAAAAAAAAAQARIDFhgZH/2gAIAQEAAT8hUsLqCKFhucXzP//aAAwDAQACAAMAAAAQc8AA/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPxAf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPxAf/8QAHBABAAEEAwAAAAAAAAAAAAAAAQAhMVGRESDB/9oACAEBAAE/EKEVgnkUhsAqQaIGt9w5w76//9k=&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Create storage account&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.nl/static/fe16700e90f24b836db9680226192453/25f26/storage-account.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/fe16700e90f24b836db9680226192453/f0518/storage-account.jpg 225w,https://erwinsmit.nl/static/fe16700e90f24b836db9680226192453/b3492/storage-account.jpg 450w,https://erwinsmit.nl/static/fe16700e90f24b836db9680226192453/25f26/storage-account.jpg 883w&quot;
+        sizes=&quot;(max-width: 883px) 100vw, 883px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;See how the Function App is connected&lt;/strong&gt;
+&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.nl/static/324b4378855828470ce93e2b6930e358/25f26/storage-account-connection.jpg&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 883px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 89.46772366930918%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAASABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAIBBf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhADEAAAAe6DQJCwf//EABYQAAMAAAAAAAAAAAAAAAAAAAEQIP/aAAgBAQABBQKwv//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQMBAT8BH//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQIBAT8BH//EABQQAQAAAAAAAAAAAAAAAAAAADD/2gAIAQEABj8CH//EABkQAAIDAQAAAAAAAAAAAAAAAAABEBFBMf/aAAgBAQABPyGlQmWZCZjOY//aAAwDAQACAAMAAAAQ48c8/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPxAf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPxAf/8QAHBABAAICAwEAAAAAAAAAAAAAAQARITFBUYGx/9oACAEBAAE/EKE1leolZHyCrTAdq3Bo58JYXPtAOYOZR1P/2Q==&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Storage account connection&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.nl/static/324b4378855828470ce93e2b6930e358/25f26/storage-account-connection.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/324b4378855828470ce93e2b6930e358/f0518/storage-account-connection.jpg 225w,https://erwinsmit.nl/static/324b4378855828470ce93e2b6930e358/b3492/storage-account-connection.jpg 450w,https://erwinsmit.nl/static/324b4378855828470ce93e2b6930e358/25f26/storage-account-connection.jpg 883w&quot;
+        sizes=&quot;(max-width: 883px) 100vw, 883px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This helped me to understand how the deployments to Azure Function Apps work. I figured out that all it takes is to upload a set of files to the &lt;code class=&quot;language-text&quot;&gt;wwwroot&lt;/code&gt; folder of the &lt;code class=&quot;language-text&quot;&gt;fileshare&lt;/code&gt; within the storage account.&lt;/p&gt;
+&lt;ol start=&quot;4&quot;&gt;
+&lt;li&gt;&lt;strong&gt;Set up the Github action&lt;/strong&gt;
+See below an example on a yml I use for the deployment of an Azure Function. Place this file in the &lt;code class=&quot;language-text&quot;&gt;.github&lt;/code&gt; directory of your project and GitHub will automatically recognise the file and add the Action to the UI.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Personally, I like to use the &lt;code class=&quot;language-text&quot;&gt;workflow_dispatch&lt;/code&gt; event. I don’t like to run a full build on each time I push some code. &lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;yml&quot;&gt;&lt;pre class=&quot;language-yml&quot;&gt;&lt;code class=&quot;language-yml&quot;&gt;&lt;span class=&quot;token key atrule&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; Deploy basic nextjs build
+
+&lt;span class=&quot;token key atrule&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;workflow_dispatch&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;token key atrule&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;NODE_VERSION&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;14.x&apos;&lt;/span&gt;
+  &lt;span class=&quot;token comment&quot;&gt;## Enter the path to your storage account and include the name of the file share&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;AZUREFUNCDEST&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;https://${pathtostoreageaccount}.file.core.windows.net/${filesharename}/site/wwwroot&apos;&lt;/span&gt;
+
+&lt;span class=&quot;token key atrule&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;build-and-deploy&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; windows&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;latest
+    &lt;span class=&quot;token key atrule&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;Checkout GitHub Action&apos;&lt;/span&gt;
+      &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; actions/checkout@main
+
+    &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; Setup Node $&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; env.NODE_VERSION &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; Environment
+      &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; actions/setup&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;node@v1
+      &lt;span class=&quot;token key atrule&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;token key atrule&quot;&gt;node-version&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; $&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; env.NODE_VERSION &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;token comment&quot;&gt;## Install a community package that adds the azcopy tool&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; Install azcopy
+      &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; kheiakiyama/install&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;azcopy&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;action@v1.0.3
+
+    &lt;span class=&quot;token comment&quot;&gt;## Build your application, replace Lerna with NPM/Yarn if that&apos;s more suitable for your project&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;Lerna bootstrap &amp;amp; azure functions build&apos;&lt;/span&gt;
+      &lt;span class=&quot;token key atrule&quot;&gt;shell&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; pwsh
+      &lt;span class=&quot;token key atrule&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;token scalar string&quot;&gt;
+        lerna bootstrap
+        npm run build
+        popd&lt;/span&gt;
+
+    &lt;span class=&quot;token comment&quot;&gt;## Clean up the directory before copying the new stuff over&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; kheiakiyama/install&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;azcopy&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;action@v1
+      &lt;span class=&quot;token key atrule&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;token key atrule&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;v10&apos;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; azcopy_v10 rm &apos;$&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; env.AZUREFUNCDEST &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;?&lt;/span&gt;$&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; secrets.SECRETSASTOKEN &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&apos; &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;recursive
+
+    &lt;span class=&quot;token comment&quot;&gt;## Copy the contents of the azure functions&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; kheiakiyama/install&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;azcopy&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;action@v1
+      &lt;span class=&quot;token key atrule&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;token key atrule&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;v10&apos;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; azcopy_v10 copy &apos;./packages/azure&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;functions/*&apos; &apos;$&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; env.AZUREFUNCDEST &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;?&lt;/span&gt;$&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; secrets.SECRETSASTOKEN &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&apos; &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;recursive&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To authenticate the copying of the files, generate a SAS Token on the storage account.
+&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.nl/static/b03c2cae1c93b81100793f938a835a12/c9643/sas-token.jpg&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 900px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 88.46938775510203%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAASABQDASIAAhEBAxEB/8QAGQABAAIDAAAAAAAAAAAAAAAAAAEDAgQF/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAH/2gAMAwEAAhADEAAAAe1nEJYFq0gA/8QAGRAAAwADAAAAAAAAAAAAAAAAAQIQEjJB/9oACAEBAAEFAiim8zWNrP/EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQMBAT8BH//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQIBAT8BH//EABgQAAIDAAAAAAAAAAAAAAAAAAEgAhEx/9oACAEBAAY/ArMQU1f/xAAbEAEAAgIDAAAAAAAAAAAAAAABABAxUREhYf/aAAgBAQABPyHuxbSFLBgSPtZa5dz/2gAMAwEAAgADAAAAECwHPP/EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQMBAT8QH//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQIBAT8QH//EAB0QAQACAgIDAAAAAAAAAAAAAAEAESFBMVFhkbH/2gAIAQEAAT8QYBnFNZShpXxBrTALUtOiW0GwjBlnZG8rv5DOXmHc9z//2Q==&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Generate SAS token&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.nl/static/b03c2cae1c93b81100793f938a835a12/2a9fa/sas-token.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/b03c2cae1c93b81100793f938a835a12/f0518/sas-token.jpg 225w,https://erwinsmit.nl/static/b03c2cae1c93b81100793f938a835a12/b3492/sas-token.jpg 450w,https://erwinsmit.nl/static/b03c2cae1c93b81100793f938a835a12/2a9fa/sas-token.jpg 900w,https://erwinsmit.nl/static/b03c2cae1c93b81100793f938a835a12/c9643/sas-token.jpg 980w&quot;
+        sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Add the SAS Token to the GitHub secrets:
+&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.nl/static/9f5efeb921c66776d7a9cbf7327984c3/b31e2/github-secret.jpg&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 790px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 97.84810126582278%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAECBf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/9oADAMBAAIQAxAAAAHu2E0hWgA//8QAFhABAQEAAAAAAAAAAAAAAAAAIAEh/9oACAEBAAEFAhNP/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPwEf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPwEf/8QAFBABAAAAAAAAAAAAAAAAAAAAMP/aAAgBAQAGPwIf/8QAGRAAAwADAAAAAAAAAAAAAAAAABEhIFGB/9oACAEBAAE/IRENkHeiw//aAAwDAQACAAMAAAAQNMgA/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPxAf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPxAf/8QAHBABAAICAwEAAAAAAAAAAAAAAQARMZEQIVGB/9oACAEBAAE/EMrYagEvrRK8EpBU1nqKkAPAjqWhn7z/AP/Z&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;GitHub secret&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.nl/static/9f5efeb921c66776d7a9cbf7327984c3/b31e2/github-secret.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/9f5efeb921c66776d7a9cbf7327984c3/f0518/github-secret.jpg 225w,https://erwinsmit.nl/static/9f5efeb921c66776d7a9cbf7327984c3/b3492/github-secret.jpg 450w,https://erwinsmit.nl/static/9f5efeb921c66776d7a9cbf7327984c3/b31e2/github-secret.jpg 790w&quot;
+        sizes=&quot;(max-width: 790px) 100vw, 790px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;There you go, now you can run the GitHub action and your Azure Function will be deployed. Hopefully, this could be a useful alternative for deploying Azure Functions using Github Actions! &lt;/p&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/deploy-azure-functions-github-actions/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Next.js on Azure Functions]]></title><link>https://erwinsmit.nl/nextjs-on-azure-functions/</link><guid isPermaLink="false">https://erwinsmit.nl/nextjs-on-azure-functions/</guid><pubDate>Wed, 13 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Next.js is a great framework for creating react applications. I was always a fan of &lt;strong&gt;SSG (Static Site Generation)&lt;/strong&gt; using for example Gatsby (this blog is using Gatsby too).
 Websites using &lt;strong&gt;SSG&lt;/strong&gt; have low hosting costs. No computing power is needed for rendering stuff to the end-user. With the great tooling available it still feels dynamic, you can still use a CMS, you just need to run a new build when some content has changed.&lt;/p&gt;
 &lt;p&gt;This is all great but when you make content changes all the time it is not that scalable. Sometimes you also still need SSR (Server Side Rendering). With Next.js you can have both at the same time! For me the key advantages of Next.js are:&lt;/p&gt;
 &lt;ul&gt;
@@ -147,7 +360,7 @@ module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span cla
 &lt;p&gt;I created a static &lt;a href=&quot;https://www.erwinsmit.com/performancepoc&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;html page&lt;/a&gt; that reflects how many Sitecore sites work, it has inline script tags that refer to React components. Although these components are already rendered server side they still need to be “Hydrated”. Hydration of a React component adds all the client side magic like event listeners, state changes, hooks etc. &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/a172d/hydration.jpg&quot;
+    href=&quot;https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/8e863/hydration.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -165,8 +378,8 @@ module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span cla
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;hydration&quot;
         title=&quot;Hydrate React component&quot;
-        src=&quot;https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/2d017/hydration.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/40f63/hydration.jpg 225w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/df2c7/hydration.jpg 450w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/2d017/hydration.jpg 900w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/bbff7/hydration.jpg 1350w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/98235/hydration.jpg 1800w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/a172d/hydration.jpg 1927w&quot;
+        src=&quot;https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/2a9fa/hydration.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/f0518/hydration.jpg 225w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/b3492/hydration.jpg 450w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/2a9fa/hydration.jpg 900w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/987c3/hydration.jpg 1350w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/e2107/hydration.jpg 1800w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/8e863/hydration.jpg 1927w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -175,7 +388,7 @@ module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span cla
 &lt;p&gt;The &lt;strong&gt;second issue&lt;/strong&gt; with this approach is the dependency on global modules within the script tags, “ClientX.default.Navigation” needs to be registered on the Window object otherwise runtime exceptions will occur. Therefore the JavaScript bundle responsible for registering these components is at the top of the page. As a result the browser first needs to load and execute this script before it can render the HTML. You can imagine tools like Google Lighthouse are not happy with this!&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/6b270/lighthouse-not-happy.jpg&quot;
+    href=&quot;https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/96ab2/lighthouse-not-happy.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -193,8 +406,8 @@ module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span cla
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;lighthouse not happy&quot;
         title=&quot;Lighthouse isn&apos;t happy!&quot;
-        src=&quot;https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/2d017/lighthouse-not-happy.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/40f63/lighthouse-not-happy.jpg 225w,https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/df2c7/lighthouse-not-happy.jpg 450w,https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/2d017/lighthouse-not-happy.jpg 900w,https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/bbff7/lighthouse-not-happy.jpg 1350w,https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/6b270/lighthouse-not-happy.jpg 1711w&quot;
+        src=&quot;https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/2a9fa/lighthouse-not-happy.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/f0518/lighthouse-not-happy.jpg 225w,https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/b3492/lighthouse-not-happy.jpg 450w,https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/2a9fa/lighthouse-not-happy.jpg 900w,https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/987c3/lighthouse-not-happy.jpg 1350w,https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/96ab2/lighthouse-not-happy.jpg 1711w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -250,7 +463,7 @@ matches&lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt;&lt;span class
 &lt;p&gt;As a result, the Google Lighthouse warning is almost gone!&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/a4d78/lighthouse-no-render-blockers.jpg&quot;
+    href=&quot;https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/be28a/lighthouse-no-render-blockers.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -268,8 +481,8 @@ matches&lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt;&lt;span class
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;lighthouse no render blockers&quot;
         title=&quot;Lighthouse almost happy&quot;
-        src=&quot;https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/2d017/lighthouse-no-render-blockers.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/40f63/lighthouse-no-render-blockers.jpg 225w,https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/df2c7/lighthouse-no-render-blockers.jpg 450w,https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/2d017/lighthouse-no-render-blockers.jpg 900w,https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/bbff7/lighthouse-no-render-blockers.jpg 1350w,https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/a4d78/lighthouse-no-render-blockers.jpg 1647w&quot;
+        src=&quot;https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/2a9fa/lighthouse-no-render-blockers.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/f0518/lighthouse-no-render-blockers.jpg 225w,https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/b3492/lighthouse-no-render-blockers.jpg 450w,https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/2a9fa/lighthouse-no-render-blockers.jpg 900w,https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/987c3/lighthouse-no-render-blockers.jpg 1350w,https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/be28a/lighthouse-no-render-blockers.jpg 1647w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -280,7 +493,7 @@ matches&lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt;&lt;span class
 Google Lighthouse is not happy with this.&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/9a95b/lighthouse-unused-javascript.jpg&quot;
+    href=&quot;https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/7548f/lighthouse-unused-javascript.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -298,8 +511,8 @@ Google Lighthouse is not happy with this.&lt;/p&gt;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;lighthouse unused javascript&quot;
         title=&quot;Google Lighthouse unused JavaScript&quot;
-        src=&quot;https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/2d017/lighthouse-unused-javascript.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/40f63/lighthouse-unused-javascript.jpg 225w,https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/df2c7/lighthouse-unused-javascript.jpg 450w,https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/2d017/lighthouse-unused-javascript.jpg 900w,https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/bbff7/lighthouse-unused-javascript.jpg 1350w,https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/9a95b/lighthouse-unused-javascript.jpg 1649w&quot;
+        src=&quot;https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/2a9fa/lighthouse-unused-javascript.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/f0518/lighthouse-unused-javascript.jpg 225w,https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/b3492/lighthouse-unused-javascript.jpg 450w,https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/2a9fa/lighthouse-unused-javascript.jpg 900w,https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/987c3/lighthouse-unused-javascript.jpg 1350w,https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/7548f/lighthouse-unused-javascript.jpg 1649w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -391,7 +604,7 @@ For fixing this we need to &lt;strong&gt;think outside of the React box&lt;/stro
 &lt;p&gt;Now, if all is well, you will see a whole bunch of JavaScript files loaded in your requests instead of the one big bundle.&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/33f33/codesplitting-requests.jpg&quot;
+    href=&quot;https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/d836a/codesplitting-requests.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -409,8 +622,8 @@ For fixing this we need to &lt;strong&gt;think outside of the React box&lt;/stro
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;codesplitting requests&quot;
         title=&quot;Code splitting requests&quot;
-        src=&quot;https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/2d017/codesplitting-requests.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/40f63/codesplitting-requests.jpg 225w,https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/df2c7/codesplitting-requests.jpg 450w,https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/2d017/codesplitting-requests.jpg 900w,https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/bbff7/codesplitting-requests.jpg 1350w,https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/33f33/codesplitting-requests.jpg 1598w&quot;
+        src=&quot;https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/2a9fa/codesplitting-requests.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/f0518/codesplitting-requests.jpg 225w,https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/b3492/codesplitting-requests.jpg 450w,https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/2a9fa/codesplitting-requests.jpg 900w,https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/987c3/codesplitting-requests.jpg 1350w,https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/d836a/codesplitting-requests.jpg 1598w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -418,7 +631,7 @@ For fixing this we need to &lt;strong&gt;think outside of the React box&lt;/stro
 &lt;p&gt;This is all great, and the amount of JavaScript loaded in total is already lower. But when running the &lt;a href=&quot;https://www.npmjs.com/package/webpack-bundle-analyzer&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;webpack-bundle-analyzer&lt;/a&gt; I noticed there is some duplicate code across the bundles.&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/c84ab/duplicate-code.jpg&quot;
+    href=&quot;https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/34b29/duplicate-code.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -436,8 +649,8 @@ For fixing this we need to &lt;strong&gt;think outside of the React box&lt;/stro
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;duplicate code&quot;
         title=&quot;Duplicate code&quot;
-        src=&quot;https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/2d017/duplicate-code.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/40f63/duplicate-code.jpg 225w,https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/df2c7/duplicate-code.jpg 450w,https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/2d017/duplicate-code.jpg 900w,https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/bbff7/duplicate-code.jpg 1350w,https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/c84ab/duplicate-code.jpg 1657w&quot;
+        src=&quot;https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/2a9fa/duplicate-code.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/f0518/duplicate-code.jpg 225w,https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/b3492/duplicate-code.jpg 450w,https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/2a9fa/duplicate-code.jpg 900w,https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/987c3/duplicate-code.jpg 1350w,https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/34b29/duplicate-code.jpg 1657w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -566,7 +779,7 @@ With minimal effort you can also generate a custom-elements.json for intellisens
 &lt;p&gt;Let’s have a look at the Lighthouse report with the standard theme switched on. &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/64ca1/lightspeed-standard.jpg&quot;
+    href=&quot;https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/9fa33/lightspeed-standard.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -584,8 +797,8 @@ With minimal effort you can also generate a custom-elements.json for intellisens
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;Lightspeed report SXA wireframe&quot;
-        src=&quot;https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/2d017/lightspeed-standard.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/40f63/lightspeed-standard.jpg 225w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/df2c7/lightspeed-standard.jpg 450w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/2d017/lightspeed-standard.jpg 900w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/bbff7/lightspeed-standard.jpg 1350w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/98235/lightspeed-standard.jpg 1800w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/64ca1/lightspeed-standard.jpg 1936w&quot;
+        src=&quot;https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/2a9fa/lightspeed-standard.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/f0518/lightspeed-standard.jpg 225w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/b3492/lightspeed-standard.jpg 450w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/2a9fa/lightspeed-standard.jpg 900w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/987c3/lightspeed-standard.jpg 1350w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/e2107/lightspeed-standard.jpg 1800w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/9fa33/lightspeed-standard.jpg 1936w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -594,7 +807,7 @@ With minimal effort you can also generate a custom-elements.json for intellisens
 &lt;p&gt;Let’s have a look at the &lt;strong&gt;JavaScript sources&lt;/strong&gt;
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/2e571/javascript-sources-standard.jpg&quot;
+    href=&quot;https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/d94b2/javascript-sources-standard.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -612,8 +825,8 @@ With minimal effort you can also generate a custom-elements.json for intellisens
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;Javascript sources SXA wireframe&quot;
-        src=&quot;https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/2d017/javascript-sources-standard.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/40f63/javascript-sources-standard.jpg 225w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/df2c7/javascript-sources-standard.jpg 450w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/2d017/javascript-sources-standard.jpg 900w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/bbff7/javascript-sources-standard.jpg 1350w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/98235/javascript-sources-standard.jpg 1800w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/2e571/javascript-sources-standard.jpg 2379w&quot;
+        src=&quot;https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/2a9fa/javascript-sources-standard.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/f0518/javascript-sources-standard.jpg 225w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/b3492/javascript-sources-standard.jpg 450w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/2a9fa/javascript-sources-standard.jpg 900w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/987c3/javascript-sources-standard.jpg 1350w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/e2107/javascript-sources-standard.jpg 1800w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/d94b2/javascript-sources-standard.jpg 2379w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -622,7 +835,7 @@ That is 1.2MB of JavaScript! And this will be loaded on every page. So even if y
 &lt;p&gt;And the &lt;strong&gt;CSS sources&lt;/strong&gt;
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/ef86f/css-sources-standard.jpg&quot;
+    href=&quot;https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/2b6a7/css-sources-standard.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -640,8 +853,8 @@ That is 1.2MB of JavaScript! And this will be loaded on every page. So even if y
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;Css sources SXA wireframe&quot;
-        src=&quot;https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/2d017/css-sources-standard.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/40f63/css-sources-standard.jpg 225w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/df2c7/css-sources-standard.jpg 450w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/2d017/css-sources-standard.jpg 900w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/bbff7/css-sources-standard.jpg 1350w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/98235/css-sources-standard.jpg 1800w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/ef86f/css-sources-standard.jpg 2374w&quot;
+        src=&quot;https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/2a9fa/css-sources-standard.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/f0518/css-sources-standard.jpg 225w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/b3492/css-sources-standard.jpg 450w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/2a9fa/css-sources-standard.jpg 900w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/987c3/css-sources-standard.jpg 1350w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/e2107/css-sources-standard.jpg 1800w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/2b6a7/css-sources-standard.jpg 2374w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -769,7 +982,7 @@ Also here the amount of loaded CSS is huge, because SXA is including a lot of 3r
 I know that it feels strange to do this. But if you want to unclutter, you have to ask yourself: does it &lt;a href=&quot;https://knowyourmeme.com/memes/does-it-spark-joy&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;spark joy&lt;/a&gt;? If it doesn’t, thank Sitecore for all the unused code and trash it! &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/6fa65/does-it-spark-joy.jpg&quot;
+    href=&quot;https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/5d4d4/does-it-spark-joy.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -787,8 +1000,8 @@ I know that it feels strange to do this. But if you want to unclutter, you have 
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;Does is spark joy?&quot;
-        src=&quot;https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/2d017/does-it-spark-joy.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/40f63/does-it-spark-joy.jpg 225w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/df2c7/does-it-spark-joy.jpg 450w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/2d017/does-it-spark-joy.jpg 900w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/bbff7/does-it-spark-joy.jpg 1350w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/98235/does-it-spark-joy.jpg 1800w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/6fa65/does-it-spark-joy.jpg 2536w&quot;
+        src=&quot;https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/2a9fa/does-it-spark-joy.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/f0518/does-it-spark-joy.jpg 225w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/b3492/does-it-spark-joy.jpg 450w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/2a9fa/does-it-spark-joy.jpg 900w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/987c3/does-it-spark-joy.jpg 1350w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/e2107/does-it-spark-joy.jpg 1800w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/5d4d4/does-it-spark-joy.jpg 2536w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -832,7 +1045,7 @@ Web Components have been around for a while, but now Microsoft is quickly killin
 &lt;p&gt;This is the lighthouse report on the latest &lt;a href=&quot;https://jaaah.nl/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;SXA Website&lt;/a&gt; we built. &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/20257/final-result.jpg&quot;
+    href=&quot;https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/cdd7f/final-result.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -850,8 +1063,8 @@ Web Components have been around for a while, but now Microsoft is quickly killin
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;Fast!&quot;
-        src=&quot;https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/2d017/final-result.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/40f63/final-result.jpg 225w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/df2c7/final-result.jpg 450w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/2d017/final-result.jpg 900w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/bbff7/final-result.jpg 1350w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/98235/final-result.jpg 1800w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/20257/final-result.jpg 1939w&quot;
+        src=&quot;https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/2a9fa/final-result.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/f0518/final-result.jpg 225w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/b3492/final-result.jpg 450w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/2a9fa/final-result.jpg 900w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/987c3/final-result.jpg 1350w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/e2107/final-result.jpg 1800w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/cdd7f/final-result.jpg 1939w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -863,7 +1076,7 @@ Web Components have been around for a while, but now Microsoft is quickly killin
 &lt;p&gt;There are also a lot of examples where we need to ‘stitch’ these services together. Let’s have a look at the domain model and the corresponding services:&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/5c089/spaData.jpg&quot;
+    href=&quot;https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/60ef4/spaData.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -881,8 +1094,8 @@ Web Components have been around for a while, but now Microsoft is quickly killin
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;data setup&quot;
-        src=&quot;https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/5c089/spaData.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/40f63/spaData.jpg 225w,https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/df2c7/spaData.jpg 450w,https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/5c089/spaData.jpg 522w&quot;
+        src=&quot;https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/60ef4/spaData.jpg&quot;
+        srcset=&quot;https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/f0518/spaData.jpg 225w,https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/b3492/spaData.jpg 450w,https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/60ef4/spaData.jpg 522w&quot;
         sizes=&quot;(max-width: 522px) 100vw, 522px&quot;
       /&gt;
   &lt;/span&gt;
@@ -914,7 +1127,7 @@ But you get the point, if we fetch service requests for example. We also have to
 &lt;p&gt;The watchlist items are saved in firebase in this structure:&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/bd1e1/firebase.png&quot;
+    href=&quot;https://erwinsmit.nl/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/abe7f/firebase.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -932,8 +1145,8 @@ But you get the point, if we fetch service requests for example. We also have to
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;data setup&quot;
-        src=&quot;https://erwinsmit.nl/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/bd1e1/firebase.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/064a4/firebase.png 225w,https://erwinsmit.nl/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/bd1e1/firebase.png 356w&quot;
+        src=&quot;https://erwinsmit.nl/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/abe7f/firebase.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/e9d1c/firebase.png 225w,https://erwinsmit.nl/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/abe7f/firebase.png 356w&quot;
         sizes=&quot;(max-width: 356px) 100vw, 356px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1080,7 +1293,7 @@ In the Film type there is a reference to WatchListItem, because this will be res
 &lt;p&gt;Now with this setup we can execute queries that will consume both services (see below for some examples). When using the graphql explorer we add the auth token to the http header to get the results we want.
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/fddbb/getFilms.png&quot;
+    href=&quot;https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/a3d24/getFilms.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1098,15 +1311,15 @@ In the Film type there is a reference to WatchListItem, because this will be res
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;get films&quot;
-        src=&quot;https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/fddbb/getFilms.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/064a4/getFilms.png 225w,https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/44727/getFilms.png 450w,https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/fddbb/getFilms.png 736w&quot;
+        src=&quot;https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/a3d24/getFilms.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/e9d1c/getFilms.png 225w,https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/80b02/getFilms.png 450w,https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/a3d24/getFilms.png 736w&quot;
         sizes=&quot;(max-width: 736px) 100vw, 736px&quot;
       /&gt;
   &lt;/span&gt;
   &lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/0336a/getWatchlistitems.png&quot;
+    href=&quot;https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/b2c79/getWatchlistitems.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1124,8 +1337,8 @@ In the Film type there is a reference to WatchListItem, because this will be res
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;get watchlistitems&quot;
-        src=&quot;https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/0336a/getWatchlistitems.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/064a4/getWatchlistitems.png 225w,https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/44727/getWatchlistitems.png 450w,https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/0336a/getWatchlistitems.png 701w&quot;
+        src=&quot;https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/b2c79/getWatchlistitems.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/e9d1c/getWatchlistitems.png 225w,https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/80b02/getWatchlistitems.png 450w,https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/b2c79/getWatchlistitems.png 701w&quot;
         sizes=&quot;(max-width: 701px) 100vw, 701px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1241,7 +1454,7 @@ So if you want to share code between multiple react applications the only (non-h
 Because of this setup we have quite a lot of release pipelines setup in Azure Devops, I’m not sure if it’s because of our setup but recently we couldn’t create new pipelines anymore because of a runtime javascript error. &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/11b4b/runtime-error.png&quot;
+    href=&quot;https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/59e8d/runtime-error.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1259,8 +1472,8 @@ Because of this setup we have quite a lot of release pipelines setup in Azure De
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Runtime error&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/fea0e/runtime-error.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/064a4/runtime-error.png 225w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/44727/runtime-error.png 450w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/fea0e/runtime-error.png 900w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/8013a/runtime-error.png 1350w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/79a4a/runtime-error.png 1800w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/11b4b/runtime-error.png 1958w&quot;
+        src=&quot;https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/05649/runtime-error.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/e9d1c/runtime-error.png 225w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/80b02/runtime-error.png 450w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/05649/runtime-error.png 900w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/572e0/runtime-error.png 1350w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/b501b/runtime-error.png 1800w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/59e8d/runtime-error.png 1958w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1284,7 +1497,7 @@ Make sure your fiddler autoresponder configuration looks like this:&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/b6aa5/autoresponder.png&quot;
+    href=&quot;https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/3b25d/autoresponder.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1302,8 +1515,8 @@ Make sure your fiddler autoresponder configuration looks like this:&lt;/li&gt;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Fiddler autoresponder&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/fea0e/autoresponder.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/064a4/autoresponder.png 225w,https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/44727/autoresponder.png 450w,https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/fea0e/autoresponder.png 900w,https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/b6aa5/autoresponder.png 952w&quot;
+        src=&quot;https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/05649/autoresponder.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/e9d1c/autoresponder.png 225w,https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/80b02/autoresponder.png 450w,https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/05649/autoresponder.png 900w,https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/3b25d/autoresponder.png 952w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1312,7 +1525,7 @@ Make sure your fiddler autoresponder configuration looks like this:&lt;/li&gt;
 &lt;p&gt;Make sure your settings look like this, when you click the ‘decrypt’ checkbox fiddler automatically adds a SSL certificate for you. &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/5ee4b/fiddler-https-settings.png&quot;
+    href=&quot;https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/79dd2/fiddler-https-settings.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1330,8 +1543,8 @@ Make sure your fiddler autoresponder configuration looks like this:&lt;/li&gt;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Fiddler https settings&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/fea0e/fiddler-https-settings.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/064a4/fiddler-https-settings.png 225w,https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/44727/fiddler-https-settings.png 450w,https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/fea0e/fiddler-https-settings.png 900w,https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/5ee4b/fiddler-https-settings.png 906w&quot;
+        src=&quot;https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/05649/fiddler-https-settings.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/e9d1c/fiddler-https-settings.png 225w,https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/80b02/fiddler-https-settings.png 450w,https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/05649/fiddler-https-settings.png 900w,https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/79dd2/fiddler-https-settings.png 906w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
