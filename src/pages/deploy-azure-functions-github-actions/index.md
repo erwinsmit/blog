@@ -12,7 +12,7 @@ However, there are some restrictions with this approach. Using this approach. Th
 
 2. Because there is no write access it's also not possible to use the [Azure App Service Editor](https://social.technet.microsoft.com/wiki/contents/articles/36467.understanding-the-azure-app-service-editor.aspx). During development I love this feature to test changes quickly without having to wait for deployments.
 
-## Alternative ways for deploying Azure Function with Github Actions
+## Alternative ways for deploying Azure Function with GitHub Actions
 
 ### Using the Azure CLI
 Instead of using the recommended **actions/checkout@v2** it's also possible to use the Azure CLI directly in the .yml file. Before doing so, it's required to run a [login command](https://github.com/marketplace/actions/azure-login) first. To run this you'll need deployment credentials which can be generated through the [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart) for example. 
@@ -35,7 +35,7 @@ This is the solution I picked for deploying Azure Functions. It's reasonably qui
 
 This helped me to understand how the deployments to Azure Function Apps work. I figured out that all it takes is to upload a set of files to the `wwwroot` folder of the `fileshare` within the storage account.
 
-4. **Set up the Github action**
+4. **Set up the GitHub action**
 See below an example on a yml I use for the deployment of an Azure Function. Place this file in the `.github` directory of your project and GitHub will automatically recognise the file and add the Action to the UI.
 
 Personally, I like to use the `workflow_dispatch` event. I don't like to run a full build on each time I push some code. 
@@ -95,4 +95,4 @@ To authenticate the copying of the files, generate a SAS Token on the storage ac
 Add the SAS Token to the GitHub secrets:
 ![GitHub secret](./github-secret.jpg)
 
-There you go, now you can run the GitHub action and your Azure Function will be deployed. Hopefully, this could be a useful alternative for deploying Azure Functions using Github Actions! 
+There you go, now you can run the GitHub action and your Azure Function will be deployed. Hopefully, this could be a useful alternative for deploying Azure Functions using GitHub Actions! 
