@@ -187,7 +187,7 @@
 See below an example on a yml I use for the deployment of an Azure Function. Place this file in the <code class="language-text">.github</code> directory of your project and GitHub will automatically recognise the file and add the Action to the UI.</li>
 </ol>
 <p>Personally, I like to use the <code class="language-text">workflow_dispatch</code> event. I don’t like to run a full build on each time I push some code. </p>
-<div class="gatsby-highlight" data-language="yml"><pre class="language-yml"><code class="language-yml"><span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy basic nextjs build
+<div class="gatsby-highlight" data-language="yml"><pre class="language-yml"><code class="language-yml"><span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy Azure Function
 
 <span class="token key atrule">on</span><span class="token punctuation">:</span>
   <span class="token punctuation">[</span>workflow_dispatch<span class="token punctuation">]</span>
