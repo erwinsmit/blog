@@ -40,7 +40,7 @@
         }
       }
     })
-  </script><link rel="preconnect dns-prefetch" href="https://www.google-analytics.com"/><link rel="alternate" type="application/rss+xml" title="Erwin Smit Blog RSS Feed" href="/rss.xml"/><link rel="shortcut icon" href="/icons/icon-48x48.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="manifest" href="/manifest.webmanifest"/><link rel="apple-touch-icon" sizes="48x48" href="/icons/icon-48x48.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="256x256" href="/icons/icon-256x256.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><title data-react-helmet="true">Deploy Azure Functions with GitHub Actions using AzCopy — Erwin Smit blog</title><meta data-react-helmet="true" name="theme-color" content="#282c35"/><meta data-react-helmet="true" name="description" content="Deploy Azure Functions directly to File Share"/><meta data-react-helmet="true" property="og:url" content="https://erwinsmit.nl/deploy-azure-functions-github-actions/"/><meta data-react-helmet="true" property="og:title" content="Deploy Azure Functions with GitHub Actions using AzCopy"/><meta data-react-helmet="true" property="og:description" content="Deploy Azure Functions directly to File Share"/><meta data-react-helmet="true" name="twitter:card" content="summary"/><meta data-react-helmet="true" name="twitter:creator" content="@rwinsmit"/><meta data-react-helmet="true" name="twitter:title" content="Deploy Azure Functions with GitHub Actions using AzCopy"/><meta data-react-helmet="true" name="twitter:description" content="Deploy Azure Functions directly to File Share"/><link as="script" rel="preload" href="/webpack-runtime-ad927f4e4180c06d8ae9.js"/><link as="script" rel="preload" href="/app-72443fdd0811342dab57.js"/><link as="script" rel="preload" href="/styles-e819d6019545901e3555.js"/><link as="script" rel="preload" href="/1-86412de490889f63ae3a.js"/><link as="script" rel="preload" href="/2-5a239feea0af983bfd03.js"/><link as="script" rel="preload" href="/component---src-templates-blog-post-js-425840eaf4a694688677.js"/><link as="fetch" rel="preload" href="/page-data\deploy-azure-functions-github-actions\page-data.json" crossorigin="use-credentials"/></head><body class="light"><script>
+  </script><link rel="preconnect dns-prefetch" href="https://www.google-analytics.com"/><link rel="alternate" type="application/rss+xml" title="Erwin Smit Blog RSS Feed" href="/rss.xml"/><link rel="shortcut icon" href="/icons/icon-48x48.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="manifest" href="/manifest.webmanifest"/><link rel="apple-touch-icon" sizes="48x48" href="/icons/icon-48x48.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="256x256" href="/icons/icon-256x256.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png?v=0da8c7a3d74eb1cc53ca908a85a5df4e"/><title data-react-helmet="true">Sitecore JSS on Azure Functions — Erwin Smit blog</title><meta data-react-helmet="true" name="theme-color" content="#282c35"/><meta data-react-helmet="true" name="description" content="Steps required"/><meta data-react-helmet="true" property="og:url" content="https://erwinsmit.nl/sitecore-jss-on-azure-functions/"/><meta data-react-helmet="true" property="og:title" content="Sitecore JSS on Azure Functions"/><meta data-react-helmet="true" property="og:description" content="Steps required"/><meta data-react-helmet="true" name="twitter:card" content="summary"/><meta data-react-helmet="true" name="twitter:creator" content="@rwinsmit"/><meta data-react-helmet="true" name="twitter:title" content="Sitecore JSS on Azure Functions"/><meta data-react-helmet="true" name="twitter:description" content="Steps required"/><link as="script" rel="preload" href="/webpack-runtime-ad927f4e4180c06d8ae9.js"/><link as="script" rel="preload" href="/app-72443fdd0811342dab57.js"/><link as="script" rel="preload" href="/styles-e819d6019545901e3555.js"/><link as="script" rel="preload" href="/1-86412de490889f63ae3a.js"/><link as="script" rel="preload" href="/2-5a239feea0af983bfd03.js"/><link as="script" rel="preload" href="/component---src-templates-blog-post-js-425840eaf4a694688677.js"/><link as="fetch" rel="preload" href="/page-data\sitecore-jss-on-azure-functions\page-data.json" crossorigin="use-credentials"/></head><body class="light"><script>
               (function() {
                 window.__onThemeChange = function() {};
                 function setTheme(newTheme) {
@@ -69,229 +69,94 @@
 
                 setTheme(preferredTheme || (darkQuery.matches ? 'dark' : 'light'));
               })();
-            </script><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><div style="color:var(--textNormal);background:var(--bg);transition:color 0.2s ease-out, background 0.2s ease-out;min-height:100vh"><div style="margin-left:auto;margin-right:auto;max-width:42rem;padding:2.625rem 1.3125rem"><header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2.625rem"><h3 style="font-family:Montserrat, sans-serif;margin-top:0;margin-bottom:0;height:42px;line-height:2.625rem"><a style="box-shadow:none;text-decoration:none;color:var(--blue)" href="/">Erwin Smit blog</a></h3></header><main><article><header><h1 style="color:var(--textTitle)">Deploy Azure Functions with GitHub Actions using AzCopy</h1><p style="font-size:0.83255rem;line-height:1.75rem;display:block;margin-bottom:1.75rem;margin-top:-1.4rem">October 15, 2021<!-- --> • ☕️ 4 min read</p></header><div><p>When deploying Azure Functions the most straightforward approach is to use the <strong>actions/checkout@v2</strong> <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-github-actions" target="_blank" rel="nofollow noopener noreferrer">recommended by Azure</a></p>
-<p>However, there are some restrictions with this approach. Using this approach. The Azure Functions will only work using the <strong><a href="https://docs.microsoft.com/en-us/azure/azure-functions/run-functions-from-deployment-package" target="_blank" rel="nofollow noopener noreferrer">Run from package option</a></strong>. There are two reasons why this wasn’t great for a <a href="/nextjs-on-azure-functions">Next.js custom server</a>.</p>
-<ol>
-<li>
-<p>Next.js requires to have write access for its <a href="https://nextjs.org/docs/basic-features/data-fetching#incremental-static-regeneration" target="_blank" rel="nofollow noopener noreferrer">Incremental Static Generation</a>. With the <strong>Run from package option</strong> you can’t use this feature.</p>
-</li>
-<li>
-<p>Because there is no write access it’s also not possible to use the <a href="https://social.technet.microsoft.com/wiki/contents/articles/36467.understanding-the-azure-app-service-editor.aspx" target="_blank" rel="nofollow noopener noreferrer">Azure App Service Editor</a>. During development I love this feature to test changes quickly without having to wait for deployments.</p>
-</li>
-</ol>
-<h2 id="alternative-ways-for-deploying-azure-function-with-github-actions"><a href="#alternative-ways-for-deploying-azure-function-with-github-actions" aria-label="alternative ways for deploying azure function with github actions permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Alternative ways for deploying Azure Function with GitHub Actions</h2>
-<h3 id="using-the-azure-cli"><a href="#using-the-azure-cli" aria-label="using the azure cli permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using the Azure CLI</h3>
-<p>Instead of using the recommended <strong>actions/checkout@v2</strong> it’s also possible to use the Azure CLI directly in the .yml file. Before doing so, it’s required to run a <a href="https://github.com/marketplace/actions/azure-login" target="_blank" rel="nofollow noopener noreferrer">login command</a> first. To run this you’ll need deployment credentials which can be generated through the <a href="https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart" target="_blank" rel="nofollow noopener noreferrer">Azure Cloud Shell</a> for example. </p>
-<p>If you have the required permissions within your organisation you’re in business! Now you can run all the <a href="https://docs.microsoft.com/en-us/cli/azure/functionapp/deployment" target="_blank" rel="nofollow noopener noreferrer">deploy commands</a> available for Azure Functions. </p>
-<p>I did not have the required permissions to create deployment credentials. Also, when trying to run this locally I found the deployments pretty slow. Just the Azure Functions are deployed quickly but with the Azure Functions also came a big Next.js build folder and their NPM dependencies (with and without remote builds). </p>
-<h3 id="using-az-copy"><a href="#using-az-copy" aria-label="using az copy permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using AZ Copy</h3>
-<p>This is the solution I picked for deploying Azure Functions. It’s reasonably quick for big projects and I have full access to the Azure App Service Editor and write access. Let’s show the implementation step by step.</p>
-<ol>
-<li>
-<p><strong>Create the Function App</strong>
-<a
-    class="gatsby-resp-image-link"
-    href="/static/dbf604721ca528d625b5b3fd6189af7c/050a5/create-function-app.jpg"
-    style="display: block"
-    target="_blank"
-    rel="noopener"
-  >
-    <span
-    class="gatsby-resp-image-wrapper"
-    style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 809px;"
-  >
-    <span
-      class="gatsby-resp-image-background-image"
-      style="padding-bottom: 86.03213844252163%; position: relative; bottom: 0; left: 0; background-image: url('data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAARABQDASIAAhEBAxEB/8QAGQABAAMBAQAAAAAAAAAAAAAAAAECBAMF/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAL/2gAMAwEAAhADEAAAAfX6XoSkZtRUyJr/xAAcEAABBQADAAAAAAAAAAAAAAABAAIDEBIRITL/2gAIAQEAAQUCEbAstWW1noDhR+hX/8QAFhEBAQEAAAAAAAAAAAAAAAAAEAIx/9oACAEDAQE/AScP/8QAFhEBAQEAAAAAAAAAAAAAAAAAEAIx/9oACAECAQE/AStP/8QAGxAAAQQDAAAAAAAAAAAAAAAAAAECECExMkH/2gAIAQEABj8CpiGpiLVTo6f/xAAeEAACAQMFAAAAAAAAAAAAAAABEQAgYZEhMVFxgf/aAAgBAQABPyEswPJaYlriLeAihR5GkQTLs0Z//9oADAMBAAIAAwAAABCACDz/xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAEDAQE/EBf/xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAECAQE/EBf/xAAeEAACAQQDAQAAAAAAAAAAAAAAAREhMVFxEEGhwf/aAAgBAQABPxCUiWFICJhlggqBibnVBMCovIz2/Wdt8f/Z'); background-size: cover; display: block;"
-    ></span>
-    <img
-        class="gatsby-resp-image-image"
-        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;"
-        alt="Function setup"
-        title=""
-        src="/static/dbf604721ca528d625b5b3fd6189af7c/050a5/create-function-app.jpg"
-        srcset="/static/dbf604721ca528d625b5b3fd6189af7c/f0518/create-function-app.jpg 225w,
-/static/dbf604721ca528d625b5b3fd6189af7c/b3492/create-function-app.jpg 450w,
-/static/dbf604721ca528d625b5b3fd6189af7c/050a5/create-function-app.jpg 809w"
-        sizes="(max-width: 809px) 100vw, 809px"
-      />
-  </span>
-  </a></p>
-</li>
-<li>
-<p><strong>Select or create a new storage account</strong>
-<a
-    class="gatsby-resp-image-link"
-    href="/static/fe16700e90f24b836db9680226192453/25f26/storage-account.jpg"
-    style="display: block"
-    target="_blank"
-    rel="noopener"
-  >
-    <span
-    class="gatsby-resp-image-wrapper"
-    style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 883px;"
-  >
-    <span
-      class="gatsby-resp-image-background-image"
-      style="padding-bottom: 89.46772366930918%; position: relative; bottom: 0; left: 0; background-image: url('data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAASABQDASIAAhEBAxEB/8QAGAABAAMBAAAAAAAAAAAAAAAAAAECAwX/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAHszoKriQAf/8QAGhAAAgIDAAAAAAAAAAAAAAAAAAIBAxESIP/aAAgBAQABBQKK0gwhqvf/xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAEDAQE/AR//xAAUEQEAAAAAAAAAAAAAAAAAAAAg/9oACAECAQE/AR//xAAYEAADAQEAAAAAAAAAAAAAAAAAATEgMv/aAAgBAQAGPwLlERN//8QAGxABAAICAwAAAAAAAAAAAAAAAQARIDFhgZH/2gAIAQEAAT8hUsLqCKFhucXzP//aAAwDAQACAAMAAAAQc8AA/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPxAf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPxAf/8QAHBABAAEEAwAAAAAAAAAAAAAAAQAhMVGRESDB/9oACAEBAAE/EKEVgnkUhsAqQaIGt9w5w76//9k='); background-size: cover; display: block;"
-    ></span>
-    <img
-        class="gatsby-resp-image-image"
-        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;"
-        alt="Create storage account"
-        title=""
-        src="/static/fe16700e90f24b836db9680226192453/25f26/storage-account.jpg"
-        srcset="/static/fe16700e90f24b836db9680226192453/f0518/storage-account.jpg 225w,
-/static/fe16700e90f24b836db9680226192453/b3492/storage-account.jpg 450w,
-/static/fe16700e90f24b836db9680226192453/25f26/storage-account.jpg 883w"
-        sizes="(max-width: 883px) 100vw, 883px"
-      />
-  </span>
-  </a></p>
-</li>
-<li>
-<p><strong>See how the Function App is connected</strong>
-<a
-    class="gatsby-resp-image-link"
-    href="/static/324b4378855828470ce93e2b6930e358/25f26/storage-account-connection.jpg"
-    style="display: block"
-    target="_blank"
-    rel="noopener"
-  >
-    <span
-    class="gatsby-resp-image-wrapper"
-    style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 883px;"
-  >
-    <span
-      class="gatsby-resp-image-background-image"
-      style="padding-bottom: 89.46772366930918%; position: relative; bottom: 0; left: 0; background-image: url('data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAASABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAIBBf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhADEAAAAe6DQJCwf//EABYQAAMAAAAAAAAAAAAAAAAAAAEQIP/aAAgBAQABBQKwv//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQMBAT8BH//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQIBAT8BH//EABQQAQAAAAAAAAAAAAAAAAAAADD/2gAIAQEABj8CH//EABkQAAIDAQAAAAAAAAAAAAAAAAABEBFBMf/aAAgBAQABPyGlQmWZCZjOY//aAAwDAQACAAMAAAAQ48c8/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPxAf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPxAf/8QAHBABAAICAwEAAAAAAAAAAAAAAQARITFBUYGx/9oACAEBAAE/EKE1leolZHyCrTAdq3Bo58JYXPtAOYOZR1P/2Q=='); background-size: cover; display: block;"
-    ></span>
-    <img
-        class="gatsby-resp-image-image"
-        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;"
-        alt="Storage account connection"
-        title=""
-        src="/static/324b4378855828470ce93e2b6930e358/25f26/storage-account-connection.jpg"
-        srcset="/static/324b4378855828470ce93e2b6930e358/f0518/storage-account-connection.jpg 225w,
-/static/324b4378855828470ce93e2b6930e358/b3492/storage-account-connection.jpg 450w,
-/static/324b4378855828470ce93e2b6930e358/25f26/storage-account-connection.jpg 883w"
-        sizes="(max-width: 883px) 100vw, 883px"
-      />
-  </span>
-  </a></p>
-</li>
-</ol>
-<p>This helped me to understand how the deployments to Azure Function Apps work. I figured out that all it takes is to upload a set of files to the <code class="language-text">wwwroot</code> folder of the <code class="language-text">fileshare</code> within the storage account.</p>
-<ol start="4">
-<li><strong>Set up the GitHub action</strong>
-See below an example on a yml I use for the deployment of an Azure Function. Place this file in the <code class="language-text">.github</code> directory of your project and GitHub will automatically recognise the file and add the Action to the UI.</li>
-</ol>
-<p>Personally, I like to use the <code class="language-text">workflow_dispatch</code> event. I don’t like to run a full build on each time I push some code. </p>
-<div class="gatsby-highlight" data-language="yml"><pre class="language-yml"><code class="language-yml"><span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy Azure Function
+            </script><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><div style="color:var(--textNormal);background:var(--bg);transition:color 0.2s ease-out, background 0.2s ease-out;min-height:100vh"><div style="margin-left:auto;margin-right:auto;max-width:42rem;padding:2.625rem 1.3125rem"><header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2.625rem"><h3 style="font-family:Montserrat, sans-serif;margin-top:0;margin-bottom:0;height:42px;line-height:2.625rem"><a style="box-shadow:none;text-decoration:none;color:var(--blue)" href="/">Erwin Smit blog</a></h3></header><main><article><header><h1 style="color:var(--textTitle)">Sitecore JSS on Azure Functions</h1><p style="font-size:0.83255rem;line-height:1.75rem;display:block;margin-bottom:1.75rem;margin-top:-1.4rem">October 27, 2021<!-- --> • ☕️ 4 min read</p></header><div><p>As described in a previous post, we managed to host Next.js using a custom server in <a href="/nextjs-on-azure-functions/">Azure Functions</a>. Now let’s see if this also works for Sitecore JSS. </p>
+<h2 id="frontend-only"><a href="#frontend-only" aria-label="frontend only permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Frontend only</h2>
+<p>For just the public facing part it was no problem, the exact same code as used in the custom server <a href="/nextjs-on-azure-functions/">previously</a> worked fine.
+However to get the experience editor working we faced some challenges.</p>
+<h2 id="experience-editor"><a href="#experience-editor" aria-label="experience editor permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Experience editor</h2>
+<p>To get the Experience editor to work we have to do some more work. Mainly because the Next.js <a href="https://github.com/Sitecore/jss/tree/dev/samples/nextjs/src/pages/api/editing" target="_blank" rel="nofollow noopener noreferrer">API routes</a> are not supported when using a <a href="https://nextjs.org/docs/advanced-features/custom-server" target="_blank" rel="nofollow noopener noreferrer">custom server</a>.</p>
+<p>Luckily these routes are easy to replicate using Azure Functions. So we created two Azure Functions that serves the:</p>
+<ul>
+<li>Editing Render Middleware</li>
+<li>Editing Data Middleware</li>
+</ul>
+<p>Why do you need two endpoints for the Experience editor? This is to enable the <strong><a href="https://nextjs.org/docs/advanced-features/preview-mode" target="_blank" rel="nofollow noopener noreferrer">Preview mode</a></strong> in Next.js. The preview mode bypasses all the clever stuff like <strong>ISG</strong> (Incremental Static Generation).
+How these endpoints work together is explained well in the <a href="https://jss.sitecore.com/docs/nextjs/experience-editor/architecture" target="_blank" rel="nofollow noopener noreferrer">JSS Docs</a>.</p>
+<p>Implementing these endpoints was done with the following code, this example is for the <a href="https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/middleware/editing-render-middleware.ts" target="_blank" rel="nofollow noopener noreferrer">Editing Render Middleware</a>:</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> AzureFunction<span class="token punctuation">,</span> Context<span class="token punctuation">,</span> HttpRequest <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@azure/functions"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> EditingRenderMiddleware <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@sitecore-jss/sitecore-jss-nextjs/middleware'</span><span class="token punctuation">;</span>
 
-<span class="token key atrule">on</span><span class="token punctuation">:</span>
-  <span class="token punctuation">[</span>workflow_dispatch<span class="token punctuation">]</span>
+<span class="token keyword">const</span> httpTrigger<span class="token punctuation">:</span> <span class="token function-variable function">AzureFunction</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">context<span class="token punctuation">:</span> Context<span class="token punctuation">,</span> req<span class="token punctuation">:</span> HttpRequest</span><span class="token punctuation">)</span><span class="token punctuation">:</span> Promise<span class="token operator">&lt;</span><span class="token keyword">void</span><span class="token operator">></span> <span class="token punctuation">{</span>    
+    <span class="token keyword">const</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EditingRenderMiddleware</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token key atrule">env</span><span class="token punctuation">:</span>
-  <span class="token key atrule">NODE_VERSION</span><span class="token punctuation">:</span> <span class="token string">'14.x'</span>
-  <span class="token comment">## Enter the path to your storage account and include the name of the file share</span>
-  <span class="token key atrule">AZUREFUNCDEST</span><span class="token punctuation">:</span> <span class="token string">'https://${pathtostoreageaccount}.file.core.windows.net/${filesharename}/site/wwwroot'</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token keyword">await</span> <span class="token function">handler</span><span class="token punctuation">(</span>context<span class="token punctuation">.</span>req<span class="token punctuation">,</span> context<span class="token punctuation">.</span>res<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token key atrule">jobs</span><span class="token punctuation">:</span>
-  <span class="token key atrule">build-and-deploy</span><span class="token punctuation">:</span>
-    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> windows<span class="token punctuation">-</span>latest
-    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">'Checkout GitHub Action'</span>
-      <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@main
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        context<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        context<span class="token punctuation">.</span>res <span class="token operator">=</span> <span class="token punctuation">{</span>
+            status<span class="token punctuation">:</span> <span class="token number">500</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Setup Node $<span class="token punctuation">{</span><span class="token punctuation">{</span> env.NODE_VERSION <span class="token punctuation">}</span><span class="token punctuation">}</span> Environment
-      <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/setup<span class="token punctuation">-</span>node@v1
-      <span class="token key atrule">with</span><span class="token punctuation">:</span>
-        <span class="token key atrule">node-version</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span><span class="token punctuation">{</span> env.NODE_VERSION <span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-    <span class="token comment">## Install a community package that adds the azcopy tool</span>
-    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Install azcopy
-      <span class="token key atrule">uses</span><span class="token punctuation">:</span> kheiakiyama/install<span class="token punctuation">-</span>azcopy<span class="token punctuation">-</span>action@v1.0.3
+<span class="token keyword">export</span> <span class="token keyword">default</span> httpTrigger<span class="token punctuation">;</span></code></pre></div>
+<h3 id="response-handler"><a href="#response-handler" aria-label="response handler permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Response handler</h3>
+<p>The problem is that the response from Azure does not contain the same methods as Vercel. An <a href="https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/middleware/editing-render-middleware.ts#L86" target="_blank" rel="nofollow noopener noreferrer">example</a> is seen here:</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">status</span><span class="token punctuation">(</span><span class="token number">405</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    html<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`&lt;html>&lt;body>Invalid request method '</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>method<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">'&lt;/body>&lt;/html>`</span></span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
+<p>Azure Functions will return errors that these methods don’t exist. These methods are used throughout the Middlewares from Sitecore JSS. Do we need to replace all those middlewares? That would be a lot of work.</p>
+<p>The easiest fix was to create a function that transforms all the Vercel specific functions to a format Azure understands. So we created a Responsehandler function that accepts the Azure Function context and attaches the Vercel specific functions:</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">getNextResponseHandler</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">context<span class="token punctuation">:</span> Context</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
 
-    <span class="token comment">## Build your application, replace Lerna with NPM/Yarn if that's more suitable for your project</span>
-    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">'Lerna bootstrap &amp; azure functions build'</span>
-      <span class="token key atrule">shell</span><span class="token punctuation">:</span> pwsh
-      <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
-        lerna bootstrap
-        npm run build
-        popd</span>
+    <span class="token keyword">const</span> nextContextRes <span class="token operator">=</span> context<span class="token punctuation">.</span>res<span class="token punctuation">;</span>
 
-    <span class="token comment">## Clean up the directory before copying the new stuff over</span>
-    <span class="token punctuation">-</span> <span class="token key atrule">uses</span><span class="token punctuation">:</span> kheiakiyama/install<span class="token punctuation">-</span>azcopy<span class="token punctuation">-</span>action@v1
-      <span class="token key atrule">with</span><span class="token punctuation">:</span>
-        <span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'v10'</span>
-    <span class="token punctuation">-</span> <span class="token key atrule">run</span><span class="token punctuation">:</span> azcopy_v10 rm '$<span class="token punctuation">{</span><span class="token punctuation">{</span> env.AZUREFUNCDEST <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">?</span>$<span class="token punctuation">{</span><span class="token punctuation">{</span> secrets.SECRETSASTOKEN <span class="token punctuation">}</span><span class="token punctuation">}</span>' <span class="token punctuation">-</span><span class="token punctuation">-</span>recursive
+    nextContextRes<span class="token punctuation">.</span><span class="token function-variable function">status</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">statusCode<span class="token punctuation">:</span> number</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+        nextContextRes<span class="token punctuation">.</span>status <span class="token operator">=</span> statusCode<span class="token punctuation">;</span>
 
-    <span class="token comment">## Copy the contents of the azure functions</span>
-    <span class="token punctuation">-</span> <span class="token key atrule">uses</span><span class="token punctuation">:</span> kheiakiyama/install<span class="token punctuation">-</span>azcopy<span class="token punctuation">-</span>action@v1
-      <span class="token key atrule">with</span><span class="token punctuation">:</span>
-        <span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'v10'</span>
-    <span class="token punctuation">-</span> <span class="token key atrule">run</span><span class="token punctuation">:</span> azcopy_v10 copy './packages/azure<span class="token punctuation">-</span>functions/*' '$<span class="token punctuation">{</span><span class="token punctuation">{</span> env.AZUREFUNCDEST <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">?</span>$<span class="token punctuation">{</span><span class="token punctuation">{</span> secrets.SECRETSASTOKEN <span class="token punctuation">}</span><span class="token punctuation">}</span>' <span class="token punctuation">-</span><span class="token punctuation">-</span>recursive</code></pre></div>
-<p>To authenticate the copying of the files, generate a SAS Token on the storage account.
-<a
-    class="gatsby-resp-image-link"
-    href="/static/b03c2cae1c93b81100793f938a835a12/c9643/sas-token.jpg"
-    style="display: block"
-    target="_blank"
-    rel="noopener"
-  >
-    <span
-    class="gatsby-resp-image-wrapper"
-    style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 900px;"
-  >
-    <span
-      class="gatsby-resp-image-background-image"
-      style="padding-bottom: 88.46938775510203%; position: relative; bottom: 0; left: 0; background-image: url('data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAASABQDASIAAhEBAxEB/8QAGQABAAIDAAAAAAAAAAAAAAAAAAEDAgQF/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAH/2gAMAwEAAhADEAAAAe1nEJYFq0gA/8QAGRAAAwADAAAAAAAAAAAAAAAAAQIQEjJB/9oACAEBAAEFAiim8zWNrP/EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQMBAT8BH//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQIBAT8BH//EABgQAAIDAAAAAAAAAAAAAAAAAAEgAhEx/9oACAEBAAY/ArMQU1f/xAAbEAEAAgIDAAAAAAAAAAAAAAABABAxUREhYf/aAAgBAQABPyHuxbSFLBgSPtZa5dz/2gAMAwEAAgADAAAAECwHPP/EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQMBAT8QH//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQIBAT8QH//EAB0QAQACAgIDAAAAAAAAAAAAAAEAESFBMVFhkbH/2gAIAQEAAT8QYBnFNZShpXxBrTALUtOiW0GwjBlnZG8rv5DOXmHc9z//2Q=='); background-size: cover; display: block;"
-    ></span>
-    <img
-        class="gatsby-resp-image-image"
-        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;"
-        alt="Generate SAS token"
-        title=""
-        src="/static/b03c2cae1c93b81100793f938a835a12/2a9fa/sas-token.jpg"
-        srcset="/static/b03c2cae1c93b81100793f938a835a12/f0518/sas-token.jpg 225w,
-/static/b03c2cae1c93b81100793f938a835a12/b3492/sas-token.jpg 450w,
-/static/b03c2cae1c93b81100793f938a835a12/2a9fa/sas-token.jpg 900w,
-/static/b03c2cae1c93b81100793f938a835a12/c9643/sas-token.jpg 980w"
-        sizes="(max-width: 900px) 100vw, 900px"
-      />
-  </span>
-  </a></p>
-<p>Add the SAS Token to the GitHub secrets:
-<a
-    class="gatsby-resp-image-link"
-    href="/static/9f5efeb921c66776d7a9cbf7327984c3/b31e2/github-secret.jpg"
-    style="display: block"
-    target="_blank"
-    rel="noopener"
-  >
-    <span
-    class="gatsby-resp-image-wrapper"
-    style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 790px;"
-  >
-    <span
-      class="gatsby-resp-image-background-image"
-      style="padding-bottom: 97.84810126582278%; position: relative; bottom: 0; left: 0; background-image: url('data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAECBf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/9oADAMBAAIQAxAAAAHu2E0hWgA//8QAFhABAQEAAAAAAAAAAAAAAAAAIAEh/9oACAEBAAEFAhNP/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPwEf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPwEf/8QAFBABAAAAAAAAAAAAAAAAAAAAMP/aAAgBAQAGPwIf/8QAGRAAAwADAAAAAAAAAAAAAAAAABEhIFGB/9oACAEBAAE/IRENkHeiw//aAAwDAQACAAMAAAAQNMgA/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAwEBPxAf/8QAFBEBAAAAAAAAAAAAAAAAAAAAIP/aAAgBAgEBPxAf/8QAHBABAAICAwEAAAAAAAAAAAAAAQARMZEQIVGB/9oACAEBAAE/EMrYagEvrRK8EpBU1nqKkAPAjqWhn7z/AP/Z'); background-size: cover; display: block;"
-    ></span>
-    <img
-        class="gatsby-resp-image-image"
-        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;"
-        alt="GitHub secret"
-        title=""
-        src="/static/9f5efeb921c66776d7a9cbf7327984c3/b31e2/github-secret.jpg"
-        srcset="/static/9f5efeb921c66776d7a9cbf7327984c3/f0518/github-secret.jpg 225w,
-/static/9f5efeb921c66776d7a9cbf7327984c3/b3492/github-secret.jpg 450w,
-/static/9f5efeb921c66776d7a9cbf7327984c3/b31e2/github-secret.jpg 790w"
-        sizes="(max-width: 790px) 100vw, 790px"
-      />
-  </span>
-  </a></p>
-<p>There you go, now you can run the GitHub action and your Azure Function will be deployed. Hopefully, this could be a useful alternative for deploying Azure Functions using GitHub Actions! </p></div><footer></footer></article></main><aside><h3 style="font-family:Montserrat, sans-serif;margin-top:0.4375rem"><a style="box-shadow:none;text-decoration:none;color:var(--blue)" href="/">Erwin Smit blog</a></h3><div style="display:flex;margin-bottom:3.5rem"><img src="https://pbs.twimg.com/profile_images/461249241952706560/aXScqorc_400x400.jpeg" alt="Erwin Smit" style="margin-right:0.875rem;margin-bottom:0;width:3.5rem;height:3.5rem;border-radius:50%"/><p style="max-width:310px">Personal blog by<!-- --> <a href="https://mobile.twitter.com/rwinsmit">Erwin Smit</a>.<!-- --> <!-- -->Writing about coding and things.</p></div><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" style="margin-right:20px" href="/nextjs-on-azure-functions/">← <!-- -->Next.js on Azure Functions</a></li><li><a rel="next" href="/sitecore-jss-on-azure-functions/">Sitecore JSS on Azure Functions<!-- --> →</a></li></ul></nav></aside></div></div></div></div><script>
+        <span class="token keyword">return</span> nextContextRes<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    nextContextRes<span class="token punctuation">.</span><span class="token function-variable function">setPreviewData</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">previewData<span class="token punctuation">:</span> string</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> manifest <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'.next/prerender-manifest.json'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        <span class="token keyword">const</span> cookies <span class="token operator">=</span> <span class="token function">setPreviewData</span><span class="token punctuation">(</span>previewData<span class="token punctuation">,</span> manifest<span class="token punctuation">.</span>preview<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        nextContextRes<span class="token punctuation">.</span>headers <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token string">'Set-Cookie'</span><span class="token punctuation">:</span> cookies<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">';'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token string">'Content-Type'</span><span class="token punctuation">:</span> <span class="token string">"application/json; charset=utf-8"</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+etc etc<span class="token operator">...</span></code></pre></div>
+<p>Now this method can be used within the Azure Function:</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> nextResponseHandler <span class="token operator">=</span> <span class="token function">getNextResponseHandler</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token keyword">await</span> <span class="token function">handler</span><span class="token punctuation">(</span>customContextReq<span class="token punctuation">,</span> nextResponseHandler<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
+<p>Creating the <code class="language-text">setPreview</code> method was a pain. Because the correct functions are not <a href="https://github.com/vercel/next.js/blob/5ddee4494bf1fbcfd91ce81bc59f8de66949c9fc/packages/next/server/api-utils.ts#L420" target="_blank" rel="nofollow noopener noreferrer">exposed by Next.js</a>. For this reason I ended up doing quite a bit of copy-pasting from the Next.js repository to get it to work. </p>
+<h3 id="editing-data-cache"><a href="#editing-data-cache" aria-label="editing data cache permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Editing data cache</h3>
+<p>Another issue we faced was the caching middleware throwing errors. After some digging the <a href="https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/middleware/editing-data-cache.ts#L24" target="_blank" rel="nofollow noopener noreferrer">following line</a> caused an issue:</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript">  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Use gzip compression and store using the OS temp directory (Vercel Serverless Functions have temp directory access)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>cache <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Cache</span><span class="token punctuation">(</span><span class="token string">'editing-data'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> compression<span class="token punctuation">:</span> <span class="token string">'gzip'</span><span class="token punctuation">,</span> location<span class="token punctuation">:</span> os<span class="token punctuation">.</span><span class="token function">tmpdir</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span></code></pre></div>
+<p><code class="language-text">os.tempdir()</code> was pointing to a directory where a Consumption Based Azure Function was not allowed to read/write to. </p>
+<p>To resolve this, we created a custom EditingDataCache middleware function that sets a different directory. That middleware is added as a parameter to the EditingDataMiddleWare:</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EditingDataMiddleware</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    editingDataCache<span class="token punctuation">:</span> editingDataDiskCache
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
+<p>It would be nice if this directory could be set as a parameter to the existing EditingDataDiskCache class. Hopefully, this <a href="https://github.com/Sitecore/jss/pull/839" target="_blank" rel="nofollow noopener noreferrer">pull request</a> will sort that out. </p>
+<h2 id="tell-sitecore-where-to-look-for-the-azure-function"><a href="#tell-sitecore-where-to-look-for-the-azure-function" aria-label="tell sitecore where to look for the azure function permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tell Sitecore where to look for the Azure Function</h2>
+<p>Finally tell sitecore where to look for the Azure Function. This can be done in the config files of the Sitecore instance.</p>
+<div class="gatsby-highlight" data-language="xml"><pre class="language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>app</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>jss-nextjs-app<span class="token punctuation">"</span></span>
+    <span class="token attr-name">...</span>
+    <span class="token attr-name">serverSideRenderingEngineEndpointUrl</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://${yourfunctionapp}.azurewebsites.net/api/editing/render<span class="token punctuation">"</span></span>
+    <span class="token attr-name">serverSideRenderingEngineApplicationUrl</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://${yourfunctionapp}.azurewebsites.net/<span class="token punctuation">"</span></span>
+<span class="token punctuation">/></span></span></code></pre></div>
+<p>That’s it, those were the problems we faced. Hopefully this could be helpful for anyone else facing similar issues. </p></div><footer></footer></article></main><aside><h3 style="font-family:Montserrat, sans-serif;margin-top:0.4375rem"><a style="box-shadow:none;text-decoration:none;color:var(--blue)" href="/">Erwin Smit blog</a></h3><div style="display:flex;margin-bottom:3.5rem"><img src="https://pbs.twimg.com/profile_images/461249241952706560/aXScqorc_400x400.jpeg" alt="Erwin Smit" style="margin-right:0.875rem;margin-bottom:0;width:3.5rem;height:3.5rem;border-radius:50%"/><p style="max-width:310px">Personal blog by<!-- --> <a href="https://mobile.twitter.com/rwinsmit">Erwin Smit</a>.<!-- --> <!-- -->Writing about coding and things.</p></div><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" style="margin-right:20px" href="/deploy-azure-functions-github-actions/">← <!-- -->Deploy Azure Functions with GitHub Actions using AzCopy</a></li><li></li></ul></nav></aside></div></div></div></div><script>
   
   
   if(true) {
@@ -306,4 +171,4 @@ See below an example on a yml I use for the deployment of an Azure Function. Pla
       
       
       }
-      </script><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/deploy-azure-functions-github-actions/";window.webpackCompilationHash="5b0703c8bbcdaf707897";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-72443fdd0811342dab57.js"],"component---src-templates-blog-index-js":["/component---src-templates-blog-index-js-1d0dded9518f2725831b.js"],"component---src-templates-blog-post-js":["/component---src-templates-blog-post-js-425840eaf4a694688677.js"],"component---src-pages-404-js":["/component---src-pages-404-js-d0e0135ad9856fc06c46.js"],"component---src-pages-confirm-js":["/component---src-pages-confirm-js-e44a9e7b812966c3001f.js"],"component---src-pages-thanks-js":["/component---src-pages-thanks-js-0c8d133b717eab2f13e6.js"]};/*]]>*/</script><script src="/component---src-templates-blog-post-js-425840eaf4a694688677.js" async=""></script><script src="/2-5a239feea0af983bfd03.js" async=""></script><script src="/1-86412de490889f63ae3a.js" async=""></script><script src="/styles-e819d6019545901e3555.js" async=""></script><script src="/app-72443fdd0811342dab57.js" async=""></script><script src="/webpack-runtime-ad927f4e4180c06d8ae9.js" async=""></script></body></html>
+      </script><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/sitecore-jss-on-azure-functions/";window.webpackCompilationHash="5b0703c8bbcdaf707897";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-72443fdd0811342dab57.js"],"component---src-templates-blog-index-js":["/component---src-templates-blog-index-js-1d0dded9518f2725831b.js"],"component---src-templates-blog-post-js":["/component---src-templates-blog-post-js-425840eaf4a694688677.js"],"component---src-pages-404-js":["/component---src-pages-404-js-d0e0135ad9856fc06c46.js"],"component---src-pages-confirm-js":["/component---src-pages-confirm-js-e44a9e7b812966c3001f.js"],"component---src-pages-thanks-js":["/component---src-pages-thanks-js-0c8d133b717eab2f13e6.js"]};/*]]>*/</script><script src="/component---src-templates-blog-post-js-425840eaf4a694688677.js" async=""></script><script src="/2-5a239feea0af983bfd03.js" async=""></script><script src="/1-86412de490889f63ae3a.js" async=""></script><script src="/styles-e819d6019545901e3555.js" async=""></script><script src="/app-72443fdd0811342dab57.js" async=""></script><script src="/webpack-runtime-ad927f4e4180c06d8ae9.js" async=""></script></body></html>
