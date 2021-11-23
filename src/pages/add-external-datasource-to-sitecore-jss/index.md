@@ -168,6 +168,6 @@ const UserSearch: React.FC<UserSearchProps> = ({ fields, rendering }): JSX.Eleme
     const data = rendering.uid ? useComponentProps<GithubUserSearchQuery>(rendering.uid) : null;
 ```
 
-With the type added to the **useComponentProps** function we get IntelliSense based on the query we created, how cool is that!
+With the type added to the **useComponentProps** function we get IntelliSense based on the query we created, how cool is that! 
 
 ![Intellisense](./vscode.jpg)
