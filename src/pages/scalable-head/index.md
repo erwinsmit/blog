@@ -54,7 +54,7 @@ When Graphql queries, [integrated or connected](https://doc.sitecore.com/xp/en/d
 
 ## Connect component to Sitecore
 Now when all the above is done, it's very easy to create a React rendering for Sitecore. 
-On the project, we specifically refer to **React renderings** within the Sitecore Next.js app. The components with the UI components package are called just components. This prevents confusion. 
+On the project, we specifically refer to **React renderings** within the Sitecore Next.js app. The components with the UI component package are called just components. This prevents confusion. 
 
 1. Create a component within the JSS Next.js app as specified in Sitecore 
 ![Component name Sitecore](component-name.png)
@@ -62,5 +62,5 @@ On the project, we specifically refer to **React renderings** within the Sitecor
 2. Component should get registered in the componentFactory.ts file automatically (using Sitecore JSS Bootstrap script)
 ![Component factory](component-factory.png)
 
-3. Now, within the React rendering, refer to the component from the "UI-components" package, map the props and it's done!
+3. Now, within the React rendering, refer to the component from the "UI components" package, map the properties from Sitecore to the model used in UI components and it's done!
 ![Finished rendering](finished-rendering.png)

@@ -54,16 +54,5 @@
     "start": "npm run develop",
     "build": "rimraf public && rimraf .cache && gatsby build",
     "deploy": "gatsby build --prefix-paths && node ./copy-stuff.js && gh-pages -d public"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "{gatsby-*.js,src/**/*.{js,jsx,json,css}}": [
-      "yarn format",
-      "git add"
-    ]
   }
 }
