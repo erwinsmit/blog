@@ -1,4 +1,226 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Erwin Smit blog]]></title><description><![CDATA[Writing about coding and things.]]></description><link>https://erwinsmit.nl</link><generator>RSS for Node</generator><lastBuildDate>Sun, 28 Nov 2021 19:09:53 GMT</lastBuildDate><item><title><![CDATA[Integrate OrderCloud with Sitecore JSS Next.js]]></title><link>https://erwinsmit.nl/ordercloud-sitecore-jss-nextjs/</link><guid isPermaLink="false">https://erwinsmit.nl/ordercloud-sitecore-jss-nextjs/</guid><pubDate>Sun, 28 Nov 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;In this blog post, I like to explain how easy it is to add some products from OrderCloud to a pre-rendered page in Sitecore JSS using Next.js&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Erwin Smit blog]]></title><description><![CDATA[Writing about coding and things.]]></description><link>https://erwinsmit.nl</link><generator>RSS for Node</generator><lastBuildDate>Mon, 26 Sep 2022 11:28:19 GMT</lastBuildDate><item><title><![CDATA[Create a scalable head for Sitecore JSS]]></title><link>https://erwinsmit.nl/scalable-head/</link><guid isPermaLink="false">https://erwinsmit.nl/scalable-head/</guid><pubDate>Mon, 26 Sep 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I recently worked on a headless project with Sitecore, the way of working I choose there worked really well in my opinion. In this post, I like to talk about the choices I made and how they helped the team create a good workflow.&lt;/p&gt;
+&lt;p&gt;What do I mean by scalable in this context? By scalable I mean a few things:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The head should be able to work with data model changes.&lt;/li&gt;
+&lt;li&gt;The head should be able to perform well even if there are hundreds of different components in the application.&lt;/li&gt;
+&lt;li&gt;The head should be able to look good in different color themes, different font sizes, different spacings, etc. &lt;/li&gt;
+&lt;li&gt;The team that develops the head should be able to scale well, and new members should be able to easily integrate into the project without any domain or Sitecore knowledge.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;monorepo&quot;&gt;&lt;a href=&quot;#monorepo&quot; aria-label=&quot;monorepo permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Monorepo&lt;/h2&gt;
+&lt;p&gt;Within the Monorepo I created a clear separation between UI components and the Sitecore JSS Next.js application.
+See the following drawing:&lt;/p&gt;
+&lt;p&gt;&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.nl/static/4cc5e51babba04f891c54e6d65971ad5/96120/monorepo.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 900px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 115.77028258887876%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAXCAIAAACEf/j0AAAACXBIWXMAAA7DAAAOwwHHb6hkAAACw0lEQVQ4y41U23KbMBDl/z+m04dO+uKHTDO51MaOnTg4bl0bEDGXABIS6IIAd4HEiR23k52FAUlnL2d3ZTRNU1VV3Ql873Y7+N19Tgytteu6CLlRFAVBUJalEAIMwV5vSynleZ7jOGma7hdfwPDoqlG6hjdEAL+c86buTjStNtWuVBosgptjz3Vd8dgqyaJMHyTzYUlKKWSxTZcBXUVs5We/coH70wUY5gKU5bmUyqgrTZxB4Q0E+s6TBfhmjNECX86/XFlfl9GPDbsKyaYLuCYksx6Xs/v5c5zmRWE0tU7Xg/j3t2xzxiJLKE0wSXAIsIV/vgwvnPzaDiwpgAtOMmo7yFo8OsjjQhhVpXk8r8hcxlOeoZ4hLvInbPnZcksePfyQ0oAXAraSJMkylqY4L7iQ0uh5gTJ1lWp56tluyXrjtSUiz/O+FkrKbq0xPlZPdoIhv4xmlGKSCSGBakIIWJcvyNdSHQmYB85uhqY5mW5s13a9MHru09m3wBu4ahpd160CAVpjnIZh+HNkXlxeTW5nDnra+gGUqG+BgzpLxtR6XTtOtV5ThJTWpVIQLfBpu2gNnh2UpKnqRHfyDkyIms2oacrxWNg2cARgYE+/CmTRdzvETCk98KwoBTAeDrlpcsfZg1vq2xJUzevAgBWM8fux6cJerSDmerWirsulBDBl7M/GdlwE2XpbP06SPmFgC/zvZ8OAL4hNlSVoP5WUZtFzbE5ux5PZ1g/dJ98PQtiHIsHuAfhjqYAY6KHx7fRmOJrdPwBnCHkZIWC6d/6/OrftyTmEmmAM7xgstQ2TQTND2geEfQS3F0tVy6KUMHY5WCoZZQBWUh3P8zG0SydPi+iOJHOGrSKaks3CUaU8cQ2dBBeYL8835tnd/WCJrsPEI6fvsH959kfpdpSgn2FgYuoXnwP3nHHFQiBNguaRELk8eewvDTcnussfEK8AAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Monorepo&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.nl/static/4cc5e51babba04f891c54e6d65971ad5/05649/monorepo.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/4cc5e51babba04f891c54e6d65971ad5/e9d1c/monorepo.png 225w,https://erwinsmit.nl/static/4cc5e51babba04f891c54e6d65971ad5/80b02/monorepo.png 450w,https://erwinsmit.nl/static/4cc5e51babba04f891c54e6d65971ad5/05649/monorepo.png 900w,https://erwinsmit.nl/static/4cc5e51babba04f891c54e6d65971ad5/96120/monorepo.png 1097w&quot;
+        sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This monorepo is using NPM workspaces in combination with Turborepo, this works well but there are a lot of similar tools that achieve the same thing.
+With monorepo’s it’s common to have &lt;strong&gt;packages&lt;/strong&gt; and &lt;strong&gt;apps&lt;/strong&gt;. Packages refer to internal codebases and apps are meant for applications that will be seen by a non-technical end-user. See the example from Turborepo for an &lt;a href=&quot;https://turborepo.org/docs/getting-started/create-new#2-exploring-your-new-repo&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;excellent example&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In the drawing above we have a couple of apps and packages: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;UI components&lt;/strong&gt;, this is where the front-end developers create their React components in &lt;a href=&quot;https://storybook.js.org/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Storybook&lt;/a&gt; out of the context of the client’s project or Sitecore&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Next.js corporate app&lt;/strong&gt;, the Sitecore JSS Next.js SDK connecting to the Corporate JSS website setup in Sitecore. This app is depending on the UI components package.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Next.js career app&lt;/strong&gt;, the same as above but pointing at a different website within Sitecore&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Apps/storefront&lt;/strong&gt;, a fictional example of an app connected to &lt;a href=&quot;https://ordercloud.io/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Sitecore Ordercloud&lt;/a&gt;. This doesn’t exist (yet), but it explains the need of creating components that can work in all sorts of applications within the same monorepo.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;component-system--css-js&quot;&gt;&lt;a href=&quot;#component-system--css-js&quot; aria-label=&quot;component system  css js permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Component system / CSS JS&lt;/h2&gt;
+&lt;p&gt;I’m a big fan of not re-inventing the wheel on simple components that exist on all projects (Accordion/Tabs etc). Although they are easily created from scratch I see a lot of examples that are built poorly or are not accessible. When using a base component system like &lt;a href=&quot;https://mui.com/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;MUI&lt;/a&gt; or &lt;a href=&quot;https://reach.tech/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Reach&lt;/a&gt; you don’t have to manually add the correct aria attributes and you’re ensured they work using the keyboard, screen reader, etc.&lt;/p&gt;
+&lt;p&gt;For this project, I picked MUI as a base system for all our components. The components are great and easily customized (no it doesn’t have to look like material UI) but you also get a good theming system based on &lt;a href=&quot;https://emotion.sh/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Emotion&lt;/a&gt; (a styled component library). &lt;/p&gt;
+&lt;p&gt;This theming system allows you to create consistency in the design implementation. And all this while using the IntelliSense of Typescript. &lt;/p&gt;
+&lt;p&gt;Even when you don’t want to use any of the components from MUI I would still consider using it as an Emotion boilerplate. It works great with Next.js apps (including the Sitecore JSS Next.js SDK). The CSS is automatically code-split, meaning that you can have 100s of components in your application but still a small CSS/JS bundle for the end-user. &lt;/p&gt;
+&lt;h2 id=&quot;rules-of-engagement&quot;&gt;&lt;a href=&quot;#rules-of-engagement&quot; aria-label=&quot;rules of engagement permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Rules of engagement&lt;/h2&gt;
+&lt;p&gt;Couple of rules I use on this project.&lt;/p&gt;
+&lt;h3 id=&quot;build-your-component-with-theme-variables-support-for-multiple-themes&quot;&gt;&lt;a href=&quot;#build-your-component-with-theme-variables-support-for-multiple-themes&quot; aria-label=&quot;build your component with theme variables support for multiple themes permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Build your component with theme variables (support for multiple themes)&lt;/h3&gt;
+&lt;p&gt;&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.nl/static/4e4ae40024992d47114d327a2420621b/76064/theme-variables.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 900px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 77.25426482534526%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAPCAIAAABr+ngCAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABlUlEQVQoz5WT2W7cMAxF5zOasbWSFLV5jT2TNi2Q5f//qZSBeeiD05YgDMrWFY+u5It3vm73Oi/eobHWW2P0v8bFicBBGp/juHiAORJ41yuttFYt/iZOZR5vr3V/SfOGhG05a501/ijMV2JnQ8l5ved1L+udOGaCKXFhGiJVJu/cqVhQgYIxru+6I6+9Un2LrpO667Tq9Qn9xTrH687bzRBAiJgKI4TAlGrIA8bsQrYYTzo7i+Nc3t5p3yEwcpI3woKcRSlDC8E4PPo3JvUIsVT27KBm3BdYR4gJQmLECNZTkDWAU8g1lAGkvyQlZFmXkbx1vnWmea0fn/XtHfMAHEmwwXtij0HEeKQMBcEig3wWqXdyKS5WTgXAJbYxaKO7p2/NqcMwKdT1SfXXg7Z/kP+B7XnaysvrdPuxb5sYJlaRdCPGEF2ePQSt1dk5i9zDUPj7LS3PsUzNJ4ogzILKVTZwelRelHK993v9+YunJZRRtizMjazv1VGcXxIRExjwMpDZj/fmSHl89Zs0w4zMaDKl/zN+A8imeBbyIYcxAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Theme variables&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.nl/static/4e4ae40024992d47114d327a2420621b/05649/theme-variables.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/4e4ae40024992d47114d327a2420621b/e9d1c/theme-variables.png 225w,https://erwinsmit.nl/static/4e4ae40024992d47114d327a2420621b/80b02/theme-variables.png 450w,https://erwinsmit.nl/static/4e4ae40024992d47114d327a2420621b/05649/theme-variables.png 900w,https://erwinsmit.nl/static/4e4ae40024992d47114d327a2420621b/76064/theme-variables.png 1231w&quot;
+        sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;
+Avoid hard-coded spacing units and colors as much as possible. This way the components can be globally adjusted to be used in all sorts of contexts. &lt;/p&gt;
+&lt;h3 id=&quot;never-use-mark-up-or-styling-in-client-facing-app&quot;&gt;&lt;a href=&quot;#never-use-mark-up-or-styling-in-client-facing-app&quot; aria-label=&quot;never use mark up or styling in client facing app permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Never use mark-up or styling in client-facing app&lt;/h3&gt;
+&lt;p&gt;&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/5a7b6/no-markup-or-styling.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 900px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 51.52761457109284%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAIAAAA7N+mxAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABfElEQVQoz4WRy26kMBBF+z8av8sPbGwM2ICB7nRP1JpN/v97YqJoNNEs5qgWtxbXrqp7UZzlZRx7n+cpj8Oj3LY+P8u+xTQQ0mOUGB0pCQgJhPBPLgE1d1CldW9xeF/Kaz9++falxW/JX8CenH5YWds7asK1IRjXwuTkNDPKgJC2911ZfVndktqyyDxQLblVoARBmDSYXJsrwleEmsq1NlWiC6WUUKJciLf3UO799tblIoZk5yE8Hva427yZaXGd7DUfnLbOdCnFZQEpTnNFWqtjNs76eQ3lZqfVpzlO/ejMEoPzbljyMM+m1YwzDkIAUEZPM6twTkEQwZiSrL6pNFdaApecSClBGzAWlGKU1qvV2ev0VfwxM8iT2Va1Jj2OPm/9/uy6TguqwuDnYuJkjdHA/774t5kSAiG6/bDz3OYsdavDhLlszh++L3TKn2l9mevOrYYc4chiT/JI3FuMG9yc2ZzpkK/6h0tNDOpaMTMJhDHCORGCVk0p/h+f811bBQcT72IAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;No mark-up or styling&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/05649/no-markup-or-styling.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/e9d1c/no-markup-or-styling.png 225w,https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/80b02/no-markup-or-styling.png 450w,https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/05649/no-markup-or-styling.png 900w,https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/572e0/no-markup-or-styling.png 1350w,https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/5a7b6/no-markup-or-styling.png 1702w&quot;
+        sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;
+Don’t add class names or styling to the React components within you’re Sitecore consuming Next.js apps. The whole point of this setup is to have a clear separation between UI components and Sitecore-related stuff. If this is done anyway, the design system created in Storybook is not leading anymore.&lt;/p&gt;
+&lt;h3 id=&quot;use-graphql-aliases-where-possible&quot;&gt;&lt;a href=&quot;#use-graphql-aliases-where-possible&quot; aria-label=&quot;use graphql aliases where possible permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Use Graphql aliases where possible&lt;/h3&gt;
+&lt;p&gt;&lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 900px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 84.90878938640132%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAIAAABSJhvpAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABlklEQVQ4y51Sy5KbMBDk/3z3IXvZlM/+IX+A/yVPx3EOyTq1YTesEBKvQWBAQiItSKp2q7KxN32A0UDPdM8o2G63y+VytVqt1+ub4zEMw6qq6G8oiSoqyvTBv4mEEMFms1ksFlevrl5fX+/3+8PhIJ6FTHjEf94gwAFtAsYYoniCmoCqc/PqKcgn8VSzEGSCrutGDze+HEE7wZetlDFDe2oRnYCmQXmlfE80oBIgpHEsikKp2lob4IwX1RTnLM7YXXQXRVGapqiIT3PpvtdNXcNR3/czH0lPbpoGAhLHdunbD/LN1/SLjIWUEo3wxxnZM3kYTdqK48M3FjPO+J9BjBeR55EhTnJsI8L8a6/TDwLOT89I+E1207RDc/yUvjvQLhYx5zxJeJZlMKmNOU9WlkK6DbMfZjDDBGvdRbLBN3p40b4fkZ3rdVf3qmpJFrIscJcpz3NVK2zlvOzMCXjexe8/00cuE5H4awvvmJ/W+p/THsfOtfdVeJt9L11u7eTZ27bGGOg6I1v3+j89Q5iZVgIL7rIavwD6f8qSlv5b4wAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Graphql Alias&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.nl/static/9592d274e70ca2ba5b715e937a6f943f/05649/graphql-alias.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/9592d274e70ca2ba5b715e937a6f943f/e9d1c/graphql-alias.png 225w,https://erwinsmit.nl/static/9592d274e70ca2ba5b715e937a6f943f/80b02/graphql-alias.png 450w,https://erwinsmit.nl/static/9592d274e70ca2ba5b715e937a6f943f/05649/graphql-alias.png 900w,https://erwinsmit.nl/static/9592d274e70ca2ba5b715e937a6f943f/ce5b6/graphql-alias.png 1206w&quot;
+        sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
+      /&gt;
+  &lt;/span&gt;
+When Graphql queries, &lt;a href=&quot;https://doc.sitecore.com/xp/en/developers/hd/190/sitecore-headless-development/integrated-graphql-in-jss-apps.html&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;integrated or connected&lt;/a&gt;, the rendering will be more future-proof if aliases are used. If the property names change in the future, the rendering component will still work. Only the query will need to be changed.&lt;/p&gt;
+&lt;h2 id=&quot;connect-component-to-sitecore&quot;&gt;&lt;a href=&quot;#connect-component-to-sitecore&quot; aria-label=&quot;connect component to sitecore permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Connect component to Sitecore&lt;/h2&gt;
+&lt;p&gt;Now when all the above is done, it’s very easy to create a React rendering for Sitecore.
+On the project, we specifically refer to &lt;strong&gt;React renderings&lt;/strong&gt; within the Sitecore Next.js app. The components with the UI component package are called just components. This prevents confusion. &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Create a component within the JSS Next.js app as specified in Sitecore
+&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.nl/static/829a2e817424ebe9d73f94531fbdf7f4/1baec/component-name.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 841px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 40.78478002378121%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAIAAAB2/0i6AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAwElEQVQY05XPPw6CMBQG8B5MDsDiBWpYZTfxEsaDoAkl3kDP4ACBQSCAC1j6B4IC9aGTiRj5Ja9L+70vRYftxsB4aZrGdGi3Xs11HS+wpmmzidD5dNxblk1shziEEAeQgQ3e5zjEpORCUErLlxuglHNeASnrum7bxxhU5HkURZ7nBX7g+zCB63pheEmSJI7jLLsWBTz5DsEddECDEKJpmq7r2o+u+w9DGJKwPE1TWVVKqb5XfxrC8FWolVIyxsopnjCWbPTlNLMlAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Component name Sitecore&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.nl/static/829a2e817424ebe9d73f94531fbdf7f4/1baec/component-name.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/829a2e817424ebe9d73f94531fbdf7f4/e9d1c/component-name.png 225w,https://erwinsmit.nl/static/829a2e817424ebe9d73f94531fbdf7f4/80b02/component-name.png 450w,https://erwinsmit.nl/static/829a2e817424ebe9d73f94531fbdf7f4/1baec/component-name.png 841w&quot;
+        sizes=&quot;(max-width: 841px) 100vw, 841px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Component should get registered in the componentFactory.ts file automatically (using Sitecore JSS Bootstrap script)
+&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/9c1da/component-factory.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 900px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 19.38296445338699%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAECAIAAAABPYjBAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAk0lEQVQI13WNQQ7CMAwE+w/aJl6vTdMUCqKCC+L/z8IJZ1ajaKJ4nUEizLZq4LWdPAsLuMDiWjXEK22lFRXNGSkISTkN0VVACVVYcTMlha5mcIdbvEnvZGhuEkiTJL286Dkm41Pb7mRb4EiFuho3JyHTNM+dqfPzyABALocen/J6X/dtr3V53PbnIcincRynPvUnX+oQIQtpwTF/AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Component factory&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/05649/component-factory.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/e9d1c/component-factory.png 225w,https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/80b02/component-factory.png 450w,https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/05649/component-factory.png 900w,https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/572e0/component-factory.png 1350w,https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/9c1da/component-factory.png 1491w&quot;
+        sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now, within the React rendering, refer to the component from the “UI components” package, map the properties from Sitecore to the model used in UI components and it’s done!
+&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/303fa/finished-rendering.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 900px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 62.45802552048355%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAIAAADtbgqsAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABoklEQVQoz41R7Y7cIAzMa1w2BIyBYAghH7v56LbVndpKff8nqsnl1Ou/DiNkArYn4yp0aY/zMOfp68+8bNPxbUxponTk+GWMS/BL9N5i35noDIASohXthSpY2tM63B/3t9/T/py5ENEc/DP3a0/BWVAMKdtWSsmBVkpfH9rKaC4ZuhhpelCefZpcys6ZDh2dDcmWnqHENjgM5xE1lGQJqFwnvZXOSgTpnSQHnWVthYwreOeFS7YEg77PQwhkKUSXgssJvNNWK65CnrWqtnl/L8v6ICcrAJseNG3DftD6PW37fXuwc11MLsSu5733/WAQLWohmvakaG5nMhtAGfKG+y9cX838DMs6Hq8uzcZ1Oo44LGbckAFgbABKEDL2CwJWSrI6MsbxHzX1i7jVDdcVp8ailRUqwTx1F5tBF2pk8yu+tJ7y24+4Hj4vftpsmnQgiB6Ch0hgtbGGx6G0Fn+ta07DpERtaFjCeLcsMq+YFmmcBG4ChdyNFwenSZ9RoVYaoK5fbnXNFKyczfiYzMn283j+SdagjGYzDO/WmjKXVrb/hz8MOGaolaYzvwAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Finished rendering&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/05649/finished-rendering.png&quot;
+        srcset=&quot;https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/e9d1c/finished-rendering.png 225w,https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/80b02/finished-rendering.png 450w,https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/05649/finished-rendering.png 900w,https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/572e0/finished-rendering.png 1350w,https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/303fa/finished-rendering.png 1489w&quot;
+        sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/scalable-head/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Integrate OrderCloud with Sitecore JSS Next.js]]></title><link>https://erwinsmit.nl/ordercloud-sitecore-jss-nextjs/</link><guid isPermaLink="false">https://erwinsmit.nl/ordercloud-sitecore-jss-nextjs/</guid><pubDate>Sat, 27 Nov 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;In this blog post, I like to explain how easy it is to add some products from OrderCloud to a pre-rendered page in Sitecore JSS using Next.js&lt;/p&gt;
 &lt;h2 id=&quot;first-make-a-storefront&quot;&gt;&lt;a href=&quot;#first-make-a-storefront&quot; aria-label=&quot;first make a storefront permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;First, make a storefront&lt;/h2&gt;
 &lt;p&gt;To be able to do this you need to create an OrderCloud marketplace and have some products.
 I created a free OrderCloud account and ran these commands to automatically create a marketplace filled with products and facets:&lt;/p&gt;
