@@ -69,7 +69,7 @@
 
                 setTheme(preferredTheme || (darkQuery.matches ? 'dark' : 'light'));
               })();
-            </script><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><div style="color:var(--textNormal);background:var(--bg);transition:color 0.2s ease-out, background 0.2s ease-out;min-height:100vh"><div style="margin-left:auto;margin-right:auto;max-width:42rem;padding:2.625rem 1.3125rem"><header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2.625rem"><h3 style="font-family:Montserrat, sans-serif;margin-top:0;margin-bottom:0;height:42px;line-height:2.625rem"><a style="box-shadow:none;text-decoration:none;color:var(--blue)" href="/">Erwin Smit blog</a></h3></header><main><article><header><h1 style="color:var(--textTitle)">Create a scalable head for Sitecore JSS</h1><p style="font-size:0.83255rem;line-height:1.75rem;display:block;margin-bottom:1.75rem;margin-top:-1.4rem">September 26, 2022<!-- --> • ☕️ 5 min read</p></header><div><p>I recently worked on a headless project with Sitecore, the way of working I choose there worked really well in my opinion. In this post, I like to talk about the choices I made and how they helped the team create a good workflow.</p>
+            </script><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><div style="color:var(--textNormal);background:var(--bg);transition:color 0.2s ease-out, background 0.2s ease-out;min-height:100vh"><div style="margin-left:auto;margin-right:auto;max-width:42rem;padding:2.625rem 1.3125rem"><header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2.625rem"><h3 style="font-family:Montserrat, sans-serif;margin-top:0;margin-bottom:0;height:42px;line-height:2.625rem"><a style="box-shadow:none;text-decoration:none;color:var(--blue)" href="/">Erwin Smit blog</a></h3></header><main><article><header><h1 style="color:var(--textTitle)">Create a scalable head for Sitecore JSS</h1><p style="font-size:0.83255rem;line-height:1.75rem;display:block;margin-bottom:1.75rem;margin-top:-1.4rem">September 26, 2022<!-- --> • ☕️ 6 min read</p></header><div><p>I recently worked on a headless project with Sitecore, the way of working I choose there worked really well in my opinion. In this post, I like to talk about the choices I made and how they helped the team create a good workflow.</p>
 <p>What do I mean by scalable in this context? By scalable I mean a few things:</p>
 <ul>
 <li>The head should be able to work with data model changes.</li>
@@ -115,14 +115,37 @@ With monorepo’s it’s common to have <strong>packages</strong> and <strong>ap
 <ul>
 <li><strong>UI components</strong>, this is where the front-end developers create their React components in <a href="https://storybook.js.org/" target="_blank" rel="nofollow noopener noreferrer">Storybook</a> out of the context of the client’s project or Sitecore</li>
 <li><strong>Next.js corporate app</strong>, the Sitecore JSS Next.js SDK connecting to the Corporate JSS website setup in Sitecore. This app is depending on the UI components package.</li>
-<li><strong>Next.js career app</strong>, the same as above but pointing at a different website within Sitecore</li>
+<li><strong>Next.js career app</strong>, the same as above but pointing at a different website within Sitecore.</li>
 <li><strong>Apps/storefront</strong>, a fictional example of an app connected to <a href="https://ordercloud.io/" target="_blank" rel="nofollow noopener noreferrer">Sitecore Ordercloud</a>. This doesn’t exist (yet), but it explains the need of creating components that can work in all sorts of applications within the same monorepo.</li>
+</ul>
+<p>Why does a monorepo helps us scale?</p>
+<ul>
+<li>
+<p><strong>Connect multiple (Next.js) apps with UI components</strong>.
+This architecture allows us to set up multiple apps consuming the same set of components and other sharable code.</p>
+</li>
+<li>
+<p><strong>Perfect for letting FE developer focus on small parts (without Sitecore experience).</strong>
+A front end developer might never have to leave Storybook. In fact, this might even help to create generic flexible components without project or Sitecore domain stuff built in.</p>
+</li>
+<li>
+<p><strong>Perfect for Sitecore devs to work on an app without having to worry about mark-up or styling.</strong>
+They only have to worry about the contract, the difference between the data model from Sitecore and the property types set in the UI component. Just a bit of data-mapping instead of juggling HTML classes, divs and spans.  </p>
+</li>
+<li>
+<p><strong>Using npm workspaces with Turborepo. Ensures easy task management and fast builds.</strong>
+Turborepo uses caching for it’s builds. That means that it only builds packages/apps that have changes. So even when the monorepo is huge, it will still perform with fast build times.</p>
+</li>
+<li>
+<p><strong>Multiple apps / packages share the same node_modules.</strong>
+The same node_modules are shared across the apps and packages when the versions are the same. So also the “npm install” should remain fast.</p>
+</li>
 </ul>
 <h2 id="component-system--css-js"><a href="#component-system--css-js" aria-label="component system  css js permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Component system / CSS JS</h2>
 <p>I’m a big fan of not re-inventing the wheel on simple components that exist on all projects (Accordion/Tabs etc). Although they are easily created from scratch I see a lot of examples that are built poorly or are not accessible. When using a base component system like <a href="https://mui.com/" target="_blank" rel="nofollow noopener noreferrer">MUI</a> or <a href="https://reach.tech/" target="_blank" rel="nofollow noopener noreferrer">Reach</a> you don’t have to manually add the correct aria attributes and you’re ensured they work using the keyboard, screen reader, etc.</p>
 <p>For this project, I picked MUI as a base system for all our components. The components are great and easily customized (no it doesn’t have to look like material UI) but you also get a good theming system based on <a href="https://emotion.sh/" target="_blank" rel="nofollow noopener noreferrer">Emotion</a> (a styled component library). </p>
 <p>This theming system allows you to create consistency in the design implementation. And all this while using the IntelliSense of Typescript. </p>
-<p>Even when you don’t want to use any of the components from MUI I would still consider using it as an Emotion boilerplate. It works great with Next.js apps (including the Sitecore JSS Next.js SDK). The CSS is automatically code-split, meaning that you can have 100s of components in your application but still a small CSS/JS bundle for the end-user. </p>
+<p>Even when you don’t want to use any of the components from MUI I would still consider using it as an Emotion boilerplate. It works great with Next.js apps (including the Sitecore <a href="https://github.com/Sitecore/jss/tree/dev/packages/sitecore-jss-nextjs" target="_blank" rel="nofollow noopener noreferrer">JSS Next.js SDK</a>). The CSS is automatically code-split, meaning that you can have 100s of components in your application but still a small CSS/JS bundle for the end-user. </p>
 <h2 id="rules-of-engagement"><a href="#rules-of-engagement" aria-label="rules of engagement permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rules of engagement</h2>
 <p>Couple of rules I use on this project.</p>
 <h3 id="build-your-component-with-theme-variables-support-for-multiple-themes"><a href="#build-your-component-with-theme-variables-support-for-multiple-themes" aria-label="build your component with theme variables support for multiple themes permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Build your component with theme variables (support for multiple themes)</h3>
@@ -216,7 +239,7 @@ When Graphql queries, <a href="https://doc.sitecore.com/xp/en/developers/hd/190/
 On the project, we specifically refer to <strong>React renderings</strong> within the Sitecore Next.js app. The components with the UI component package are called just components. This prevents confusion. </p>
 <ol>
 <li>
-<p>Create a component within the JSS Next.js app as specified in Sitecore
+<p><strong>Create a component within the JSS Next.js app as specified in Sitecore</strong>
 <a
     class="gatsby-resp-image-link"
     href="/static/829a2e817424ebe9d73f94531fbdf7f4/1baec/component-name.png"
@@ -247,7 +270,7 @@ On the project, we specifically refer to <strong>React renderings</strong> withi
   </a></p>
 </li>
 <li>
-<p>Component should get registered in the componentFactory.ts file automatically (using Sitecore JSS Bootstrap script)
+<p><strong>Component should get registered in the componentFactory.ts file automatically (using Sitecore JSS Bootstrap script)</strong>
 <a
     class="gatsby-resp-image-link"
     href="/static/17a5e35826c8c2bfa0f60f920bf516e6/9c1da/component-factory.png"
@@ -280,7 +303,7 @@ On the project, we specifically refer to <strong>React renderings</strong> withi
   </a></p>
 </li>
 <li>
-<p>Now, within the React rendering, refer to the component from the “UI components” package, map the properties from Sitecore to the model used in UI components and it’s done!
+<p><strong>Now, within the React rendering, refer to the component from the “UI components” package, map the properties from Sitecore to the model used in UI components and it’s done!</strong>
 <a
     class="gatsby-resp-image-link"
     href="/static/d454baa84b72aa02cfc34e81ee5b2164/303fa/finished-rendering.png"
