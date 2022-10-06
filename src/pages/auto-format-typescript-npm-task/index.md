@@ -4,7 +4,7 @@ date: '2022-10-02'
 spoiler:  
 ---
 
-In a previous post, I wrote about the workflow of a headless Sitecore project. 
+In a [previous post](/scalable-head), I wrote about the workflow of a headless Sitecore project. 
 One of the things I like to do is add formatting rules with ESLint and Prettier. On the pull request build, I check if those rules are applied correctly before the code is allowed to be merged in.
 
 ## Do Sitecore developers like this?
