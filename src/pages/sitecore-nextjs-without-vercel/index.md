@@ -1,7 +1,7 @@
 ---
-title: Sitecore Next.js without Vercel
-date: '2022-10-05'
-spoiler: 
+title: Sitecore JSS Next.js without Vercel
+date: '2022-10-10'
+spoiler: Yes, you can still run Sitecore JSS Next.js on Azure Functions without Vercel
 ---
 
 As we all know by now, Vercel is a great platform to host your Next.js apps. I currently use it for some small projects and I love the developer experience.

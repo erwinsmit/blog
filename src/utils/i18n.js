@@ -14,17 +14,6 @@ export const codeToLanguage = code =>
 
 export const loadFontsForCode = code => {
   switch (code) {
-    case 'ru':
-    case 'bg':
-      import('../fonts/fonts-shared.cyrillic.css');
-      import('../fonts/fonts-post.cyrillic.css');
-      break;
-    case 'uk':
-      import('../fonts/fonts-shared.cyrillic.css');
-      import('../fonts/fonts-post.cyrillic.css');
-      import('../fonts/fonts-shared.latin-ext.css');
-      import('../fonts/fonts-post.latin-ext.css');
-      break;
     case 'cs':
     case 'da':
     case 'de':
