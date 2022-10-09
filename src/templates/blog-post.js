@@ -9,7 +9,6 @@ import SEO from '../components/SEO';
 import Signup from '../components/Signup';
 import Panel from '../components/Panel';
 import { formatPostDate, formatReadingTime } from '../utils/helpers';
-import { rhythm, scale } from '../utils/typography';
 import {
   codeToLanguage,
   createLanguageLink,
@@ -105,33 +104,26 @@ class BlogPostTemplate extends React.Component {
           description={post.frontmatter.spoiler}
           slug={post.fields.slug}
         />
-        <main>
+        <main className="max-w-7xl mx-auto px-6 sm:px-8 py-24 flex-1 max-w-4xl pb-2">
           <article>
             <header>
-              <h1 style={{ color: 'var(--textTitle)' }}>
-                {post.frontmatter.title}
+              <h1 className="w-full relative	mb-8 text-6xl font-extrabold tracking-normal text-center title-font">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600 dark:from-blue-300 dark:to-blue-500">
+                  {post.frontmatter.title}
+                </span>
               </h1>
-              <p
-                style={{
-                  ...scale(-1 / 5),
-                  display: 'block',
-                  marginBottom: rhythm(1),
-                  marginTop: rhythm(-4 / 5),
-                }}
-              >
-                {formatPostDate(post.frontmatter.date, lang)}
-                {` • ${formatReadingTime(post.timeToRead)}`}
-              </p>
-              {translations.length > 0 && (
-                <Translations
-                  translations={translations}
-                  editUrl={editUrl}
-                  languageLink={languageLink}
-                  lang={lang}
-                />
-              )}
+              <div className="flex items-center justify-center mb-16">
+                <p className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white">
+                  {formatPostDate(post.frontmatter.date, lang)}
+                </p>
+                <span className="font-bold text-gray-200 dark:text-gray-500 mx-2">—</span>
+                <p className='text-base text-gray-400 group-hover:text-gray-500 dark:text-gray-300 dark:group-hover:text-gray-150'>
+                  {`${formatReadingTime(post.timeToRead)}`}
+                </p>
+              </div>
+              
             </header>
-            <div dangerouslySetInnerHTML={{ __html: html }} />
+            <div className='prose lg:prose-xl' dangerouslySetInnerHTML={{ __html: html }} />
             <footer>
               
             </footer>
@@ -139,10 +131,6 @@ class BlogPostTemplate extends React.Component {
         </main>
         <aside>
           <h3
-            style={{
-              fontFamily: 'Montserrat, sans-serif',
-              marginTop: rhythm(0.25),
-            }}
           >
             <Link
               style={{

@@ -3,10 +3,10 @@ import { Link } from 'gatsby';
 import Toggle from './Toggle';
 import Helmet from 'react-helmet';
 
-import { rhythm, scale } from '../utils/typography';
+// import { rhythm, scale } from '../utils/typography';
 import sun from '../assets/sun.png';
 import moon from '../assets/moon.png';
-
+import '../css/output.css';
 class Layout extends React.Component {
   state = {
     theme: null,
@@ -24,19 +24,11 @@ class Layout extends React.Component {
     if (location.pathname === rootPath) {
       return (
         <h1
-          style={{
-            ...scale(0.75),
-            marginBottom: 0,
-            marginTop: 0,
-          }}
+          className="select-none text-lg font-bold tracking-tight my-4 transition duration-150 ease-out transform"
         >
           <Link
-            style={{
-              boxShadow: 'none',
-              textDecoration: 'none',
-              color: 'var(--blue)',
-            }}
             to={'/'}
+            className="no-underline"
           >
             {title}
           </Link>
@@ -45,20 +37,10 @@ class Layout extends React.Component {
     } else {
       return (
         <h3
-          style={{
-            fontFamily: 'Montserrat, sans-serif',
-            marginTop: 0,
-            marginBottom: 0,
-            height: 42, // because
-            lineHeight: '2.625rem',
-          }}
+          className='select-none text-lg font-bold tracking-tight my-4 transition duration-150 ease-out transform'
         >
           <Link
-            style={{
-              boxShadow: 'none',
-              textDecoration: 'none',
-              color: 'var(--blue)',
-            }}
+            className='no-underline'
             to={'/'}
           >
             {title}
@@ -72,42 +54,26 @@ class Layout extends React.Component {
 
     return (
       <div
-        style={{
-          color: 'var(--textNormal)',
-          background: 'var(--bg)',
-          transition: 'color 0.2s ease-out, background 0.2s ease-out',
-          minHeight: '100vh',
-        }}
+        className="min-h-screen flex flex-col false false font-sans"
       >
-        <Helmet
-          meta={[
-            {
-              name: 'theme-color',
-              content: this.state.theme === 'light' ? '#ffa8c5' : '#282c35',
-            },
-          ]}
-        />
-        <div
-          style={{
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            maxWidth: rhythm(24),
-            padding: `2.625rem ${rhythm(3 / 4)}`,
-          }}
+        <header
+          className="bg-gradient-to-b text-black from-gray-50 to-white"
         >
-          <header
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '2.625rem',
-            }}
-          >
-            {this.renderHeader()}
-          </header>
-          {children}
+          <div className="max-w-7xl mx-auto px-6 sm:px-8  py-4 relative z-10 max-w-8xl">
+            <div className="flex items-center justify-between">
+
+              {this.renderHeader()}
+            </div>
+            <div className="absolute h-1 bg-gradient-to-r from-transparent via-black dark:via-white to-transparent bottom-0 left-4 right-4 -z-1 opacity-5" />
+          </div>
+        </header>
+        <div className="bg-gray-50">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8">
+            {children}
+          </div>
         </div>
       </div>
+    
     );
   }
 }

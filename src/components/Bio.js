@@ -1,5 +1,4 @@
 import React from 'react';
-import { rhythm } from '../utils/typography';
 
 class Bio extends React.Component {
   render() {
@@ -7,10 +6,9 @@ class Bio extends React.Component {
       <div
         style={{
           display: 'flex',
-          marginBottom: rhythm(2),
         }}
       >
-        <img
+        {/* <img
           src={'https://pbs.twimg.com/profile_images/461249241952706560/aXScqorc_400x400.jpeg'}
           alt={`Erwin Smit`}
           style={{
@@ -25,7 +23,7 @@ class Bio extends React.Component {
           Personal blog by{' '}
           <a href="https://mobile.twitter.com/rwinsmit">Erwin Smit</a>.{' '}
           Writing about coding and things.
-        </p>
+        </p> */}
       </div>
     );
   }
