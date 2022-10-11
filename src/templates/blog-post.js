@@ -130,50 +130,29 @@ class BlogPostTemplate extends React.Component {
           </article>
         </main>
         <aside>
-          <h3
-          >
-            <Link
-              style={{
-                boxShadow: 'none',
-                textDecoration: 'none',
-                color: 'var(--blue)',
-              }}
-              to={'/'}
-            >
-              Erwin Smit blog
-            </Link>
-          </h3>
-          <Bio />
-          <nav>
-            <ul
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'space-between',
-                listStyle: 'none',
-                padding: 0,
-              }}
-            >
-              <li>
-                {previous && (
-                  <Link
-                    to={previous.fields.slug}
-                    rel="prev"
-                    style={{ marginRight: 20 }}
-                  >
-                    ← {previous.frontmatter.title}
-                  </Link>
-                )}
-              </li>
-              <li>
-                {next && (
-                  <Link to={next.fields.slug} rel="next">
-                    {next.frontmatter.title} →
-                  </Link>
-                )}
-              </li>
-            </ul>
-          </nav>
+          
+        <div
+          className='bg-gray-100 mt-8 p-8 rounded-md shadow-md flex flex-row items-start'
+        >
+          <img
+            src={'https://pbs.twimg.com/profile_images/461249241952706560/aXScqorc_400x400.jpeg'}
+            alt={`Erwin Smit`}
+            className="rounded-full mr-4 w-24"
+          />
+          <div className='prose'>
+            <p>
+              Hi, I'm Erwin. <br />
+              I'm a Web Developer
+              focussing on the "Head" in Headless development. 
+            </p>
+            <p>I like to write about my experiences in developing against Headless solutions like Sitecore JSS.</p>
+            
+            <p>
+              <a href="https://twitter.com/RwinSmit" target="_blank">Twitter</a> <span>/</span> <a href="https://github.com/erwinsmit" target="_blank">GitHub</a>
+            </p>
+          </div>
+      </div>
+    
         </aside>
       </Layout>
     );

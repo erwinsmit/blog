@@ -1,7 +1,7 @@
 ---
 title: Auto-format typescript with a npm task
 date: '2022-10-02'
-spoiler:  
+spoiler: Keep your back-end & front-end dev's happy with this npm task
 ---
 
 In a [previous post](/scalable-head), I wrote about the workflow of a headless Sitecore project. 

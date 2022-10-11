@@ -57,3 +57,7 @@ app.UseStaticFiles(new StaticFileOptions {
 ```
 
 That was pretty much it, we were able to re-use the code from the old solution and simply replaced the Azure functions proxy with a different one. 
+
+Just after I wrote this blog post, Azure announced that Azure Static Web Apps will support Next.js with ISR/SSR & API routes soon. See the announcement about [Next.js support here](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/extending-next-js-support-in-azure-static-web-apps/ba-p/3627975).
+
+Will be interesting to see if the Sitecore JSS Next.js SDK will also work with this, perhaps coming up in a blog post soon!

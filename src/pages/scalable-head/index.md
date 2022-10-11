@@ -1,7 +1,7 @@
 ---
 title: Create a scalable head for Sitecore JSS
 date: '2022-09-26'
-spoiler:  
+spoiler: Building a scalable Head in headless world
 ---
 
 I recently worked on a headless project with Sitecore, the way of working I choose there worked really well in my opinion. In this post, I like to talk about the choices I made and how they helped the team create a good workflow.

@@ -24,26 +24,26 @@ class Layout extends React.Component {
     if (location.pathname === rootPath) {
       return (
         <h1
-          className="select-none text-lg font-bold tracking-tight my-4 transition duration-150 ease-out transform"
+          className="select-none text-slate-800 text-2xl font-bold tracking-tight my-4 transition duration-150 ease-out transform"
         >
           <Link
             to={'/'}
             className="no-underline"
           >
-            {title}
+            Erwin.Smit
           </Link>
         </h1>
       );
     } else {
       return (
         <h3
-          className='select-none text-lg font-bold tracking-tight my-4 transition duration-150 ease-out transform'
+          className='select-none text-slate-800 text-2xl font-bold tracking-tight my-4 transition duration-150 ease-out transform'
         >
           <Link
             className='no-underline'
             to={'/'}
           >
-            {title}
+            Erwin.Smit
           </Link>
         </h3>
       );
@@ -57,7 +57,8 @@ class Layout extends React.Component {
         className="min-h-screen flex flex-col false false font-sans"
       >
         <header
-          className="bg-gradient-to-b text-black from-gray-50 to-white"
+          className="bg-gradient-to-b text-black from-gray-50 to-white pattern"
+          
         >
           <div className="max-w-7xl mx-auto px-6 sm:px-8  py-4 relative z-10 max-w-8xl">
             <div className="flex items-center justify-between">

@@ -4,26 +4,27 @@ class Bio extends React.Component {
   render() {
     return (
       <div
+        className='bg-gradient bg-gradient-to-br from-gray-50 to-gray-100 mt-8 p-8 rounded-md shadow-md'
         style={{
-          display: 'flex',
+          maxWidth: "320px"
         }}
       >
-        {/* <img
+        <img
           src={'https://pbs.twimg.com/profile_images/461249241952706560/aXScqorc_400x400.jpeg'}
           alt={`Erwin Smit`}
-          style={{
-            marginRight: rhythm(1 / 2),
-            marginBottom: 0,
-            width: rhythm(2),
-            height: rhythm(2),
-            borderRadius: '50%',
-          }}
+          className="rounded-full mb-4"
         />
-        <p style={{ maxWidth: 310 }}>
-          Personal blog by{' '}
-          <a href="https://mobile.twitter.com/rwinsmit">Erwin Smit</a>.{' '}
-          Writing about coding and things.
-        </p> */}
+        <div className='prose'>
+          <p>
+            Hi, I'm Erwin. <br />
+            I'm a Web Developer
+            focussing on the "Head" in Headless development. 
+          </p>
+          <p>I like to write about my experiences in developing against Headless solutions like Sitecore JSS.</p>
+          <p>
+            <a href="https://twitter.com/RwinSmit" target="_blank">Twitter</a> <span>/</span> <a href="https://github.com/erwinsmit" target="_blank">GitHub</a>
+          </p>
+        </div>
       </div>
     );
   }
