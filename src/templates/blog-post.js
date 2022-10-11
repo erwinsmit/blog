@@ -104,7 +104,7 @@ class BlogPostTemplate extends React.Component {
           description={post.frontmatter.spoiler}
           slug={post.fields.slug}
         />
-        <main className="max-w-7xl mx-auto px-6 sm:px-8 py-24 flex-1 max-w-4xl pb-2">
+        <main className="max-w-7xl mx-auto px-6 sm:px-8 py-24 flex-1 pb-2">
           <article>
             <header>
               <h1 className="w-full relative	mb-8 text-6xl font-extrabold tracking-normal text-center title-font">
@@ -123,7 +123,7 @@ class BlogPostTemplate extends React.Component {
               </div>
               
             </header>
-            <div className='prose lg:prose-xl' dangerouslySetInnerHTML={{ __html: html }} />
+            <div className='prose lg:prose-xl max-w-none' dangerouslySetInnerHTML={{ __html: html }} />
             <footer>
               
             </footer>

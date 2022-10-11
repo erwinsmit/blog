@@ -12,7 +12,10 @@ But... There are some drawbacks to Vercel.
 - Most clients my from my employer [Macaw](https://www.macaw.nl) already pay for a hosting provider, in the Microsoft world, this is Azure. It's hard to also sell Vercel in that case.
 
 - The pricing is hard to predict, it goes from **free** to **10 dollars a month** to **enterprise**. In Azure for example this is more transparent, with the [cost calculator](https://azure.microsoft.com/en-us/pricing/calculator/) you can get a decent estimate.
+
+
 ![Vercel pricing](vercel-pricing.png)
+
 
 - GDPR, is especially a hard requirement for German clients. The GDPR is more strict in Germany than in other countries, although Vercel claims to cover GDPR in the EU, it does not seem to make the same amount of effort as Azure with a dedicated [German cloud](https://azure.microsoft.com/en-us/support/legal/privacy-statement/germany/). Disclaimer: Legal stuff is not my strong suit
 
@@ -44,7 +47,7 @@ Almost all the proxy rules are configured through the appsettings alone, see: ht
 
 Only for the static files from Next.js a couple of lines of code are necessary to mount the file share.
 
-```c#
+```js
 var nextMount = builder.Configuration.GetValue<string>("NextMount");
 
 app.UseStaticFiles(new StaticFileOptions { 
