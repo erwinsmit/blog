@@ -25,7 +25,7 @@ class BlogIndexTemplate extends React.Component {
             {posts.map(({ node }) => {
               const title = get(node, 'frontmatter.title') || node.fields.slug;
               return (
-                <article key={node.fields.slug} className="group block px-8 py-10 mt-8 last:mb-0 bg-gray-50 bg-gradient-to-br from-gray-50 to-gray-100 dark:bg-gray-700 dark:from-gray-800 dark:to-gray-700 rounded-md shadow-sm transition-all duration-150 ease-out hover:shadow-md hover:to-gray-50 dark:hover:to-gray-600">
+                <article key={node.fields.slug} className="group block px-8 py-10 mt-8 last:mb-0 bg-gray-50 bg-gradient-to-br from-gray-50 to-gray-100 rounded-md shadow-sm transition-all duration-150 ease-out hover:shadow-md hover:to-gray-50">
                   <header>
                     <h3
                       className="text-blue-400 text-3xl font-semibold title-font mb-5 transition-all duration-150 ease-out group"
@@ -46,11 +46,11 @@ class BlogIndexTemplate extends React.Component {
                     </h3>
                     <small>
                     <div className="flex items-center mb-4">
-                      <p className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white">
+                      <p className="text-base font-medium text-gray-600 group-hover:text-gray-800">
                         {formatPostDate(node.frontmatter.date, langKey)}
                       </p>
-                      <span className="font-bold text-gray-200 dark:text-gray-500 mx-2">—</span>
-                      <p className='text-base text-gray-400 group-hover:text-gray-500 dark:text-gray-300 dark:group-hover:text-gray-150'>
+                      <span className="font-bold text-gray-200 mx-2">—</span>
+                      <p className='text-base text-gray-400 group-hover:text-gray-500'>
                         {`${formatReadingTime(node.timeToRead)}`}
                       </p>
                     </div>

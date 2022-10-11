@@ -65,7 +65,7 @@ class Layout extends React.Component {
 
               {this.renderHeader()}
             </div>
-            <div className="absolute h-1 bg-gradient-to-r from-transparent via-black dark:via-white to-transparent bottom-0 left-4 right-4 -z-1 opacity-5" />
+            <div className="absolute h-1 bg-gradient-to-r from-transparent via-black to-transparent bottom-0 left-4 right-4 -z-1 opacity-5" />
           </div>
         </header>
         <div className="bg-gray-50">

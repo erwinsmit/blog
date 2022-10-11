@@ -108,16 +108,16 @@ class BlogPostTemplate extends React.Component {
           <article>
             <header>
               <h1 className="w-full relative	mb-8 text-6xl font-extrabold tracking-normal text-center title-font">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600 dark:from-blue-300 dark:to-blue-500">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">
                   {post.frontmatter.title}
                 </span>
               </h1>
               <div className="flex items-center justify-center mb-16">
-                <p className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white">
+                <p className="text-base font-medium text-gray-600 group-hover:text-gray-800">
                   {formatPostDate(post.frontmatter.date, lang)}
                 </p>
-                <span className="font-bold text-gray-200 dark:text-gray-500 mx-2">—</span>
-                <p className='text-base text-gray-400 group-hover:text-gray-500 dark:text-gray-300 dark:group-hover:text-gray-150'>
+                <span className="font-bold text-gray-200 mx-2">—</span>
+                <p className='text-base text-gray-400 group-hover:text-gray-500'>
                   {`${formatReadingTime(post.timeToRead)}`}
                 </p>
               </div>
