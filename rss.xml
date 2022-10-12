@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Erwin Smit blog]]></title><description><![CDATA[Writing about coding and things.]]></description><link>https://erwinsmit.nl</link><generator>RSS for Node</generator><lastBuildDate>Tue, 11 Oct 2022 20:06:45 GMT</lastBuildDate><item><title><![CDATA[Sitecore JSS Next.js without Vercel]]></title><link>https://erwinsmit.nl/sitecore-nextjs-without-vercel/</link><guid isPermaLink="false">https://erwinsmit.nl/sitecore-nextjs-without-vercel/</guid><pubDate>Mon, 10 Oct 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;As we all know by now, Vercel is a great platform to host your Next.js apps. I currently use it for some small projects and I love the developer experience.
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Erwin Smit blog]]></title><description><![CDATA[Writing about coding and things.]]></description><link>https://erwinsmit.com</link><generator>RSS for Node</generator><lastBuildDate>Wed, 12 Oct 2022 11:19:34 GMT</lastBuildDate><item><title><![CDATA[Sitecore JSS Next.js without Vercel]]></title><link>https://erwinsmit.com/sitecore-nextjs-without-vercel/</link><guid isPermaLink="false">https://erwinsmit.com/sitecore-nextjs-without-vercel/</guid><pubDate>Mon, 10 Oct 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;As we all know by now, Vercel is a great platform to host your Next.js apps. I currently use it for some small projects and I love the developer experience.
 It’s so easy to handle deployments, preview pull requests (you get a unique URL for each pull request), real performance monitoring (using &lt;a href=&quot;https://web.dev/vitals/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Core Web Vitals&lt;/a&gt;), and much more. &lt;/p&gt;
 &lt;p&gt;But… There are some drawbacks to Vercel.&lt;/p&gt;
 &lt;ul&gt;
@@ -11,7 +11,7 @@ It’s so easy to handle deployments, preview pull requests (you get a unique UR
 &lt;/ul&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/c13974f2993f730f8cc6e16e30a302fb/782d1/vercel-pricing.png&quot;
+    href=&quot;https://erwinsmit.com/static/c13974f2993f730f8cc6e16e30a302fb/782d1/vercel-pricing.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -29,8 +29,8 @@ It’s so easy to handle deployments, preview pull requests (you get a unique UR
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Vercel pricing&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/c13974f2993f730f8cc6e16e30a302fb/05649/vercel-pricing.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/c13974f2993f730f8cc6e16e30a302fb/e9d1c/vercel-pricing.png 225w,https://erwinsmit.nl/static/c13974f2993f730f8cc6e16e30a302fb/80b02/vercel-pricing.png 450w,https://erwinsmit.nl/static/c13974f2993f730f8cc6e16e30a302fb/05649/vercel-pricing.png 900w,https://erwinsmit.nl/static/c13974f2993f730f8cc6e16e30a302fb/782d1/vercel-pricing.png 954w&quot;
+        src=&quot;https://erwinsmit.com/static/c13974f2993f730f8cc6e16e30a302fb/05649/vercel-pricing.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/c13974f2993f730f8cc6e16e30a302fb/e9d1c/vercel-pricing.png 225w,https://erwinsmit.com/static/c13974f2993f730f8cc6e16e30a302fb/80b02/vercel-pricing.png 450w,https://erwinsmit.com/static/c13974f2993f730f8cc6e16e30a302fb/05649/vercel-pricing.png 900w,https://erwinsmit.com/static/c13974f2993f730f8cc6e16e30a302fb/782d1/vercel-pricing.png 954w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -44,17 +44,17 @@ We did just that last year.&lt;/p&gt;
 &lt;h2 id=&quot;old-solution&quot;&gt;&lt;a href=&quot;#old-solution&quot; aria-label=&quot;old solution permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Old solution,&lt;/h2&gt;
 &lt;p&gt;Last year I’ve worked on a way of hosting Sitecore Next.js with Azure:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://erwinsmit.nl/nextjs-on-azure-functions/&quot;&gt;Next.js on Azure Functions&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://erwinsmit.nl/deploy-azure-functions-github-actions/&quot;&gt;Deploy Azure Functions with Github Actions&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://erwinsmit.nl/sitecore-jss-on-azure-functions/&quot;&gt;Sitecore JSS on Azure functions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://erwinsmit.com/nextjs-on-azure-functions/&quot;&gt;Next.js on Azure Functions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://erwinsmit.com/deploy-azure-functions-github-actions/&quot;&gt;Deploy Azure Functions with Github Actions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://erwinsmit.com/sitecore-jss-on-azure-functions/&quot;&gt;Sitecore JSS on Azure functions&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;This diagram explains how it all works together:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://erwinsmit.nl/old-solution-a8f0f7ffbe7f7990e2e270f889bbc9a2.svg&quot; alt=&quot;Old solution&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://erwinsmit.com/old-solution-a8f0f7ffbe7f7990e2e270f889bbc9a2.svg&quot; alt=&quot;Old solution&quot;&gt;&lt;/p&gt;
 &lt;p&gt;When I worked on this Azure Functions version 3 was the latest version. Now it’s version 4 and proxies are not &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/azure-functions/functions-proxies#legacy-functions-proxies&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;supported anymore&lt;/a&gt;.
 This December, support for Azure Functions version 3 will be switched off so this solution is not viable anymore. &lt;/p&gt;
 &lt;h2 id=&quot;a-new-proxy&quot;&gt;&lt;a href=&quot;#a-new-proxy&quot; aria-label=&quot;a new proxy permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;A new proxy&lt;/h2&gt;
 &lt;p&gt;So we got back to the drawing board and came up with the following solution:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://erwinsmit.nl/new-solution-acf7cb10af9b40f00ca1a4c765d1d393.svg&quot; alt=&quot;New solution&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://erwinsmit.com/new-solution-acf7cb10af9b40f00ca1a4c765d1d393.svg&quot; alt=&quot;New solution&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Instead of using Azure Function proxies a .net application with &lt;a href=&quot;https://microsoft.github.io/reverse-proxy/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;YARP (Yet another reverse proxy)&lt;/a&gt; is used. What I like about YARP is that you almost need no code at all to get it running.
 Almost all the proxy rules are configured through the appsettings alone, see: &lt;a href=&quot;https://github.com/macaw-cad/nextjs-on-azure/blob/main/YarpProxy/appsettings.Development.json&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;https://github.com/macaw-cad/nextjs-on-azure/blob/main/YarpProxy/appsettings.Development.json&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Only for the static files from Next.js a couple of lines of code are necessary to mount the file share.&lt;/p&gt;
@@ -67,8 +67,8 @@ app&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=
 &lt;p&gt;That was pretty much it, we were able to re-use the code from the old solution and simply replaced the Azure functions proxy with a different one. &lt;/p&gt;
 &lt;p&gt;Just after I wrote this blog post, Azure announced that Azure Static Web Apps will support Next.js with ISR/SSR &amp;#x26; API routes soon. See the announcement about &lt;a href=&quot;https://techcommunity.microsoft.com/t5/apps-on-azure-blog/extending-next-js-support-in-azure-static-web-apps/ba-p/3627975&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Next.js support here&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Will be interesting to see if the Sitecore JSS Next.js SDK will also work with this, perhaps coming up in a blog post soon!&lt;/p&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/sitecore-nextjs-without-vercel/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Auto-format typescript with a npm task]]></title><link>https://erwinsmit.nl/auto-format-typescript-npm-task/</link><guid isPermaLink="false">https://erwinsmit.nl/auto-format-typescript-npm-task/</guid><pubDate>Sun, 02 Oct 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;In a &lt;a href=&quot;https://erwinsmit.nl/scalable-head&quot;&gt;previous post&lt;/a&gt;, I wrote about the workflow of a headless Sitecore project.
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/sitecore-nextjs-without-vercel/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Auto-format typescript with a npm task]]></title><link>https://erwinsmit.com/auto-format-typescript-npm-task/</link><guid isPermaLink="false">https://erwinsmit.com/auto-format-typescript-npm-task/</guid><pubDate>Sun, 02 Oct 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;In a &lt;a href=&quot;https://erwinsmit.com/scalable-head&quot;&gt;previous post&lt;/a&gt;, I wrote about the workflow of a headless Sitecore project.
 One of the things I like to do is add formatting rules with ESLint and Prettier. On the pull request build, I check if those rules are applied correctly before the code is allowed to be merged in.&lt;/p&gt;
 &lt;h2 id=&quot;do-sitecore-developers-like-this&quot;&gt;&lt;a href=&quot;#do-sitecore-developers-like-this&quot; aria-label=&quot;do sitecore developers like this permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Do Sitecore developers like this?&lt;/h2&gt;
 &lt;p&gt;Not always, when a Sitecore developer who is less involved in the whole JavaScript world tries to make some changes in a React rendering you can get some issues. If they don’t have Prettier installed in their code editor it will be inevitable that they will get errors on the PR build. &lt;/p&gt;
@@ -79,8 +79,8 @@ One of the things I like to do is add formatting rules with ESLint and Prettier.
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Running this task will automatically format the typescript using the rules set by Prettier and ESLint.&lt;/p&gt;
 &lt;p&gt;Keep the code nice and consistent without annoying the non-JavaScript developers!&lt;/p&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/auto-format-typescript-npm-task/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Create a scalable head for Sitecore JSS]]></title><link>https://erwinsmit.nl/scalable-head/</link><guid isPermaLink="false">https://erwinsmit.nl/scalable-head/</guid><pubDate>Mon, 26 Sep 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I recently worked on a headless project with Sitecore, the way of working I choose there worked really well in my opinion. In this post, I like to talk about the choices I made and how they helped the team create a good workflow.&lt;/p&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/auto-format-typescript-npm-task/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Create a scalable head for Sitecore JSS]]></title><link>https://erwinsmit.com/scalable-head/</link><guid isPermaLink="false">https://erwinsmit.com/scalable-head/</guid><pubDate>Mon, 26 Sep 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I recently worked on a headless project with Sitecore, the way of working I choose there worked really well in my opinion. In this post, I like to talk about the choices I made and how they helped the team create a good workflow.&lt;/p&gt;
 &lt;p&gt;What do I mean by scalable in this context? By scalable I mean a few things:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;The head should be able to work with data model changes.&lt;/li&gt;
@@ -93,7 +93,7 @@ One of the things I like to do is add formatting rules with ESLint and Prettier.
 See the following drawing:&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/4cc5e51babba04f891c54e6d65971ad5/96120/monorepo.png&quot;
+    href=&quot;https://erwinsmit.com/static/4cc5e51babba04f891c54e6d65971ad5/96120/monorepo.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -111,8 +111,8 @@ See the following drawing:&lt;/p&gt;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Monorepo&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/4cc5e51babba04f891c54e6d65971ad5/05649/monorepo.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/4cc5e51babba04f891c54e6d65971ad5/e9d1c/monorepo.png 225w,https://erwinsmit.nl/static/4cc5e51babba04f891c54e6d65971ad5/80b02/monorepo.png 450w,https://erwinsmit.nl/static/4cc5e51babba04f891c54e6d65971ad5/05649/monorepo.png 900w,https://erwinsmit.nl/static/4cc5e51babba04f891c54e6d65971ad5/96120/monorepo.png 1097w&quot;
+        src=&quot;https://erwinsmit.com/static/4cc5e51babba04f891c54e6d65971ad5/05649/monorepo.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/4cc5e51babba04f891c54e6d65971ad5/e9d1c/monorepo.png 225w,https://erwinsmit.com/static/4cc5e51babba04f891c54e6d65971ad5/80b02/monorepo.png 450w,https://erwinsmit.com/static/4cc5e51babba04f891c54e6d65971ad5/05649/monorepo.png 900w,https://erwinsmit.com/static/4cc5e51babba04f891c54e6d65971ad5/96120/monorepo.png 1097w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -159,7 +159,7 @@ The same node_modules are shared across the apps and packages when the versions 
 &lt;h3 id=&quot;build-your-component-with-theme-variables-support-for-multiple-themes&quot;&gt;&lt;a href=&quot;#build-your-component-with-theme-variables-support-for-multiple-themes&quot; aria-label=&quot;build your component with theme variables support for multiple themes permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Build your component with theme variables (support for multiple themes)&lt;/h3&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/4e4ae40024992d47114d327a2420621b/76064/theme-variables.png&quot;
+    href=&quot;https://erwinsmit.com/static/4e4ae40024992d47114d327a2420621b/76064/theme-variables.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -177,8 +177,8 @@ The same node_modules are shared across the apps and packages when the versions 
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Theme variables&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/4e4ae40024992d47114d327a2420621b/05649/theme-variables.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/4e4ae40024992d47114d327a2420621b/e9d1c/theme-variables.png 225w,https://erwinsmit.nl/static/4e4ae40024992d47114d327a2420621b/80b02/theme-variables.png 450w,https://erwinsmit.nl/static/4e4ae40024992d47114d327a2420621b/05649/theme-variables.png 900w,https://erwinsmit.nl/static/4e4ae40024992d47114d327a2420621b/76064/theme-variables.png 1231w&quot;
+        src=&quot;https://erwinsmit.com/static/4e4ae40024992d47114d327a2420621b/05649/theme-variables.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/4e4ae40024992d47114d327a2420621b/e9d1c/theme-variables.png 225w,https://erwinsmit.com/static/4e4ae40024992d47114d327a2420621b/80b02/theme-variables.png 450w,https://erwinsmit.com/static/4e4ae40024992d47114d327a2420621b/05649/theme-variables.png 900w,https://erwinsmit.com/static/4e4ae40024992d47114d327a2420621b/76064/theme-variables.png 1231w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -187,7 +187,7 @@ Avoid hard-coded spacing units and colors as much as possible. This way the comp
 &lt;h3 id=&quot;never-use-mark-up-or-styling-in-client-facing-app&quot;&gt;&lt;a href=&quot;#never-use-mark-up-or-styling-in-client-facing-app&quot; aria-label=&quot;never use mark up or styling in client facing app permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Never use mark-up or styling in client-facing app&lt;/h3&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/5a7b6/no-markup-or-styling.png&quot;
+    href=&quot;https://erwinsmit.com/static/a30e58c16066ba17be89ffffd828533f/5a7b6/no-markup-or-styling.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -205,8 +205,8 @@ Avoid hard-coded spacing units and colors as much as possible. This way the comp
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;No mark-up or styling&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/05649/no-markup-or-styling.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/e9d1c/no-markup-or-styling.png 225w,https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/80b02/no-markup-or-styling.png 450w,https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/05649/no-markup-or-styling.png 900w,https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/572e0/no-markup-or-styling.png 1350w,https://erwinsmit.nl/static/a30e58c16066ba17be89ffffd828533f/5a7b6/no-markup-or-styling.png 1702w&quot;
+        src=&quot;https://erwinsmit.com/static/a30e58c16066ba17be89ffffd828533f/05649/no-markup-or-styling.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/a30e58c16066ba17be89ffffd828533f/e9d1c/no-markup-or-styling.png 225w,https://erwinsmit.com/static/a30e58c16066ba17be89ffffd828533f/80b02/no-markup-or-styling.png 450w,https://erwinsmit.com/static/a30e58c16066ba17be89ffffd828533f/05649/no-markup-or-styling.png 900w,https://erwinsmit.com/static/a30e58c16066ba17be89ffffd828533f/572e0/no-markup-or-styling.png 1350w,https://erwinsmit.com/static/a30e58c16066ba17be89ffffd828533f/5a7b6/no-markup-or-styling.png 1702w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -226,8 +226,8 @@ Don’t add class names or styling to the React components within you’re Sitec
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Graphql Alias&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/9592d274e70ca2ba5b715e937a6f943f/05649/graphql-alias.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/9592d274e70ca2ba5b715e937a6f943f/e9d1c/graphql-alias.png 225w,https://erwinsmit.nl/static/9592d274e70ca2ba5b715e937a6f943f/80b02/graphql-alias.png 450w,https://erwinsmit.nl/static/9592d274e70ca2ba5b715e937a6f943f/05649/graphql-alias.png 900w,https://erwinsmit.nl/static/9592d274e70ca2ba5b715e937a6f943f/ce5b6/graphql-alias.png 1206w&quot;
+        src=&quot;https://erwinsmit.com/static/9592d274e70ca2ba5b715e937a6f943f/05649/graphql-alias.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/9592d274e70ca2ba5b715e937a6f943f/e9d1c/graphql-alias.png 225w,https://erwinsmit.com/static/9592d274e70ca2ba5b715e937a6f943f/80b02/graphql-alias.png 450w,https://erwinsmit.com/static/9592d274e70ca2ba5b715e937a6f943f/05649/graphql-alias.png 900w,https://erwinsmit.com/static/9592d274e70ca2ba5b715e937a6f943f/ce5b6/graphql-alias.png 1206w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -240,7 +240,7 @@ On the project, we specifically refer to &lt;strong&gt;React renderings&lt;/stro
 &lt;p&gt;&lt;strong&gt;Create a component within the JSS Next.js app as specified in Sitecore&lt;/strong&gt;
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/829a2e817424ebe9d73f94531fbdf7f4/1baec/component-name.png&quot;
+    href=&quot;https://erwinsmit.com/static/829a2e817424ebe9d73f94531fbdf7f4/1baec/component-name.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -258,8 +258,8 @@ On the project, we specifically refer to &lt;strong&gt;React renderings&lt;/stro
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Component name Sitecore&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/829a2e817424ebe9d73f94531fbdf7f4/1baec/component-name.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/829a2e817424ebe9d73f94531fbdf7f4/e9d1c/component-name.png 225w,https://erwinsmit.nl/static/829a2e817424ebe9d73f94531fbdf7f4/80b02/component-name.png 450w,https://erwinsmit.nl/static/829a2e817424ebe9d73f94531fbdf7f4/1baec/component-name.png 841w&quot;
+        src=&quot;https://erwinsmit.com/static/829a2e817424ebe9d73f94531fbdf7f4/1baec/component-name.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/829a2e817424ebe9d73f94531fbdf7f4/e9d1c/component-name.png 225w,https://erwinsmit.com/static/829a2e817424ebe9d73f94531fbdf7f4/80b02/component-name.png 450w,https://erwinsmit.com/static/829a2e817424ebe9d73f94531fbdf7f4/1baec/component-name.png 841w&quot;
         sizes=&quot;(max-width: 841px) 100vw, 841px&quot;
       /&gt;
   &lt;/span&gt;
@@ -269,7 +269,7 @@ On the project, we specifically refer to &lt;strong&gt;React renderings&lt;/stro
 &lt;p&gt;&lt;strong&gt;Component should get registered in the componentFactory.ts file automatically (using Sitecore JSS Bootstrap script)&lt;/strong&gt;
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/9c1da/component-factory.png&quot;
+    href=&quot;https://erwinsmit.com/static/17a5e35826c8c2bfa0f60f920bf516e6/9c1da/component-factory.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -287,8 +287,8 @@ On the project, we specifically refer to &lt;strong&gt;React renderings&lt;/stro
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Component factory&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/05649/component-factory.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/e9d1c/component-factory.png 225w,https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/80b02/component-factory.png 450w,https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/05649/component-factory.png 900w,https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/572e0/component-factory.png 1350w,https://erwinsmit.nl/static/17a5e35826c8c2bfa0f60f920bf516e6/9c1da/component-factory.png 1491w&quot;
+        src=&quot;https://erwinsmit.com/static/17a5e35826c8c2bfa0f60f920bf516e6/05649/component-factory.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/17a5e35826c8c2bfa0f60f920bf516e6/e9d1c/component-factory.png 225w,https://erwinsmit.com/static/17a5e35826c8c2bfa0f60f920bf516e6/80b02/component-factory.png 450w,https://erwinsmit.com/static/17a5e35826c8c2bfa0f60f920bf516e6/05649/component-factory.png 900w,https://erwinsmit.com/static/17a5e35826c8c2bfa0f60f920bf516e6/572e0/component-factory.png 1350w,https://erwinsmit.com/static/17a5e35826c8c2bfa0f60f920bf516e6/9c1da/component-factory.png 1491w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -298,7 +298,7 @@ On the project, we specifically refer to &lt;strong&gt;React renderings&lt;/stro
 &lt;p&gt;&lt;strong&gt;Now, within the React rendering, refer to the component from the “UI components” package, map the properties from Sitecore to the model used in UI components and it’s done!&lt;/strong&gt;
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/303fa/finished-rendering.png&quot;
+    href=&quot;https://erwinsmit.com/static/d454baa84b72aa02cfc34e81ee5b2164/303fa/finished-rendering.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -316,21 +316,21 @@ On the project, we specifically refer to &lt;strong&gt;React renderings&lt;/stro
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Finished rendering&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/05649/finished-rendering.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/e9d1c/finished-rendering.png 225w,https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/80b02/finished-rendering.png 450w,https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/05649/finished-rendering.png 900w,https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/572e0/finished-rendering.png 1350w,https://erwinsmit.nl/static/d454baa84b72aa02cfc34e81ee5b2164/303fa/finished-rendering.png 1489w&quot;
+        src=&quot;https://erwinsmit.com/static/d454baa84b72aa02cfc34e81ee5b2164/05649/finished-rendering.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/d454baa84b72aa02cfc34e81ee5b2164/e9d1c/finished-rendering.png 225w,https://erwinsmit.com/static/d454baa84b72aa02cfc34e81ee5b2164/80b02/finished-rendering.png 450w,https://erwinsmit.com/static/d454baa84b72aa02cfc34e81ee5b2164/05649/finished-rendering.png 900w,https://erwinsmit.com/static/d454baa84b72aa02cfc34e81ee5b2164/572e0/finished-rendering.png 1350w,https://erwinsmit.com/static/d454baa84b72aa02cfc34e81ee5b2164/303fa/finished-rendering.png 1489w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
   &lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/scalable-head/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Can we keep up with Vercel?]]></title><link>https://erwinsmit.nl/can-we-keep-up-with-vercel/</link><guid isPermaLink="false">https://erwinsmit.nl/can-we-keep-up-with-vercel/</guid><pubDate>Tue, 05 Apr 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Last year we’ve spent quite some time getting &lt;a href=&quot;https://erwinsmit.nl/sitecore-nextjs-without-vercel&quot;&gt;Sitecore JSS Next.js to work on Azure&lt;/a&gt; (with ISG &amp;#x26; build-in APIs). However, some issues have come up since then.&lt;/p&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/scalable-head/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Can we keep up with Vercel?]]></title><link>https://erwinsmit.com/can-we-keep-up-with-vercel/</link><guid isPermaLink="false">https://erwinsmit.com/can-we-keep-up-with-vercel/</guid><pubDate>Tue, 05 Apr 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Last year we’ve spent quite some time getting &lt;a href=&quot;https://erwinsmit.com/sitecore-nextjs-without-vercel&quot;&gt;Sitecore JSS Next.js to work on Azure&lt;/a&gt; (with ISG &amp;#x26; build-in APIs). However, some issues have come up since then.&lt;/p&gt;
 &lt;p&gt;First of all, everything broke when I updated to &lt;a href=&quot;https://nextjs.org/blog/next-12&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Next 12&lt;/a&gt; and I had to make some changes to get it to work again. I was getting some weird re-directs. &lt;/p&gt;
 &lt;p&gt;Later &lt;a href=&quot;https://techcommunity.microsoft.com/t5/apps-on-azure-blog/azure-functions-v4-versus-v3/ba-p/3276055&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Azure functions v4&lt;/a&gt; was released and proxies are not supported anymore. &lt;/p&gt;
 &lt;p&gt;Things like this make me wonder if it’s worth trying to maintain the custom hosting solutions of Next.js and support all the functionality. With Vercel everything &lt;strong&gt;just works&lt;/strong&gt;. &lt;/p&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/can-we-keep-up-with-vercel/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Integrate OrderCloud with Sitecore JSS Next.js]]></title><link>https://erwinsmit.nl/ordercloud-sitecore-jss-nextjs/</link><guid isPermaLink="false">https://erwinsmit.nl/ordercloud-sitecore-jss-nextjs/</guid><pubDate>Sat, 27 Nov 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;In this blog post, I like to explain how easy it is to add some products from OrderCloud to a pre-rendered page in Sitecore JSS using Next.js&lt;/p&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/can-we-keep-up-with-vercel/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Integrate OrderCloud with Sitecore JSS Next.js]]></title><link>https://erwinsmit.com/ordercloud-sitecore-jss-nextjs/</link><guid isPermaLink="false">https://erwinsmit.com/ordercloud-sitecore-jss-nextjs/</guid><pubDate>Sat, 27 Nov 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;In this blog post, I like to explain how easy it is to add some products from OrderCloud to a pre-rendered page in Sitecore JSS using Next.js&lt;/p&gt;
 &lt;h2 id=&quot;first-make-a-storefront&quot;&gt;&lt;a href=&quot;#first-make-a-storefront&quot; aria-label=&quot;first make a storefront permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;First, make a storefront&lt;/h2&gt;
 &lt;p&gt;To be able to do this you need to create an OrderCloud marketplace and have some products.
 I created a free OrderCloud account and ran these commands to automatically create a marketplace filled with products and facets:&lt;/p&gt;
@@ -341,7 +341,7 @@ I created a free OrderCloud account and ran these commands to automatically crea
 &lt;p&gt;Next, log in to your marketplace and make a note of the Storefront App ID:
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/5f5775db06778956dec6901f01da21aa/eab05/api-key.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/5f5775db06778956dec6901f01da21aa/eab05/api-key.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -359,8 +359,8 @@ I created a free OrderCloud account and ran these commands to automatically crea
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Storefront App ID&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/5f5775db06778956dec6901f01da21aa/2a9fa/api-key.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/5f5775db06778956dec6901f01da21aa/f0518/api-key.jpg 225w,https://erwinsmit.nl/static/5f5775db06778956dec6901f01da21aa/b3492/api-key.jpg 450w,https://erwinsmit.nl/static/5f5775db06778956dec6901f01da21aa/2a9fa/api-key.jpg 900w,https://erwinsmit.nl/static/5f5775db06778956dec6901f01da21aa/987c3/api-key.jpg 1350w,https://erwinsmit.nl/static/5f5775db06778956dec6901f01da21aa/e2107/api-key.jpg 1800w,https://erwinsmit.nl/static/5f5775db06778956dec6901f01da21aa/eab05/api-key.jpg 2255w&quot;
+        src=&quot;https://erwinsmit.com/static/5f5775db06778956dec6901f01da21aa/2a9fa/api-key.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/5f5775db06778956dec6901f01da21aa/f0518/api-key.jpg 225w,https://erwinsmit.com/static/5f5775db06778956dec6901f01da21aa/b3492/api-key.jpg 450w,https://erwinsmit.com/static/5f5775db06778956dec6901f01da21aa/2a9fa/api-key.jpg 900w,https://erwinsmit.com/static/5f5775db06778956dec6901f01da21aa/987c3/api-key.jpg 1350w,https://erwinsmit.com/static/5f5775db06778956dec6901f01da21aa/e2107/api-key.jpg 1800w,https://erwinsmit.com/static/5f5775db06778956dec6901f01da21aa/eab05/api-key.jpg 2255w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -432,7 +432,7 @@ NEXT_PUBLIC_OC_ALLOW_ANONYMOUS=false&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;As a result, we now have products from our OrderCloud marketplace rendered on Next.js build-time. Fast and good for SEO!&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/3759a4bc175b29bfd22c564ad179144e/76f1c/ordercloud-products.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/3759a4bc175b29bfd22c564ad179144e/76f1c/ordercloud-products.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -450,14 +450,14 @@ NEXT_PUBLIC_OC_ALLOW_ANONYMOUS=false&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;OrderCloud products&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/3759a4bc175b29bfd22c564ad179144e/2a9fa/ordercloud-products.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/3759a4bc175b29bfd22c564ad179144e/f0518/ordercloud-products.jpg 225w,https://erwinsmit.nl/static/3759a4bc175b29bfd22c564ad179144e/b3492/ordercloud-products.jpg 450w,https://erwinsmit.nl/static/3759a4bc175b29bfd22c564ad179144e/2a9fa/ordercloud-products.jpg 900w,https://erwinsmit.nl/static/3759a4bc175b29bfd22c564ad179144e/987c3/ordercloud-products.jpg 1350w,https://erwinsmit.nl/static/3759a4bc175b29bfd22c564ad179144e/e2107/ordercloud-products.jpg 1800w,https://erwinsmit.nl/static/3759a4bc175b29bfd22c564ad179144e/76f1c/ordercloud-products.jpg 2601w&quot;
+        src=&quot;https://erwinsmit.com/static/3759a4bc175b29bfd22c564ad179144e/2a9fa/ordercloud-products.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/3759a4bc175b29bfd22c564ad179144e/f0518/ordercloud-products.jpg 225w,https://erwinsmit.com/static/3759a4bc175b29bfd22c564ad179144e/b3492/ordercloud-products.jpg 450w,https://erwinsmit.com/static/3759a4bc175b29bfd22c564ad179144e/2a9fa/ordercloud-products.jpg 900w,https://erwinsmit.com/static/3759a4bc175b29bfd22c564ad179144e/987c3/ordercloud-products.jpg 1350w,https://erwinsmit.com/static/3759a4bc175b29bfd22c564ad179144e/e2107/ordercloud-products.jpg 1800w,https://erwinsmit.com/static/3759a4bc175b29bfd22c564ad179144e/76f1c/ordercloud-products.jpg 2601w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
   &lt;/a&gt;&lt;/p&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/ordercloud-sitecore-jss-nextjs/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Add external datasource to Sitecore JSS]]></title><link>https://erwinsmit.nl/add-external-datasource-to-sitecore-jss/</link><guid isPermaLink="false">https://erwinsmit.nl/add-external-datasource-to-sitecore-jss/</guid><pubDate>Tue, 23 Nov 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2 id=&quot;sitecore-jss-graphql-out-of-the-box&quot;&gt;&lt;a href=&quot;#sitecore-jss-graphql-out-of-the-box&quot; aria-label=&quot;sitecore jss graphql out of the box permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Sitecore JSS GraphQL out of the box&lt;/h2&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/ordercloud-sitecore-jss-nextjs/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Add external datasource to Sitecore JSS]]></title><link>https://erwinsmit.com/add-external-datasource-to-sitecore-jss/</link><guid isPermaLink="false">https://erwinsmit.com/add-external-datasource-to-sitecore-jss/</guid><pubDate>Tue, 23 Nov 2021 00:00:00 GMT</pubDate><content:encoded>&lt;h2 id=&quot;sitecore-jss-graphql-out-of-the-box&quot;&gt;&lt;a href=&quot;#sitecore-jss-graphql-out-of-the-box&quot; aria-label=&quot;sitecore jss graphql out of the box permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Sitecore JSS GraphQL out of the box&lt;/h2&gt;
 &lt;p&gt;The Sitecore JSS Next.js SDK has great built-in &lt;a href=&quot;https://doc.sitecore.com/en/developers/hd/190/sitecore-headless-development/use-graphql-to-fetch-component-level-data-in-jss-next-js-apps.html&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;tooling&lt;/a&gt; for querying the Sitecore GraphQL endpoint.
 In this blog post, I will explain how to use the same tooling but for external data sources. &lt;/p&gt;
 &lt;h2 id=&quot;consume-external-graphql-api&quot;&gt;&lt;a href=&quot;#consume-external-graphql-api&quot; aria-label=&quot;consume external graphql api permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Consume external Graphql API&lt;/h2&gt;
@@ -587,7 +587,7 @@ Now when you run &lt;strong&gt;npm run update:graphql&lt;/strong&gt; you get a n
 &lt;p&gt;With the type added to the &lt;strong&gt;useComponentProps&lt;/strong&gt; function we get IntelliSense based on the query we created, how cool is that! &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/d02c01fff0914e2ea6adb87fffc18f25/9ae17/vscode.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/d02c01fff0914e2ea6adb87fffc18f25/9ae17/vscode.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -605,16 +605,16 @@ Now when you run &lt;strong&gt;npm run update:graphql&lt;/strong&gt; you get a n
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Intellisense&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/d02c01fff0914e2ea6adb87fffc18f25/2a9fa/vscode.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/d02c01fff0914e2ea6adb87fffc18f25/f0518/vscode.jpg 225w,https://erwinsmit.nl/static/d02c01fff0914e2ea6adb87fffc18f25/b3492/vscode.jpg 450w,https://erwinsmit.nl/static/d02c01fff0914e2ea6adb87fffc18f25/2a9fa/vscode.jpg 900w,https://erwinsmit.nl/static/d02c01fff0914e2ea6adb87fffc18f25/987c3/vscode.jpg 1350w,https://erwinsmit.nl/static/d02c01fff0914e2ea6adb87fffc18f25/e2107/vscode.jpg 1800w,https://erwinsmit.nl/static/d02c01fff0914e2ea6adb87fffc18f25/9ae17/vscode.jpg 2425w&quot;
+        src=&quot;https://erwinsmit.com/static/d02c01fff0914e2ea6adb87fffc18f25/2a9fa/vscode.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/d02c01fff0914e2ea6adb87fffc18f25/f0518/vscode.jpg 225w,https://erwinsmit.com/static/d02c01fff0914e2ea6adb87fffc18f25/b3492/vscode.jpg 450w,https://erwinsmit.com/static/d02c01fff0914e2ea6adb87fffc18f25/2a9fa/vscode.jpg 900w,https://erwinsmit.com/static/d02c01fff0914e2ea6adb87fffc18f25/987c3/vscode.jpg 1350w,https://erwinsmit.com/static/d02c01fff0914e2ea6adb87fffc18f25/e2107/vscode.jpg 1800w,https://erwinsmit.com/static/d02c01fff0914e2ea6adb87fffc18f25/9ae17/vscode.jpg 2425w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
   &lt;/a&gt;&lt;/p&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/add-external-datasource-to-sitecore-jss/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Sitecore JSS on Azure Functions]]></title><link>https://erwinsmit.nl/sitecore-jss-on-azure-functions/</link><guid isPermaLink="false">https://erwinsmit.nl/sitecore-jss-on-azure-functions/</guid><pubDate>Wed, 27 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;As described in a previous post, we managed to host Next.js using a custom server in &lt;a href=&quot;https://erwinsmit.nl/nextjs-on-azure-functions/&quot;&gt;Azure Functions&lt;/a&gt;. Now let’s see if this also works for Sitecore JSS. &lt;/p&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/add-external-datasource-to-sitecore-jss/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Sitecore JSS on Azure Functions]]></title><link>https://erwinsmit.com/sitecore-jss-on-azure-functions/</link><guid isPermaLink="false">https://erwinsmit.com/sitecore-jss-on-azure-functions/</guid><pubDate>Wed, 27 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;As described in a previous post, we managed to host Next.js using a custom server in &lt;a href=&quot;https://erwinsmit.com/nextjs-on-azure-functions/&quot;&gt;Azure Functions&lt;/a&gt;. Now let’s see if this also works for Sitecore JSS. &lt;/p&gt;
 &lt;h2 id=&quot;frontend-only&quot;&gt;&lt;a href=&quot;#frontend-only&quot; aria-label=&quot;frontend only permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Frontend only&lt;/h2&gt;
-&lt;p&gt;For just the public facing part it was no problem, the exact same code as used in the custom server &lt;a href=&quot;https://erwinsmit.nl/nextjs-on-azure-functions/&quot;&gt;previously&lt;/a&gt; worked fine.
+&lt;p&gt;For just the public facing part it was no problem, the exact same code as used in the custom server &lt;a href=&quot;https://erwinsmit.com/nextjs-on-azure-functions/&quot;&gt;previously&lt;/a&gt; worked fine.
 However to get the experience editor working we faced some challenges.&lt;/p&gt;
 &lt;h2 id=&quot;experience-editor&quot;&gt;&lt;a href=&quot;#experience-editor&quot; aria-label=&quot;experience editor permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Experience editor&lt;/h2&gt;
 &lt;p&gt;To get the Experience editor to work we have to do some more work. Mainly because the Next.js &lt;a href=&quot;https://github.com/Sitecore/jss/tree/dev/samples/nextjs/src/pages/api/editing&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;API routes&lt;/a&gt; are not supported when using a &lt;a href=&quot;https://nextjs.org/docs/advanced-features/custom-server&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;custom server&lt;/a&gt;.&lt;/p&gt;
@@ -700,9 +700,9 @@ etc etc&lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;&lt;/code&gt
     &lt;span class=&quot;token attr-name&quot;&gt;serverSideRenderingEngineApplicationUrl&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;https://${yourfunctionapp}.azurewebsites.net/&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;/&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;That’s it, those were the problems we faced. Hopefully this could be helpful for anyone else facing similar issues. &lt;/p&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/sitecore-jss-on-azure-functions/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Deploy Azure Functions with GitHub Actions using AzCopy]]></title><link>https://erwinsmit.nl/deploy-azure-functions-github-actions/</link><guid isPermaLink="false">https://erwinsmit.nl/deploy-azure-functions-github-actions/</guid><pubDate>Fri, 15 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;When deploying Azure Functions the most straightforward approach is to use the &lt;strong&gt;actions/checkout@v2&lt;/strong&gt; &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-github-actions&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;recommended by Azure&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;However, there are some restrictions with this approach. Using this approach. The Azure Functions will only work using the &lt;strong&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/azure-functions/run-functions-from-deployment-package&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Run from package option&lt;/a&gt;&lt;/strong&gt;. There are two reasons why this wasn’t great for a &lt;a href=&quot;https://erwinsmit.nl/nextjs-on-azure-functions&quot;&gt;Next.js custom server&lt;/a&gt;.&lt;/p&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/sitecore-jss-on-azure-functions/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Deploy Azure Functions with GitHub Actions using AzCopy]]></title><link>https://erwinsmit.com/deploy-azure-functions-github-actions/</link><guid isPermaLink="false">https://erwinsmit.com/deploy-azure-functions-github-actions/</guid><pubDate>Fri, 15 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;When deploying Azure Functions the most straightforward approach is to use the &lt;strong&gt;actions/checkout@v2&lt;/strong&gt; &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-github-actions&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;recommended by Azure&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;However, there are some restrictions with this approach. Using this approach. The Azure Functions will only work using the &lt;strong&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/azure-functions/run-functions-from-deployment-package&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Run from package option&lt;/a&gt;&lt;/strong&gt;. There are two reasons why this wasn’t great for a &lt;a href=&quot;https://erwinsmit.com/nextjs-on-azure-functions&quot;&gt;Next.js custom server&lt;/a&gt;.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;Next.js requires to have write access for its &lt;a href=&quot;https://nextjs.org/docs/basic-features/data-fetching#incremental-static-regeneration&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Incremental Static Generation&lt;/a&gt;. With the &lt;strong&gt;Run from package option&lt;/strong&gt; you can’t use this feature.&lt;/p&gt;
@@ -723,7 +723,7 @@ etc etc&lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;&lt;/code&gt
 &lt;p&gt;&lt;strong&gt;Create the Function App&lt;/strong&gt;
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/dbf604721ca528d625b5b3fd6189af7c/050a5/create-function-app.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/dbf604721ca528d625b5b3fd6189af7c/050a5/create-function-app.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -741,8 +741,8 @@ etc etc&lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;&lt;/code&gt
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Function setup&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/dbf604721ca528d625b5b3fd6189af7c/050a5/create-function-app.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/dbf604721ca528d625b5b3fd6189af7c/f0518/create-function-app.jpg 225w,https://erwinsmit.nl/static/dbf604721ca528d625b5b3fd6189af7c/b3492/create-function-app.jpg 450w,https://erwinsmit.nl/static/dbf604721ca528d625b5b3fd6189af7c/050a5/create-function-app.jpg 809w&quot;
+        src=&quot;https://erwinsmit.com/static/dbf604721ca528d625b5b3fd6189af7c/050a5/create-function-app.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/dbf604721ca528d625b5b3fd6189af7c/f0518/create-function-app.jpg 225w,https://erwinsmit.com/static/dbf604721ca528d625b5b3fd6189af7c/b3492/create-function-app.jpg 450w,https://erwinsmit.com/static/dbf604721ca528d625b5b3fd6189af7c/050a5/create-function-app.jpg 809w&quot;
         sizes=&quot;(max-width: 809px) 100vw, 809px&quot;
       /&gt;
   &lt;/span&gt;
@@ -752,7 +752,7 @@ etc etc&lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;&lt;/code&gt
 &lt;p&gt;&lt;strong&gt;Select or create a new storage account&lt;/strong&gt;
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/fe16700e90f24b836db9680226192453/25f26/storage-account.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/fe16700e90f24b836db9680226192453/25f26/storage-account.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -770,8 +770,8 @@ etc etc&lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;&lt;/code&gt
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Create storage account&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/fe16700e90f24b836db9680226192453/25f26/storage-account.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/fe16700e90f24b836db9680226192453/f0518/storage-account.jpg 225w,https://erwinsmit.nl/static/fe16700e90f24b836db9680226192453/b3492/storage-account.jpg 450w,https://erwinsmit.nl/static/fe16700e90f24b836db9680226192453/25f26/storage-account.jpg 883w&quot;
+        src=&quot;https://erwinsmit.com/static/fe16700e90f24b836db9680226192453/25f26/storage-account.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/fe16700e90f24b836db9680226192453/f0518/storage-account.jpg 225w,https://erwinsmit.com/static/fe16700e90f24b836db9680226192453/b3492/storage-account.jpg 450w,https://erwinsmit.com/static/fe16700e90f24b836db9680226192453/25f26/storage-account.jpg 883w&quot;
         sizes=&quot;(max-width: 883px) 100vw, 883px&quot;
       /&gt;
   &lt;/span&gt;
@@ -781,7 +781,7 @@ etc etc&lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;&lt;/code&gt
 &lt;p&gt;&lt;strong&gt;See how the Function App is connected&lt;/strong&gt;
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/324b4378855828470ce93e2b6930e358/25f26/storage-account-connection.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/324b4378855828470ce93e2b6930e358/25f26/storage-account-connection.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -799,8 +799,8 @@ etc etc&lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;&lt;/code&gt
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Storage account connection&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/324b4378855828470ce93e2b6930e358/25f26/storage-account-connection.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/324b4378855828470ce93e2b6930e358/f0518/storage-account-connection.jpg 225w,https://erwinsmit.nl/static/324b4378855828470ce93e2b6930e358/b3492/storage-account-connection.jpg 450w,https://erwinsmit.nl/static/324b4378855828470ce93e2b6930e358/25f26/storage-account-connection.jpg 883w&quot;
+        src=&quot;https://erwinsmit.com/static/324b4378855828470ce93e2b6930e358/25f26/storage-account-connection.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/324b4378855828470ce93e2b6930e358/f0518/storage-account-connection.jpg 225w,https://erwinsmit.com/static/324b4378855828470ce93e2b6930e358/b3492/storage-account-connection.jpg 450w,https://erwinsmit.com/static/324b4378855828470ce93e2b6930e358/25f26/storage-account-connection.jpg 883w&quot;
         sizes=&quot;(max-width: 883px) 100vw, 883px&quot;
       /&gt;
   &lt;/span&gt;
@@ -861,7 +861,7 @@ See below an example on a yml I use for the deployment of an Azure Function. Pla
 &lt;p&gt;To authenticate the copying of the files, generate a SAS Token on the storage account.
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/b03c2cae1c93b81100793f938a835a12/c9643/sas-token.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/b03c2cae1c93b81100793f938a835a12/c9643/sas-token.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -879,8 +879,8 @@ See below an example on a yml I use for the deployment of an Azure Function. Pla
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Generate SAS token&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/b03c2cae1c93b81100793f938a835a12/2a9fa/sas-token.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/b03c2cae1c93b81100793f938a835a12/f0518/sas-token.jpg 225w,https://erwinsmit.nl/static/b03c2cae1c93b81100793f938a835a12/b3492/sas-token.jpg 450w,https://erwinsmit.nl/static/b03c2cae1c93b81100793f938a835a12/2a9fa/sas-token.jpg 900w,https://erwinsmit.nl/static/b03c2cae1c93b81100793f938a835a12/c9643/sas-token.jpg 980w&quot;
+        src=&quot;https://erwinsmit.com/static/b03c2cae1c93b81100793f938a835a12/2a9fa/sas-token.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/b03c2cae1c93b81100793f938a835a12/f0518/sas-token.jpg 225w,https://erwinsmit.com/static/b03c2cae1c93b81100793f938a835a12/b3492/sas-token.jpg 450w,https://erwinsmit.com/static/b03c2cae1c93b81100793f938a835a12/2a9fa/sas-token.jpg 900w,https://erwinsmit.com/static/b03c2cae1c93b81100793f938a835a12/c9643/sas-token.jpg 980w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -888,7 +888,7 @@ See below an example on a yml I use for the deployment of an Azure Function. Pla
 &lt;p&gt;Add the SAS Token to the GitHub secrets:
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/9f5efeb921c66776d7a9cbf7327984c3/b31e2/github-secret.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/9f5efeb921c66776d7a9cbf7327984c3/b31e2/github-secret.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -906,15 +906,15 @@ See below an example on a yml I use for the deployment of an Azure Function. Pla
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;GitHub secret&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/9f5efeb921c66776d7a9cbf7327984c3/b31e2/github-secret.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/9f5efeb921c66776d7a9cbf7327984c3/f0518/github-secret.jpg 225w,https://erwinsmit.nl/static/9f5efeb921c66776d7a9cbf7327984c3/b3492/github-secret.jpg 450w,https://erwinsmit.nl/static/9f5efeb921c66776d7a9cbf7327984c3/b31e2/github-secret.jpg 790w&quot;
+        src=&quot;https://erwinsmit.com/static/9f5efeb921c66776d7a9cbf7327984c3/b31e2/github-secret.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/9f5efeb921c66776d7a9cbf7327984c3/f0518/github-secret.jpg 225w,https://erwinsmit.com/static/9f5efeb921c66776d7a9cbf7327984c3/b3492/github-secret.jpg 450w,https://erwinsmit.com/static/9f5efeb921c66776d7a9cbf7327984c3/b31e2/github-secret.jpg 790w&quot;
         sizes=&quot;(max-width: 790px) 100vw, 790px&quot;
       /&gt;
   &lt;/span&gt;
   &lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;There you go, now you can run the GitHub action and your Azure Function will be deployed. Hopefully, this could be a useful alternative for deploying Azure Functions using GitHub Actions! &lt;/p&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/deploy-azure-functions-github-actions/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Next.js on Azure Functions]]></title><link>https://erwinsmit.nl/nextjs-on-azure-functions/</link><guid isPermaLink="false">https://erwinsmit.nl/nextjs-on-azure-functions/</guid><pubDate>Wed, 13 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Next.js is a great framework for creating react applications. I was always a fan of &lt;strong&gt;SSG (Static Site Generation)&lt;/strong&gt; using for example Gatsby (this blog is using Gatsby too).
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/deploy-azure-functions-github-actions/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Next.js on Azure Functions]]></title><link>https://erwinsmit.com/nextjs-on-azure-functions/</link><guid isPermaLink="false">https://erwinsmit.com/nextjs-on-azure-functions/</guid><pubDate>Wed, 13 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Next.js is a great framework for creating react applications. I was always a fan of &lt;strong&gt;SSG (Static Site Generation)&lt;/strong&gt; using for example Gatsby (this blog is using Gatsby too).
 Websites using &lt;strong&gt;SSG&lt;/strong&gt; have low hosting costs. No computing power is needed for rendering stuff to the end-user. With the great tooling available it still feels dynamic, you can still use a CMS, you just need to run a new build when some content has changed.&lt;/p&gt;
 &lt;p&gt;This is all great but when you make content changes all the time it is not that scalable. Sometimes you also still need SSR (Server Side Rendering). With Next.js you can have both at the same time! For me the key advantages of Next.js are:&lt;/p&gt;
 &lt;ul&gt;
@@ -1056,14 +1056,14 @@ module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span cla
 &lt;li&gt;Creating components in Sitecore JSS&lt;/li&gt;
 &lt;li&gt;Integrate Sitecore OrderCloud and other services in Sitecore JSS&lt;/li&gt;
 &lt;/ul&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/nextjs-on-azure-functions/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Speed up your Sitecore React implementation]]></title><link>https://erwinsmit.nl/speed-up-your-sitecore-react-implementation/</link><guid isPermaLink="false">https://erwinsmit.nl/speed-up-your-sitecore-react-implementation/</guid><pubDate>Thu, 11 Feb 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;On a lot of Sitecore sites that jumped on the React bandwagon a while ago I notice some performance issues. In this post I will explain how to fix this and make your Sitecore/React implementation almost as fast as a site built with &lt;a href=&quot;https://www.erwinsmit.com/make-your-sxa-site-perform/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Stencil components&lt;/a&gt;&lt;/p&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/nextjs-on-azure-functions/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Speed up your Sitecore React implementation]]></title><link>https://erwinsmit.com/speed-up-your-sitecore-react-implementation/</link><guid isPermaLink="false">https://erwinsmit.com/speed-up-your-sitecore-react-implementation/</guid><pubDate>Thu, 11 Feb 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;On a lot of Sitecore sites that jumped on the React bandwagon a while ago I notice some performance issues. In this post I will explain how to fix this and make your Sitecore/React implementation almost as fast as a site built with &lt;a href=&quot;https://www.erwinsmit.com/make-your-sxa-site-perform/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Stencil components&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The two main issues with these websites are &lt;strong&gt;Render blocking script tags&lt;/strong&gt; and &lt;strong&gt;unused javascript&lt;/strong&gt;. Let’s fix it!&lt;/p&gt;
 &lt;h2 id=&quot;render-blocking-script-tags&quot;&gt;&lt;a href=&quot;#render-blocking-script-tags&quot; aria-label=&quot;render blocking script tags permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Render blocking script tags&lt;/h2&gt;
 &lt;p&gt;I created a static &lt;a href=&quot;https://www.erwinsmit.com/performancepoc&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;html page&lt;/a&gt; that reflects how many Sitecore sites work, it has inline script tags that refer to React components. Although these components are already rendered server side they still need to be “Hydrated”. Hydration of a React component adds all the client side magic like event listeners, state changes, hooks etc. &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/8e863/hydration.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/39af2d2ed855611f4444383da874bc52/8e863/hydration.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1081,8 +1081,8 @@ module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span cla
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;hydration&quot;
         title=&quot;Hydrate React component&quot;
-        src=&quot;https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/2a9fa/hydration.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/f0518/hydration.jpg 225w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/b3492/hydration.jpg 450w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/2a9fa/hydration.jpg 900w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/987c3/hydration.jpg 1350w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/e2107/hydration.jpg 1800w,https://erwinsmit.nl/static/39af2d2ed855611f4444383da874bc52/8e863/hydration.jpg 1927w&quot;
+        src=&quot;https://erwinsmit.com/static/39af2d2ed855611f4444383da874bc52/2a9fa/hydration.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/39af2d2ed855611f4444383da874bc52/f0518/hydration.jpg 225w,https://erwinsmit.com/static/39af2d2ed855611f4444383da874bc52/b3492/hydration.jpg 450w,https://erwinsmit.com/static/39af2d2ed855611f4444383da874bc52/2a9fa/hydration.jpg 900w,https://erwinsmit.com/static/39af2d2ed855611f4444383da874bc52/987c3/hydration.jpg 1350w,https://erwinsmit.com/static/39af2d2ed855611f4444383da874bc52/e2107/hydration.jpg 1800w,https://erwinsmit.com/static/39af2d2ed855611f4444383da874bc52/8e863/hydration.jpg 1927w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1091,7 +1091,7 @@ module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span cla
 &lt;p&gt;The &lt;strong&gt;second issue&lt;/strong&gt; with this approach is the dependency on global modules within the script tags, “ClientX.default.Navigation” needs to be registered on the Window object otherwise runtime exceptions will occur. Therefore the JavaScript bundle responsible for registering these components is at the top of the page. As a result the browser first needs to load and execute this script before it can render the HTML. You can imagine tools like Google Lighthouse are not happy with this!&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/96ab2/lighthouse-not-happy.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/ae521b97aeabf182d48ab3a14e104cbc/96ab2/lighthouse-not-happy.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1109,8 +1109,8 @@ module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span cla
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;lighthouse not happy&quot;
         title=&quot;Lighthouse isn&apos;t happy!&quot;
-        src=&quot;https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/2a9fa/lighthouse-not-happy.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/f0518/lighthouse-not-happy.jpg 225w,https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/b3492/lighthouse-not-happy.jpg 450w,https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/2a9fa/lighthouse-not-happy.jpg 900w,https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/987c3/lighthouse-not-happy.jpg 1350w,https://erwinsmit.nl/static/ae521b97aeabf182d48ab3a14e104cbc/96ab2/lighthouse-not-happy.jpg 1711w&quot;
+        src=&quot;https://erwinsmit.com/static/ae521b97aeabf182d48ab3a14e104cbc/2a9fa/lighthouse-not-happy.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/ae521b97aeabf182d48ab3a14e104cbc/f0518/lighthouse-not-happy.jpg 225w,https://erwinsmit.com/static/ae521b97aeabf182d48ab3a14e104cbc/b3492/lighthouse-not-happy.jpg 450w,https://erwinsmit.com/static/ae521b97aeabf182d48ab3a14e104cbc/2a9fa/lighthouse-not-happy.jpg 900w,https://erwinsmit.com/static/ae521b97aeabf182d48ab3a14e104cbc/987c3/lighthouse-not-happy.jpg 1350w,https://erwinsmit.com/static/ae521b97aeabf182d48ab3a14e104cbc/96ab2/lighthouse-not-happy.jpg 1711w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1166,7 +1166,7 @@ matches&lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt;&lt;span class
 &lt;p&gt;As a result, the Google Lighthouse warning is almost gone!&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/be28a/lighthouse-no-render-blockers.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/94a26922e5810e82ee617c6766c65900/be28a/lighthouse-no-render-blockers.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1184,8 +1184,8 @@ matches&lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt;&lt;span class
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;lighthouse no render blockers&quot;
         title=&quot;Lighthouse almost happy&quot;
-        src=&quot;https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/2a9fa/lighthouse-no-render-blockers.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/f0518/lighthouse-no-render-blockers.jpg 225w,https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/b3492/lighthouse-no-render-blockers.jpg 450w,https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/2a9fa/lighthouse-no-render-blockers.jpg 900w,https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/987c3/lighthouse-no-render-blockers.jpg 1350w,https://erwinsmit.nl/static/94a26922e5810e82ee617c6766c65900/be28a/lighthouse-no-render-blockers.jpg 1647w&quot;
+        src=&quot;https://erwinsmit.com/static/94a26922e5810e82ee617c6766c65900/2a9fa/lighthouse-no-render-blockers.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/94a26922e5810e82ee617c6766c65900/f0518/lighthouse-no-render-blockers.jpg 225w,https://erwinsmit.com/static/94a26922e5810e82ee617c6766c65900/b3492/lighthouse-no-render-blockers.jpg 450w,https://erwinsmit.com/static/94a26922e5810e82ee617c6766c65900/2a9fa/lighthouse-no-render-blockers.jpg 900w,https://erwinsmit.com/static/94a26922e5810e82ee617c6766c65900/987c3/lighthouse-no-render-blockers.jpg 1350w,https://erwinsmit.com/static/94a26922e5810e82ee617c6766c65900/be28a/lighthouse-no-render-blockers.jpg 1647w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1196,7 +1196,7 @@ matches&lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt;&lt;span class
 Google Lighthouse is not happy with this.&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/7548f/lighthouse-unused-javascript.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/6f1ecfd63634c8268a4cea93299b490b/7548f/lighthouse-unused-javascript.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1214,8 +1214,8 @@ Google Lighthouse is not happy with this.&lt;/p&gt;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;lighthouse unused javascript&quot;
         title=&quot;Google Lighthouse unused JavaScript&quot;
-        src=&quot;https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/2a9fa/lighthouse-unused-javascript.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/f0518/lighthouse-unused-javascript.jpg 225w,https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/b3492/lighthouse-unused-javascript.jpg 450w,https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/2a9fa/lighthouse-unused-javascript.jpg 900w,https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/987c3/lighthouse-unused-javascript.jpg 1350w,https://erwinsmit.nl/static/6f1ecfd63634c8268a4cea93299b490b/7548f/lighthouse-unused-javascript.jpg 1649w&quot;
+        src=&quot;https://erwinsmit.com/static/6f1ecfd63634c8268a4cea93299b490b/2a9fa/lighthouse-unused-javascript.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/6f1ecfd63634c8268a4cea93299b490b/f0518/lighthouse-unused-javascript.jpg 225w,https://erwinsmit.com/static/6f1ecfd63634c8268a4cea93299b490b/b3492/lighthouse-unused-javascript.jpg 450w,https://erwinsmit.com/static/6f1ecfd63634c8268a4cea93299b490b/2a9fa/lighthouse-unused-javascript.jpg 900w,https://erwinsmit.com/static/6f1ecfd63634c8268a4cea93299b490b/987c3/lighthouse-unused-javascript.jpg 1350w,https://erwinsmit.com/static/6f1ecfd63634c8268a4cea93299b490b/7548f/lighthouse-unused-javascript.jpg 1649w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1307,7 +1307,7 @@ For fixing this we need to &lt;strong&gt;think outside of the React box&lt;/stro
 &lt;p&gt;Now, if all is well, you will see a whole bunch of JavaScript files loaded in your requests instead of the one big bundle.&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/d836a/codesplitting-requests.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/92e54bd0fc4a2e684bf9795797d029f5/d836a/codesplitting-requests.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1325,8 +1325,8 @@ For fixing this we need to &lt;strong&gt;think outside of the React box&lt;/stro
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;codesplitting requests&quot;
         title=&quot;Code splitting requests&quot;
-        src=&quot;https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/2a9fa/codesplitting-requests.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/f0518/codesplitting-requests.jpg 225w,https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/b3492/codesplitting-requests.jpg 450w,https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/2a9fa/codesplitting-requests.jpg 900w,https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/987c3/codesplitting-requests.jpg 1350w,https://erwinsmit.nl/static/92e54bd0fc4a2e684bf9795797d029f5/d836a/codesplitting-requests.jpg 1598w&quot;
+        src=&quot;https://erwinsmit.com/static/92e54bd0fc4a2e684bf9795797d029f5/2a9fa/codesplitting-requests.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/92e54bd0fc4a2e684bf9795797d029f5/f0518/codesplitting-requests.jpg 225w,https://erwinsmit.com/static/92e54bd0fc4a2e684bf9795797d029f5/b3492/codesplitting-requests.jpg 450w,https://erwinsmit.com/static/92e54bd0fc4a2e684bf9795797d029f5/2a9fa/codesplitting-requests.jpg 900w,https://erwinsmit.com/static/92e54bd0fc4a2e684bf9795797d029f5/987c3/codesplitting-requests.jpg 1350w,https://erwinsmit.com/static/92e54bd0fc4a2e684bf9795797d029f5/d836a/codesplitting-requests.jpg 1598w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1334,7 +1334,7 @@ For fixing this we need to &lt;strong&gt;think outside of the React box&lt;/stro
 &lt;p&gt;This is all great, and the amount of JavaScript loaded in total is already lower. But when running the &lt;a href=&quot;https://www.npmjs.com/package/webpack-bundle-analyzer&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;webpack-bundle-analyzer&lt;/a&gt; I noticed there is some duplicate code across the bundles.&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/34b29/duplicate-code.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/e91d48a6bb3ce82fe69908a553412216/34b29/duplicate-code.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1352,8 +1352,8 @@ For fixing this we need to &lt;strong&gt;think outside of the React box&lt;/stro
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;duplicate code&quot;
         title=&quot;Duplicate code&quot;
-        src=&quot;https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/2a9fa/duplicate-code.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/f0518/duplicate-code.jpg 225w,https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/b3492/duplicate-code.jpg 450w,https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/2a9fa/duplicate-code.jpg 900w,https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/987c3/duplicate-code.jpg 1350w,https://erwinsmit.nl/static/e91d48a6bb3ce82fe69908a553412216/34b29/duplicate-code.jpg 1657w&quot;
+        src=&quot;https://erwinsmit.com/static/e91d48a6bb3ce82fe69908a553412216/2a9fa/duplicate-code.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/e91d48a6bb3ce82fe69908a553412216/f0518/duplicate-code.jpg 225w,https://erwinsmit.com/static/e91d48a6bb3ce82fe69908a553412216/b3492/duplicate-code.jpg 450w,https://erwinsmit.com/static/e91d48a6bb3ce82fe69908a553412216/2a9fa/duplicate-code.jpg 900w,https://erwinsmit.com/static/e91d48a6bb3ce82fe69908a553412216/987c3/duplicate-code.jpg 1350w,https://erwinsmit.com/static/e91d48a6bb3ce82fe69908a553412216/34b29/duplicate-code.jpg 1657w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1458,8 +1458,8 @@ For fixing this we need to &lt;strong&gt;think outside of the React box&lt;/stro
         &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/speed-up-your-sitecore-react-implementation/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Get intellisense on your Stencil webcomponents in VS Code]]></title><link>https://erwinsmit.nl/webcomponents-intellisense/</link><guid isPermaLink="false">https://erwinsmit.nl/webcomponents-intellisense/</guid><pubDate>Thu, 21 Jan 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;As discussed in the previous blogpost we are happy with the combination of &lt;a href=&quot;https://www.erwinsmit.com/make-your-sxa-site-perform/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Sitecore SXA &amp;#x26; Stencil webcomponents&lt;/a&gt;. However there was a small detail that was annoying me… &lt;/p&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/speed-up-your-sitecore-react-implementation/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Get intellisense on your Stencil webcomponents in VS Code]]></title><link>https://erwinsmit.com/webcomponents-intellisense/</link><guid isPermaLink="false">https://erwinsmit.com/webcomponents-intellisense/</guid><pubDate>Thu, 21 Jan 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;As discussed in the previous blogpost we are happy with the combination of &lt;a href=&quot;https://www.erwinsmit.com/make-your-sxa-site-perform/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Sitecore SXA &amp;#x26; Stencil webcomponents&lt;/a&gt;. However there was a small detail that was annoying me… &lt;/p&gt;
 &lt;p&gt;StencilJS has great &lt;a href=&quot;https://stenciljs.com/docs/typed-components#typed-components&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Typescript support&lt;/a&gt; so when you use Stencil webcomponents in .TSX files you get great intellisense in VS Code.
 With minimal effort you can also generate a custom-elements.json for intellisense on your Stencil Components in static .html files.&lt;/p&gt;
 &lt;p&gt;To do so, add this object to your stencil.config.ts:&lt;/p&gt;
@@ -1472,17 +1472,17 @@ With minimal effort you can also generate a custom-elements.json for intellisens
     &lt;span class=&quot;token property&quot;&gt;&quot;html.customData&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;./{replace-with-your-dist-path}/custom-elements.json&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now you get intellisense on static html files!
-&lt;img src=&quot;https://erwinsmit.nl/intellisense-6361daeb9c5b8ba675b02209afbc3df1.gif&quot; alt=&quot;html intellisense&quot;&gt;&lt;/p&gt;
+&lt;img src=&quot;https://erwinsmit.com/intellisense-6361daeb9c5b8ba675b02209afbc3df1.gif&quot; alt=&quot;html intellisense&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;now-what-about-scriban&quot;&gt;&lt;a href=&quot;#now-what-about-scriban&quot; aria-label=&quot;now what about scriban permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Now what about Scriban?&lt;/h2&gt;
 &lt;p&gt;By default VS Code does not support Scriban so you will need to install an extension. You can either install a standard &lt;a href=&quot;https://marketplace.visualstudio.com/items?itemName=xoofx.scriban&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Scriban extension&lt;/a&gt; or the great &lt;a href=&quot;https://marketplace.visualstudio.com/items?itemName=adamnaj.sitecore-scriban&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Sitecore Scriban Extension&lt;/a&gt; that also gives you autocompletion on Sitecore specific methods and objects. At the writing of this blog there is no support yet for intellisense on Stencil Components, but when &lt;a href=&quot;https://github.com/AdamNaj/SitecoreScriban-vscode/pull/2&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;version 0.2.1&lt;/a&gt; is released you will get the same great intellisense on your Scriban files as well! It’s small improvements on developer experience like this that can make a great difference in the daily lives of Sitecore developers. &lt;/p&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/webcomponents-intellisense/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[How to make your Sitecore SXA site perform]]></title><link>https://erwinsmit.nl/make-your-sxa-site-perform/</link><guid isPermaLink="false">https://erwinsmit.nl/make-your-sxa-site-perform/</guid><pubDate>Thu, 12 Nov 2020 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;From my experience websites that are built using Sitecore SXA with the standard themes enabled don’t perform very well. In this post I dive into the root cause of this problem and how to fix this.&lt;/p&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/webcomponents-intellisense/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[How to make your Sitecore SXA site perform]]></title><link>https://erwinsmit.com/make-your-sxa-site-perform/</link><guid isPermaLink="false">https://erwinsmit.com/make-your-sxa-site-perform/</guid><pubDate>Thu, 12 Nov 2020 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;From my experience websites that are built using Sitecore SXA with the standard themes enabled don’t perform very well. In this post I dive into the root cause of this problem and how to fix this.&lt;/p&gt;
 &lt;h2 id=&quot;the-problems-with-sitecore-sxa-and-frontend-code&quot;&gt;&lt;a href=&quot;#the-problems-with-sitecore-sxa-and-frontend-code&quot; aria-label=&quot;the problems with sitecore sxa and frontend code permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;The problems with Sitecore SXA and frontend code&lt;/h2&gt;
 &lt;p&gt;To put it bluntly, the performance from Sitecore out of the box is not great. We can measure this with &lt;a href=&quot;https://developers.google.com/web/tools/lighthouse&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Google Lighthouse&lt;/a&gt;, a tool standard available in the Chrome browser that rates your website on performance (among other things).&lt;/p&gt;
 &lt;p&gt;Let’s have a look at the Lighthouse report with the standard theme switched on. &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/9fa33/lightspeed-standard.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/bc083b82f76c354beba96b63c889e08b/9fa33/lightspeed-standard.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1500,8 +1500,8 @@ With minimal effort you can also generate a custom-elements.json for intellisens
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;Lightspeed report SXA wireframe&quot;
-        src=&quot;https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/2a9fa/lightspeed-standard.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/f0518/lightspeed-standard.jpg 225w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/b3492/lightspeed-standard.jpg 450w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/2a9fa/lightspeed-standard.jpg 900w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/987c3/lightspeed-standard.jpg 1350w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/e2107/lightspeed-standard.jpg 1800w,https://erwinsmit.nl/static/bc083b82f76c354beba96b63c889e08b/9fa33/lightspeed-standard.jpg 1936w&quot;
+        src=&quot;https://erwinsmit.com/static/bc083b82f76c354beba96b63c889e08b/2a9fa/lightspeed-standard.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/bc083b82f76c354beba96b63c889e08b/f0518/lightspeed-standard.jpg 225w,https://erwinsmit.com/static/bc083b82f76c354beba96b63c889e08b/b3492/lightspeed-standard.jpg 450w,https://erwinsmit.com/static/bc083b82f76c354beba96b63c889e08b/2a9fa/lightspeed-standard.jpg 900w,https://erwinsmit.com/static/bc083b82f76c354beba96b63c889e08b/987c3/lightspeed-standard.jpg 1350w,https://erwinsmit.com/static/bc083b82f76c354beba96b63c889e08b/e2107/lightspeed-standard.jpg 1800w,https://erwinsmit.com/static/bc083b82f76c354beba96b63c889e08b/9fa33/lightspeed-standard.jpg 1936w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1510,7 +1510,7 @@ With minimal effort you can also generate a custom-elements.json for intellisens
 &lt;p&gt;Let’s have a look at the &lt;strong&gt;JavaScript sources&lt;/strong&gt;
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/d94b2/javascript-sources-standard.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/f0e2738f449819f53ec24fbed248dfa6/d94b2/javascript-sources-standard.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1528,8 +1528,8 @@ With minimal effort you can also generate a custom-elements.json for intellisens
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;Javascript sources SXA wireframe&quot;
-        src=&quot;https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/2a9fa/javascript-sources-standard.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/f0518/javascript-sources-standard.jpg 225w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/b3492/javascript-sources-standard.jpg 450w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/2a9fa/javascript-sources-standard.jpg 900w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/987c3/javascript-sources-standard.jpg 1350w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/e2107/javascript-sources-standard.jpg 1800w,https://erwinsmit.nl/static/f0e2738f449819f53ec24fbed248dfa6/d94b2/javascript-sources-standard.jpg 2379w&quot;
+        src=&quot;https://erwinsmit.com/static/f0e2738f449819f53ec24fbed248dfa6/2a9fa/javascript-sources-standard.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/f0e2738f449819f53ec24fbed248dfa6/f0518/javascript-sources-standard.jpg 225w,https://erwinsmit.com/static/f0e2738f449819f53ec24fbed248dfa6/b3492/javascript-sources-standard.jpg 450w,https://erwinsmit.com/static/f0e2738f449819f53ec24fbed248dfa6/2a9fa/javascript-sources-standard.jpg 900w,https://erwinsmit.com/static/f0e2738f449819f53ec24fbed248dfa6/987c3/javascript-sources-standard.jpg 1350w,https://erwinsmit.com/static/f0e2738f449819f53ec24fbed248dfa6/e2107/javascript-sources-standard.jpg 1800w,https://erwinsmit.com/static/f0e2738f449819f53ec24fbed248dfa6/d94b2/javascript-sources-standard.jpg 2379w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1538,7 +1538,7 @@ That is 1.2MB of JavaScript! And this will be loaded on every page. So even if y
 &lt;p&gt;And the &lt;strong&gt;CSS sources&lt;/strong&gt;
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/2b6a7/css-sources-standard.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/fd5566f42e53b2456795f0b6e71451c1/2b6a7/css-sources-standard.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1556,8 +1556,8 @@ That is 1.2MB of JavaScript! And this will be loaded on every page. So even if y
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;Css sources SXA wireframe&quot;
-        src=&quot;https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/2a9fa/css-sources-standard.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/f0518/css-sources-standard.jpg 225w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/b3492/css-sources-standard.jpg 450w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/2a9fa/css-sources-standard.jpg 900w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/987c3/css-sources-standard.jpg 1350w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/e2107/css-sources-standard.jpg 1800w,https://erwinsmit.nl/static/fd5566f42e53b2456795f0b6e71451c1/2b6a7/css-sources-standard.jpg 2374w&quot;
+        src=&quot;https://erwinsmit.com/static/fd5566f42e53b2456795f0b6e71451c1/2a9fa/css-sources-standard.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/fd5566f42e53b2456795f0b6e71451c1/f0518/css-sources-standard.jpg 225w,https://erwinsmit.com/static/fd5566f42e53b2456795f0b6e71451c1/b3492/css-sources-standard.jpg 450w,https://erwinsmit.com/static/fd5566f42e53b2456795f0b6e71451c1/2a9fa/css-sources-standard.jpg 900w,https://erwinsmit.com/static/fd5566f42e53b2456795f0b6e71451c1/987c3/css-sources-standard.jpg 1350w,https://erwinsmit.com/static/fd5566f42e53b2456795f0b6e71451c1/e2107/css-sources-standard.jpg 1800w,https://erwinsmit.com/static/fd5566f42e53b2456795f0b6e71451c1/2b6a7/css-sources-standard.jpg 2374w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1685,7 +1685,7 @@ Also here the amount of loaded CSS is huge, because SXA is including a lot of 3r
 I know that it feels strange to do this. But if you want to unclutter, you have to ask yourself: does it &lt;a href=&quot;https://knowyourmeme.com/memes/does-it-spark-joy&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;spark joy&lt;/a&gt;? If it doesn’t, thank Sitecore for all the unused code and trash it! &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/5d4d4/does-it-spark-joy.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/a02f349f85fa660051f2edd0425ee36b/5d4d4/does-it-spark-joy.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1703,8 +1703,8 @@ I know that it feels strange to do this. But if you want to unclutter, you have 
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;Does is spark joy?&quot;
-        src=&quot;https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/2a9fa/does-it-spark-joy.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/f0518/does-it-spark-joy.jpg 225w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/b3492/does-it-spark-joy.jpg 450w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/2a9fa/does-it-spark-joy.jpg 900w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/987c3/does-it-spark-joy.jpg 1350w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/e2107/does-it-spark-joy.jpg 1800w,https://erwinsmit.nl/static/a02f349f85fa660051f2edd0425ee36b/5d4d4/does-it-spark-joy.jpg 2536w&quot;
+        src=&quot;https://erwinsmit.com/static/a02f349f85fa660051f2edd0425ee36b/2a9fa/does-it-spark-joy.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/a02f349f85fa660051f2edd0425ee36b/f0518/does-it-spark-joy.jpg 225w,https://erwinsmit.com/static/a02f349f85fa660051f2edd0425ee36b/b3492/does-it-spark-joy.jpg 450w,https://erwinsmit.com/static/a02f349f85fa660051f2edd0425ee36b/2a9fa/does-it-spark-joy.jpg 900w,https://erwinsmit.com/static/a02f349f85fa660051f2edd0425ee36b/987c3/does-it-spark-joy.jpg 1350w,https://erwinsmit.com/static/a02f349f85fa660051f2edd0425ee36b/e2107/does-it-spark-joy.jpg 1800w,https://erwinsmit.com/static/a02f349f85fa660051f2edd0425ee36b/5d4d4/does-it-spark-joy.jpg 2536w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1748,7 +1748,7 @@ Web Components have been around for a while, but now Microsoft is quickly killin
 &lt;p&gt;This is the lighthouse report on the latest &lt;a href=&quot;https://jaaah.nl/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;SXA Website&lt;/a&gt; we built. &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/cdd7f/final-result.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/414dd86121aa03b6a2fd0c34be812d8c/cdd7f/final-result.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1766,20 +1766,20 @@ Web Components have been around for a while, but now Microsoft is quickly killin
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;Fast!&quot;
-        src=&quot;https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/2a9fa/final-result.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/f0518/final-result.jpg 225w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/b3492/final-result.jpg 450w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/2a9fa/final-result.jpg 900w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/987c3/final-result.jpg 1350w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/e2107/final-result.jpg 1800w,https://erwinsmit.nl/static/414dd86121aa03b6a2fd0c34be812d8c/cdd7f/final-result.jpg 1939w&quot;
+        src=&quot;https://erwinsmit.com/static/414dd86121aa03b6a2fd0c34be812d8c/2a9fa/final-result.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/414dd86121aa03b6a2fd0c34be812d8c/f0518/final-result.jpg 225w,https://erwinsmit.com/static/414dd86121aa03b6a2fd0c34be812d8c/b3492/final-result.jpg 450w,https://erwinsmit.com/static/414dd86121aa03b6a2fd0c34be812d8c/2a9fa/final-result.jpg 900w,https://erwinsmit.com/static/414dd86121aa03b6a2fd0c34be812d8c/987c3/final-result.jpg 1350w,https://erwinsmit.com/static/414dd86121aa03b6a2fd0c34be812d8c/e2107/final-result.jpg 1800w,https://erwinsmit.com/static/414dd86121aa03b6a2fd0c34be812d8c/cdd7f/final-result.jpg 1939w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
   &lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;With a combined CSS/JS footprint of less then 50kb it’s almost &lt;strong&gt;25 times&lt;/strong&gt; more lightweight than the standard SXA theme!&lt;/p&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/make-your-sxa-site-perform/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Exploring the apollo graphql stack]]></title><link>https://erwinsmit.nl/getting-started-with-apollo-federation/</link><guid isPermaLink="false">https://erwinsmit.nl/getting-started-with-apollo-federation/</guid><pubDate>Sat, 15 Feb 2020 00:00:00 GMT</pubDate><content:encoded>&lt;h2 id=&quot;why&quot;&gt;&lt;a href=&quot;#why&quot; aria-label=&quot;why permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Why?&lt;/h2&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/make-your-sxa-site-perform/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Exploring the apollo graphql stack]]></title><link>https://erwinsmit.com/getting-started-with-apollo-federation/</link><guid isPermaLink="false">https://erwinsmit.com/getting-started-with-apollo-federation/</guid><pubDate>Sat, 15 Feb 2020 00:00:00 GMT</pubDate><content:encoded>&lt;h2 id=&quot;why&quot;&gt;&lt;a href=&quot;#why&quot; aria-label=&quot;why permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Why?&lt;/h2&gt;
 &lt;p&gt;At a project I’m working on we have to build a single page application with authentication that needs to query data from multiple data services. &lt;/p&gt;
 &lt;p&gt;There are also a lot of examples where we need to ‘stitch’ these services together. Let’s have a look at the domain model and the corresponding services:&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/60ef4/spaData.jpg&quot;
+    href=&quot;https://erwinsmit.com/static/02acf174e7d3516107da7a76b05b4e10/60ef4/spaData.jpg&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1797,8 +1797,8 @@ Web Components have been around for a while, but now Microsoft is quickly killin
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;data setup&quot;
-        src=&quot;https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/60ef4/spaData.jpg&quot;
-        srcset=&quot;https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/f0518/spaData.jpg 225w,https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/b3492/spaData.jpg 450w,https://erwinsmit.nl/static/02acf174e7d3516107da7a76b05b4e10/60ef4/spaData.jpg 522w&quot;
+        src=&quot;https://erwinsmit.com/static/02acf174e7d3516107da7a76b05b4e10/60ef4/spaData.jpg&quot;
+        srcset=&quot;https://erwinsmit.com/static/02acf174e7d3516107da7a76b05b4e10/f0518/spaData.jpg 225w,https://erwinsmit.com/static/02acf174e7d3516107da7a76b05b4e10/b3492/spaData.jpg 450w,https://erwinsmit.com/static/02acf174e7d3516107da7a76b05b4e10/60ef4/spaData.jpg 522w&quot;
         sizes=&quot;(max-width: 522px) 100vw, 522px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1830,7 +1830,7 @@ But you get the point, if we fetch service requests for example. We also have to
 &lt;p&gt;The watchlist items are saved in firebase in this structure:&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/abe7f/firebase.png&quot;
+    href=&quot;https://erwinsmit.com/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/abe7f/firebase.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -1848,8 +1848,8 @@ But you get the point, if we fetch service requests for example. We also have to
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;data setup&quot;
-        src=&quot;https://erwinsmit.nl/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/abe7f/firebase.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/e9d1c/firebase.png 225w,https://erwinsmit.nl/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/abe7f/firebase.png 356w&quot;
+        src=&quot;https://erwinsmit.com/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/abe7f/firebase.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/e9d1c/firebase.png 225w,https://erwinsmit.com/static/d58f3eccffdbcec8e7faf6b15bfd4ba1/abe7f/firebase.png 356w&quot;
         sizes=&quot;(max-width: 356px) 100vw, 356px&quot;
       /&gt;
   &lt;/span&gt;
@@ -1996,7 +1996,7 @@ In the Film type there is a reference to WatchListItem, because this will be res
 &lt;p&gt;Now with this setup we can execute queries that will consume both services (see below for some examples). When using the graphql explorer we add the auth token to the http header to get the results we want.
 &lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/a3d24/getFilms.png&quot;
+    href=&quot;https://erwinsmit.com/static/dfb38a435aebdc1a9588d1c6de4d3422/a3d24/getFilms.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -2014,15 +2014,15 @@ In the Film type there is a reference to WatchListItem, because this will be res
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;get films&quot;
-        src=&quot;https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/a3d24/getFilms.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/e9d1c/getFilms.png 225w,https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/80b02/getFilms.png 450w,https://erwinsmit.nl/static/dfb38a435aebdc1a9588d1c6de4d3422/a3d24/getFilms.png 736w&quot;
+        src=&quot;https://erwinsmit.com/static/dfb38a435aebdc1a9588d1c6de4d3422/a3d24/getFilms.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/dfb38a435aebdc1a9588d1c6de4d3422/e9d1c/getFilms.png 225w,https://erwinsmit.com/static/dfb38a435aebdc1a9588d1c6de4d3422/80b02/getFilms.png 450w,https://erwinsmit.com/static/dfb38a435aebdc1a9588d1c6de4d3422/a3d24/getFilms.png 736w&quot;
         sizes=&quot;(max-width: 736px) 100vw, 736px&quot;
       /&gt;
   &lt;/span&gt;
   &lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/b2c79/getWatchlistitems.png&quot;
+    href=&quot;https://erwinsmit.com/static/fd4c44457a1b9d767879f286688ef1d1/b2c79/getWatchlistitems.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -2040,8 +2040,8 @@ In the Film type there is a reference to WatchListItem, because this will be res
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;alt text&quot;
         title=&quot;get watchlistitems&quot;
-        src=&quot;https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/b2c79/getWatchlistitems.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/e9d1c/getWatchlistitems.png 225w,https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/80b02/getWatchlistitems.png 450w,https://erwinsmit.nl/static/fd4c44457a1b9d767879f286688ef1d1/b2c79/getWatchlistitems.png 701w&quot;
+        src=&quot;https://erwinsmit.com/static/fd4c44457a1b9d767879f286688ef1d1/b2c79/getWatchlistitems.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/fd4c44457a1b9d767879f286688ef1d1/e9d1c/getWatchlistitems.png 225w,https://erwinsmit.com/static/fd4c44457a1b9d767879f286688ef1d1/80b02/getWatchlistitems.png 450w,https://erwinsmit.com/static/fd4c44457a1b9d767879f286688ef1d1/b2c79/getWatchlistitems.png 701w&quot;
         sizes=&quot;(max-width: 701px) 100vw, 701px&quot;
       /&gt;
   &lt;/span&gt;
@@ -2049,8 +2049,8 @@ In the Film type there is a reference to WatchListItem, because this will be res
 &lt;p&gt;In future blogposts I would like to dive deeper into the apollo-client and optimising the dataservices. Explore the caching options both on the client and on the server.&lt;/p&gt;
 &lt;p&gt;For now the rest of the source code is available on:
 &lt;a href=&quot;https://github.com/erwinsmit/watchlist&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;https://github.com/erwinsmit/watchlist&lt;/a&gt;&lt;/p&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/getting-started-with-apollo-federation/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Creating local npm package for sharing between multiple react applications]]></title><link>https://erwinsmit.nl/local-npm package-to-share-between-react-apps/</link><guid isPermaLink="false">https://erwinsmit.nl/local-npm package-to-share-between-react-apps/</guid><pubDate>Mon, 16 Sep 2019 00:00:00 GMT</pubDate><content:encoded>&lt;h2 id=&quot;the-usecase&quot;&gt;&lt;a href=&quot;#the-usecase&quot; aria-label=&quot;the usecase permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;The usecase&lt;/h2&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/getting-started-with-apollo-federation/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Creating local npm package for sharing between multiple react applications]]></title><link>https://erwinsmit.com/local-npm package-to-share-between-react-apps/</link><guid isPermaLink="false">https://erwinsmit.com/local-npm package-to-share-between-react-apps/</guid><pubDate>Mon, 16 Sep 2019 00:00:00 GMT</pubDate><content:encoded>&lt;h2 id=&quot;the-usecase&quot;&gt;&lt;a href=&quot;#the-usecase&quot; aria-label=&quot;the usecase permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;The usecase&lt;/h2&gt;
 &lt;p&gt;At the project I’m working on currently we have multiple react apps running alongside of each other. These apps are using “Create react app”, we like using CRA because of all the best practices it enforces on the user and the fact that it’s well maintained by people that know their way around a webpack configuration. &lt;/p&gt;
 &lt;p&gt;One of the best practices it enforces is that you are not allowed to include files from outside of the src directory.
 So if you want to share code between multiple react applications the only (non-hacky) way is to create npm packages that contain transpiled code. The code has to be transpiled because CRA will only do the compile step on npm packages. &lt;/p&gt;
@@ -2151,13 +2151,13 @@ So if you want to share code between multiple react applications the only (non-h
 &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; internal&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ts
 &lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;./dep1.ts&apos;&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;./dep2.ts&apos;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/local-npm package-to-share-between-react-apps/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
-              </content:encoded></item><item><title><![CDATA[Azure devops create pipeline "Cannot read property 'childFolders' of undefined"]]></title><link>https://erwinsmit.nl/azure-devops-create-pipeline-error/</link><guid isPermaLink="false">https://erwinsmit.nl/azure-devops-create-pipeline-error/</guid><pubDate>Fri, 21 Jun 2019 00:00:00 GMT</pubDate><content:encoded>&lt;h2 id=&quot;problems-creating-a-new-release-pipeline-in-azure-devops&quot;&gt;&lt;a href=&quot;#problems-creating-a-new-release-pipeline-in-azure-devops&quot; aria-label=&quot;problems creating a new release pipeline in azure devops permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Problems creating a new release pipeline in Azure Devops&lt;/h2&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/local-npm package-to-share-between-react-apps/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Azure devops create pipeline "Cannot read property 'childFolders' of undefined"]]></title><link>https://erwinsmit.com/azure-devops-create-pipeline-error/</link><guid isPermaLink="false">https://erwinsmit.com/azure-devops-create-pipeline-error/</guid><pubDate>Fri, 21 Jun 2019 00:00:00 GMT</pubDate><content:encoded>&lt;h2 id=&quot;problems-creating-a-new-release-pipeline-in-azure-devops&quot;&gt;&lt;a href=&quot;#problems-creating-a-new-release-pipeline-in-azure-devops&quot; aria-label=&quot;problems creating a new release pipeline in azure devops permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Problems creating a new release pipeline in Azure Devops&lt;/h2&gt;
 &lt;p&gt;Currently I’m working on a project that uses a monorepo using LernaJS for building several microsites.
 Because of this setup we have quite a lot of release pipelines setup in Azure Devops, I’m not sure if it’s because of our setup but recently we couldn’t create new pipelines anymore because of a runtime javascript error. &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/59e8d/runtime-error.png&quot;
+    href=&quot;https://erwinsmit.com/static/0737848c8a0b38f67331d46f22016f7f/59e8d/runtime-error.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -2175,8 +2175,8 @@ Because of this setup we have quite a lot of release pipelines setup in Azure De
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Runtime error&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/05649/runtime-error.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/e9d1c/runtime-error.png 225w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/80b02/runtime-error.png 450w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/05649/runtime-error.png 900w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/572e0/runtime-error.png 1350w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/b501b/runtime-error.png 1800w,https://erwinsmit.nl/static/0737848c8a0b38f67331d46f22016f7f/59e8d/runtime-error.png 1958w&quot;
+        src=&quot;https://erwinsmit.com/static/0737848c8a0b38f67331d46f22016f7f/05649/runtime-error.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/0737848c8a0b38f67331d46f22016f7f/e9d1c/runtime-error.png 225w,https://erwinsmit.com/static/0737848c8a0b38f67331d46f22016f7f/80b02/runtime-error.png 450w,https://erwinsmit.com/static/0737848c8a0b38f67331d46f22016f7f/05649/runtime-error.png 900w,https://erwinsmit.com/static/0737848c8a0b38f67331d46f22016f7f/572e0/runtime-error.png 1350w,https://erwinsmit.com/static/0737848c8a0b38f67331d46f22016f7f/b501b/runtime-error.png 1800w,https://erwinsmit.com/static/0737848c8a0b38f67331d46f22016f7f/59e8d/runtime-error.png 1958w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -2200,7 +2200,7 @@ Make sure your fiddler autoresponder configuration looks like this:&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/3b25d/autoresponder.png&quot;
+    href=&quot;https://erwinsmit.com/static/15804e23a5139989ac206bdd98eefbe6/3b25d/autoresponder.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -2218,8 +2218,8 @@ Make sure your fiddler autoresponder configuration looks like this:&lt;/li&gt;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Fiddler autoresponder&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/05649/autoresponder.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/e9d1c/autoresponder.png 225w,https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/80b02/autoresponder.png 450w,https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/05649/autoresponder.png 900w,https://erwinsmit.nl/static/15804e23a5139989ac206bdd98eefbe6/3b25d/autoresponder.png 952w&quot;
+        src=&quot;https://erwinsmit.com/static/15804e23a5139989ac206bdd98eefbe6/05649/autoresponder.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/15804e23a5139989ac206bdd98eefbe6/e9d1c/autoresponder.png 225w,https://erwinsmit.com/static/15804e23a5139989ac206bdd98eefbe6/80b02/autoresponder.png 450w,https://erwinsmit.com/static/15804e23a5139989ac206bdd98eefbe6/05649/autoresponder.png 900w,https://erwinsmit.com/static/15804e23a5139989ac206bdd98eefbe6/3b25d/autoresponder.png 952w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
@@ -2228,7 +2228,7 @@ Make sure your fiddler autoresponder configuration looks like this:&lt;/li&gt;
 &lt;p&gt;Make sure your settings look like this, when you click the ‘decrypt’ checkbox fiddler automatically adds a SSL certificate for you. &lt;/p&gt;
 &lt;p&gt;&lt;a
     class=&quot;gatsby-resp-image-link&quot;
-    href=&quot;https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/79dd2/fiddler-https-settings.png&quot;
+    href=&quot;https://erwinsmit.com/static/a6e8bb963b32f80babe990693582c5c6/79dd2/fiddler-https-settings.png&quot;
     style=&quot;display: block&quot;
     target=&quot;_blank&quot;
     rel=&quot;noopener&quot;
@@ -2246,13 +2246,13 @@ Make sure your fiddler autoresponder configuration looks like this:&lt;/li&gt;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
         alt=&quot;Fiddler https settings&quot;
         title=&quot;&quot;
-        src=&quot;https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/05649/fiddler-https-settings.png&quot;
-        srcset=&quot;https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/e9d1c/fiddler-https-settings.png 225w,https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/80b02/fiddler-https-settings.png 450w,https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/05649/fiddler-https-settings.png 900w,https://erwinsmit.nl/static/a6e8bb963b32f80babe990693582c5c6/79dd2/fiddler-https-settings.png 906w&quot;
+        src=&quot;https://erwinsmit.com/static/a6e8bb963b32f80babe990693582c5c6/05649/fiddler-https-settings.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/a6e8bb963b32f80babe990693582c5c6/e9d1c/fiddler-https-settings.png 225w,https://erwinsmit.com/static/a6e8bb963b32f80babe990693582c5c6/80b02/fiddler-https-settings.png 450w,https://erwinsmit.com/static/a6e8bb963b32f80babe990693582c5c6/05649/fiddler-https-settings.png 900w,https://erwinsmit.com/static/a6e8bb963b32f80babe990693582c5c6/79dd2/fiddler-https-settings.png 906w&quot;
         sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
       /&gt;
   &lt;/span&gt;
   &lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;I think you can also do similar stuff using the chrome devtools now, but I always find Fiddler great for fixing and debugging issues like this. &lt;/p&gt;
 &lt;p&gt;Hope this helps anyone that experiences the same issue!. We did log this issue &lt;a href=&quot;https://developercommunity.visualstudio.com/content/problem/610555/cannot-saveclone-release-definition.html&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;here&lt;/a&gt;, so hopefully it will be resolved soon. &lt;/p&gt;
-                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.nl/azure-devops-create-pipeline-error/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/azure-devops-create-pipeline-error/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
               </content:encoded></item></channel></rss>
