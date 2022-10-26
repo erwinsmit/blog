@@ -14,6 +14,7 @@ import {
   createLanguageLink,
   loadFontsForCode,
 } from '../utils/i18n';
+import Footer from '../components/Footer';
 
 const GITHUB_USERNAME = 'erwinsmit';
 const GITHUB_REPO_NAME = 'blog';
@@ -104,7 +105,7 @@ class BlogPostTemplate extends React.Component {
           description={post.frontmatter.spoiler}
           slug={post.fields.slug}
         />
-        <main className="max-w-7xl mx-auto px-6 sm:px-8 py-24 flex-1 pb-2">
+        <main className="max-w-7xl mx-auto px-4 sm:px-8 py-24 flex-1 pb-2">
           <article>
             <header>
               <h1 className="w-full relative	mb-8 text-6xl font-extrabold tracking-normal text-center title-font">
@@ -154,6 +155,7 @@ class BlogPostTemplate extends React.Component {
       </div>
     
         </aside>
+        <Footer />
       </Layout>
     );
   }

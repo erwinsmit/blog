@@ -64,12 +64,16 @@ class Layout extends React.Component {
             <div className="flex items-center justify-between">
 
               {this.renderHeader()}
+
+              <a href="/rss.xml" className='font-bold text-slate-800 text-xl' target="_blank" rel="noopener noreferrer">
+                rss
+              </a>
             </div>
             <div className="absolute h-1 bg-gradient-to-r from-transparent via-black to-transparent bottom-0 left-4 right-4 -z-1 opacity-5" />
           </div>
         </header>
         <div className="bg-gray-50">
-          <div className="max-w-7xl mx-auto px-6 sm:px-8">
+          <div className="max-w-7xl mx-auto sm:px-8">
             {children}
           </div>
         </div>

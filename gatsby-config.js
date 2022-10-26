@@ -3,7 +3,7 @@ module.exports = {
     title: 'Erwin Smit blog',
     author: 'Erwin Smit',
     description: 'Writing about coding and things.',
-    siteUrl: 'https://erwinsmit.nl',
+    siteUrl: 'https://erwinsmit.com',
     social: {
       twitter: '@rwinsmit',
     },
