@@ -43,6 +43,29 @@ So, I had to find a different way of saving the *Preview data* somewhere. In Azu
 
 Luckily Azure has good [documentation](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-nodejs?tabs=environment-variable-windows#upload-blobs-to-a-container) on this and a [NPM package](https://www.npmjs.com/package/@azure/storage-blob).
 
+With this package it's as easy as this to upload blobs.
+
+```javascript
+export class EditingDataBlobCache implements EditingDataCache {
+  private containerClient: ContainerClient;
+
+  constructor() {
+    const blobServiceClient = BlobServiceClient.fromConnectionString(
+      process.env.AZURE_STORAGE_CONNECTION_STRING
+    );
+
+    this.containerClient = blobServiceClient.getContainerClient(process.env.AZURE_BLOB_CONTAINER);
+  }
+
+  async set(key: string, editingData: EditingData): Promise<void> {
+    const blobName = key + '.txt';
+    const blockBlobClient = this.containerClient.getBlockBlobClient(blobName);
+    // Upload data to the blob
+    const data = JSON.stringify(editingData);
+    const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
+  }
+```
+
 All I had to do was create a custom [EditingDataDiskCache](https://github.com/erwinsmit/swa-jss/blob/master/src/lib/editing/editing-data-cache.ts) implementation and plug that into the Sitecore JSS code. The plugging is well supported by the JSS codebase, the implementation can be passed as follows on the `api/editing/data/[key].ts` API route:
 
 ```javascript
