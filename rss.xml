@@ -1,4 +1,106 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Erwin Smit blog]]></title><description><![CDATA[Writing about coding and things.]]></description><link>https://erwinsmit.com</link><generator>RSS for Node</generator><lastBuildDate>Wed, 12 Oct 2022 19:43:12 GMT</lastBuildDate><item><title><![CDATA[Sitecore JSS Next.js without Vercel]]></title><link>https://erwinsmit.com/sitecore-nextjs-without-vercel/</link><guid isPermaLink="false">https://erwinsmit.com/sitecore-nextjs-without-vercel/</guid><pubDate>Mon, 10 Oct 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;As we all know by now, Vercel is a great platform to host your Next.js apps. I currently use it for some small projects and I love the developer experience.
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Erwin Smit blog]]></title><description><![CDATA[Writing about coding and things.]]></description><link>https://erwinsmit.com</link><generator>RSS for Node</generator><lastBuildDate>Wed, 26 Oct 2022 13:06:23 GMT</lastBuildDate><item><title><![CDATA[Sitecore JSS Next.js on Azure Static Web Apps]]></title><link>https://erwinsmit.com/sitecore-jss-nextjs-on-azure-static-web-app/</link><guid isPermaLink="false">https://erwinsmit.com/sitecore-jss-nextjs-on-azure-static-web-app/</guid><pubDate>Wed, 26 Oct 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Azure &lt;a href=&quot;https://techcommunity.microsoft.com/t5/apps-on-azure-blog/extending-next-js-support-in-azure-static-web-apps/ba-p/3627975&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;announced a few weeks ago&lt;/a&gt; that they now also support the non-static features from Next.js (e.g. ISR &amp;#x26; SSG).&lt;/p&gt;
+&lt;p&gt;Although I’ve already had a way of &lt;a href=&quot;https://erwinsmit.com/sitecore-nextjs-without-vercel&quot;&gt;hosting JSS Next.js&lt;/a&gt; on Azure. I was curious to see if I was able to deploy JSS Next.js using &lt;strong&gt;Azure SWA&lt;/strong&gt; (I use &lt;strong&gt;SWA&lt;/strong&gt; as abbreviation for Static Web App from here) route.&lt;/p&gt;
+&lt;p&gt;Of course nothing is easy, so let’s run through the problems I’ve had.&lt;/p&gt;
+&lt;h2 id=&quot;problem-1-getting-it-deployed&quot;&gt;&lt;a href=&quot;#problem-1-getting-it-deployed&quot; aria-label=&quot;problem 1 getting it deployed permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Problem 1, getting it deployed&lt;/h2&gt;
+&lt;p&gt;I created a new JSS project using the &lt;a href=&quot;https://doc.sitecore.com/xp/en/developers/hd/190/sitecore-headless-development/walkthrough--creating-a-jss-next-js-application-with-the-jss-cli.html&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;JSS CLI&lt;/a&gt;. After that I followed the steps to &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs-hybrid&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;deploy a hybrid Next.js&lt;/a&gt; website to Azure. This connects to your GitHub repo and automatically creates a GitHub action. There I got the first problem:&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;SystemError [ERR_SYSTEM_ERROR]: A system error occurred: uv_os_get_passwd returned ENOENT (no such file or directory)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.com/static/88dc75dd6b289f97f5435c3567f0743c/c43b4/action-error.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 748px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 56.81818181818182%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABb0lEQVQoz1VSW27DMAzbUba2S+K3/HaSNsvaol+7/3lG22iHAYRAB6ZE0XkblfduzuvVz/v++MnbPZ2vab1KVwBOCVUANgtbuM2M0igDp8x0eDsxMyivKSsdfFxiuuSyxbiOjEZmgGHSrBHGiXNi3DBBUoBQFY/CJRNvYd5c/vblGubdFat9NDE0WB2kdKhOB6McKQ8iha3iSYdREK5+uXJ2eaZ0tnm1eaHUxOE46fcnPiZ9aPXITBOrMPAqLpQ6FptwzBS1dJgphJWVWCEtF/bAzCczpy4epCMd4BbO72HJTRZqRaMII4nQt35s3+sKGPaa7HFITZPq/Ar4X54uoO/KbgfdvQ6874zQR07Yc3Nl9wWxoUKMCGDnYjPsgKNLT0u1yQM3XRwRGC7dmvOqaZmDoz7ign8ArwDDGAjlJKrnv53hAS+RTHWInI3yTNRseEsLHFW0a5Ah/NNLPLWXXG3CDfiZOCHM3vv4n3T+wi+CkX1zr0XHkgAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;GitHub action error&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.com/static/88dc75dd6b289f97f5435c3567f0743c/c43b4/action-error.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/88dc75dd6b289f97f5435c3567f0743c/e9d1c/action-error.png 225w,https://erwinsmit.com/static/88dc75dd6b289f97f5435c3567f0743c/80b02/action-error.png 450w,https://erwinsmit.com/static/88dc75dd6b289f97f5435c3567f0743c/c43b4/action-error.png 748w&quot;
+        sizes=&quot;(max-width: 748px) 100vw, 748px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So the “username-sync” package is the culprit, this is a dependency from &lt;a href=&quot;https://www.npmjs.com/package/sync-disk-cache&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;sync-disk-cache&lt;/a&gt;. Sitecore JSS is using this to solve the &lt;a href=&quot;https://nextjs.org/docs/advanced-features/preview-mode#previewdata-size-limits&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;2kb preview data problem&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;So apparently the &lt;em&gt;username-sync&lt;/em&gt; package doesn’t play nicely on GitHub actions. I worked around it by &lt;a href=&quot;https://github.com/erwinsmit/swa-jss/tree/master/username-sync&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;overwriting this package&lt;/a&gt; with a hardcoded value.&lt;/p&gt;
+&lt;p&gt;And it worked! We had a nice fast frontend with a fast simple pipeline. But then I went to the Experience Editor…&lt;/p&gt;
+&lt;h2 id=&quot;problem-2-editingdatadiskcache-doesnt-work&quot;&gt;&lt;a href=&quot;#problem-2-editingdatadiskcache-doesnt-work&quot; aria-label=&quot;problem 2 editingdatadiskcache doesnt work permalink&quot; class=&quot;anchor&quot;&gt;&lt;svg aria-hidden=&quot;true&quot; focusable=&quot;false&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Problem 2, EditingDataDiskCache doesn’t work&lt;/h2&gt;
+&lt;p&gt;When hitting the Experience Editor I noticed the API routes were returning 500 errors, in application insights I got the following errors:&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Editing data cache miss for key 9f1a55c0-ad8b-51e4-8064-6e427bf80000-y3iv6vzpa3 at /tmp/if-you-need-to-delete-this-open-an-issue-sync-disk-cache/editing-data&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;I know from &lt;a href=&quot;https://erwinsmit.com/sitecore-jss-on-azure-functions/&quot;&gt;experience&lt;/a&gt; that these errors are coming from the &lt;a href=&quot;https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/editing/editing-data-cache.ts&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;EditingDataDiskCache&lt;/a&gt;. Apparently with Azure SWA you can’t write and read stuff to the TMP directory. Also configuring a different TMP directory did not fix this problem. &lt;/p&gt;
+&lt;p&gt;So, I had to find a different way of saving the &lt;em&gt;Preview data&lt;/em&gt; somewhere, luckily in Azure this can be done cheap and easy with a Storage account resource. I created a Storage account, added a container to the Blob Storage and now I just had to find a way to read/write from there. &lt;/p&gt;
+&lt;p&gt;&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.com/static/bd5c94cf112680db30b6c153f1b79710/70bf2/blob-storage.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 900px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 35.4389721627409%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAIAAACHqfpvAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA1UlEQVQY051P227FMAjL/3/jpD1tWqveEwgOkI620tHZ66wocggYOy1FiEgqzhvWO3GtFVVaFQRjZkFwaTdUFQ1m2ntPw0E/43AcOwAFsmAnORjrdUevoVlTV/Pu3m/4TWJTOqTN255zNo+tToLP73GcFyYqhUmU4Qxr1s+/CIlUmD++hnWewl7ly/I0L+u2EV/jItXdwuQLj/MoRaKEpnthQKJ+ndZKzvHxyIe9UkJCgod6TCL0arULmrai07xGjnc/0Refr+eT0N8yP7qJoVzl/Bd+ASI7mcPI9twLAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;Blob storage&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.com/static/bd5c94cf112680db30b6c153f1b79710/05649/blob-storage.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/bd5c94cf112680db30b6c153f1b79710/e9d1c/blob-storage.png 225w,https://erwinsmit.com/static/bd5c94cf112680db30b6c153f1b79710/80b02/blob-storage.png 450w,https://erwinsmit.com/static/bd5c94cf112680db30b6c153f1b79710/05649/blob-storage.png 900w,https://erwinsmit.com/static/bd5c94cf112680db30b6c153f1b79710/70bf2/blob-storage.png 934w&quot;
+        sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Luckily Azure has good &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-nodejs?tabs=environment-variable-windows#upload-blobs-to-a-container&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;documentation&lt;/a&gt; on this and &lt;a href=&quot;https://www.npmjs.com/package/@azure/storage-blob&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;NPM package&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;All I had to do was create a custom EditingDataDiskCache and plug that into the Sitecore JSS code. So the architecture looks as illustrated below.&lt;/p&gt;
+&lt;p&gt;&lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;https://erwinsmit.com/static/57715677ddc24328f7ffb5132cc1efed/20909/new-architecture.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-wrapper&quot;
+    style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 900px;&quot;
+  &gt;
+    &lt;span
+      class=&quot;gatsby-resp-image-background-image&quot;
+      style=&quot;padding-bottom: 82.42303872889771%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAQCAYAAAAWGF8bAAAACXBIWXMAAAsSAAALEgHS3X78AAADf0lEQVQ4y41Ta2gcVRTeTBJjjbFQWvRXRYq/RDGkRDGVgkWQltoSRSHkh9Gf0uRHaaWiJNBCkQqirJI0Dd3UNK1dN482u5vdqJs4JplNNK81aTazM7tzZ4bpzs5jp/vIZh9zvXfdFBfT0gMf58y5c7773XvOtViQ7R3oJ7CvsfU1vDxkH6sfdpB7BmwncG7/jYFKCKFlJ6Mo6v/J6Xv3iOtrq9U4PjvhPfyJc8zWcme0r8M7/gHOWZeXqqcEnrhlt1dZrdZdbW1tNSRJVvb39xfrBwcHLQ+1lK53xkWRNHjBndb1q/9dMwyjVVVVimXZX5PJpFuW5QM4j3xFGcmiorwWS282G9nsMUGWO2mO692IcL0ovhTfyr6rZzLNK6raBETxEA/AFYZhLkuS9LWiKHtwvSiK5arGOM75fYSFF1eWYNecP3uO/D2FkP6Sms18FViB34UZeDNEL+TT6dOJRAIios1UKqXpuv4SrkeqiTJCW3DddZScgo23h+Fhjwse+cVTBI4PDjvMRrcTfj7vp6BpfoGaAzVNy5ummYlGo6/ievRdTujl+dddALzvAeCkk2WbnRx30oUwxjDvTYZCn82w7Le+YLAFqerChMgjbhMiZQ07Ej6uIYJj6O5+o2nag2I7InoW55HS8qaMA464xfOV16jZKpvXW3MBzdyEEa/5ORCovzIzU//T6uorzki4bqdNkOAKPKMlX4wtPT09xcXu7m7Lj3b7E/9uAvYvCkJ+kWVhQJIgFZPfLM4sANVWh6NyPhKpeuRxtkk9a6tF+XaWeS6oadKGLKtBVY1NAdC0gzr8gnYj1CE8U0KtZXvih0jSkio9sYBh7JqkNxq8fv9HvrtrTcuq8vS4JD3l+jvQPDo39+F1P3Ukkc1+upkzheRWgU5lC/S6nAH3M/mR4lG3LYKeIfbxaPRFJRabDLPsH3I0+mfOiDdcDYf33UUd9ikxSAKQjqbSg7BkeYSbYQhDylboAZmvNPG99EYtrWkdDC9cXmfYH2gAekHcOOOWpBcmOe5438JCyx2afkfStaOwkPsGcV2C0ESAOO54QDgh8MX7E5LJAzYmBNtnp2E7GvhT0yTsZhn4V0x+u/Rr7WPNmRuAitJlP39uzi8fHHEk3rg9Em8cGbr/8ZTPmBfFt/B66+hwXevK0pPnlxdxU4jNXI4oFAqEls4TW3mT+Ac4U3axa1cuJQAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+    &gt;&lt;/span&gt;
+    &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;&quot;
+        alt=&quot;New architecture&quot;
+        title=&quot;&quot;
+        src=&quot;https://erwinsmit.com/static/57715677ddc24328f7ffb5132cc1efed/05649/new-architecture.png&quot;
+        srcset=&quot;https://erwinsmit.com/static/57715677ddc24328f7ffb5132cc1efed/e9d1c/new-architecture.png 225w,https://erwinsmit.com/static/57715677ddc24328f7ffb5132cc1efed/80b02/new-architecture.png 450w,https://erwinsmit.com/static/57715677ddc24328f7ffb5132cc1efed/05649/new-architecture.png 900w,https://erwinsmit.com/static/57715677ddc24328f7ffb5132cc1efed/572e0/new-architecture.png 1350w,https://erwinsmit.com/static/57715677ddc24328f7ffb5132cc1efed/b501b/new-architecture.png 1800w,https://erwinsmit.com/static/57715677ddc24328f7ffb5132cc1efed/20909/new-architecture.png 2014w&quot;
+        sizes=&quot;(max-width: 900px) 100vw, 900px&quot;
+      /&gt;
+  &lt;/span&gt;
+  &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;And now it all works! So do I prefer using Azure SWA over my own custom &lt;a href=&quot;https://erwinsmit.com/sitecore-nextjs-without-vercel&quot;&gt;solution&lt;/a&gt;? I think I do, mainly for these reasons:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The API routes are automatically transformed into Azure Functions&lt;/li&gt;
+&lt;li&gt;Deploying is much easier, no large custom pipelines, just use the pipeline from Azure SWA, configure the environment variables and you’re good to go!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Sometimes you have to kill your babies. At least I’ve learned a lot about Next.js &amp;#x26; JSS in the process!&lt;/p&gt;
+&lt;p&gt;For the code, have a look at my &lt;a href=&quot;https://github.com/erwinsmit/swa-jss&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;repo&lt;/a&gt;. The customizations can be found in &lt;a href=&quot;https://github.com/erwinsmit/swa-jss/tree/master/src/lib/editing&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;src/lib/editing&lt;/a&gt;.&lt;/p&gt;
+                &lt;div style=&quot;margin-top=55px; font-style: italic;&quot;&gt;(This is an article posted to my blog at overreacted.io. You can read it online by &lt;a href=&quot;https://erwinsmit.com/sitecore-jss-nextjs-on-azure-static-web-app/&quot;&gt;clicking here&lt;/a&gt;.)&lt;/div&gt;
+              </content:encoded></item><item><title><![CDATA[Sitecore JSS Next.js without Vercel]]></title><link>https://erwinsmit.com/sitecore-nextjs-without-vercel/</link><guid isPermaLink="false">https://erwinsmit.com/sitecore-nextjs-without-vercel/</guid><pubDate>Mon, 10 Oct 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;As we all know by now, Vercel is a great platform to host your Next.js apps. I currently use it for some small projects and I love the developer experience.
 It’s so easy to handle deployments, preview pull requests (you get a unique URL for each pull request), real performance monitoring (using &lt;a href=&quot;https://web.dev/vitals/&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;&gt;Core Web Vitals&lt;/a&gt;), and much more. &lt;/p&gt;
 &lt;p&gt;But… There are some drawbacks to Vercel.&lt;/p&gt;
 &lt;ul&gt;
