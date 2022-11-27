@@ -2,10 +2,8 @@ import React from 'react';
 import { Link } from 'gatsby';
 import Toggle from './Toggle';
 import Helmet from 'react-helmet';
+const logo = require('../logo.svg');
 
-// import { rhythm, scale } from '../utils/typography';
-import sun from '../assets/sun.png';
-import moon from '../assets/moon.png';
 import '../css/output.css';
 class Layout extends React.Component {
   state = {
@@ -30,7 +28,8 @@ class Layout extends React.Component {
             to={'/'}
             className="no-underline"
           >
-            Erwin.Smit
+            <img src={logo} alt="logo" className="inline-block mr-2 w-52 bg-white/80 px-3 py-2" />
+            
           </Link>
         </h1>
       );
@@ -43,7 +42,7 @@ class Layout extends React.Component {
             className='no-underline'
             to={'/'}
           >
-            Erwin.Smit
+            <img src={logo} alt="logo" className="inline-block mr-2 w-52 bg-white/80 px-3 py-2" />
           </Link>
         </h3>
       );
@@ -65,7 +64,7 @@ class Layout extends React.Component {
 
               {this.renderHeader()}
 
-              <a href="/rss.xml" className='font-bold text-slate-800 text-xl' target="_blank" rel="noopener noreferrer">
+              <a href="/rss.xml" className='font-bold text-blue-400 text-xl bg-white/80 p-2 px-3' target="_blank" rel="noopener noreferrer">
                 rss
               </a>
             </div>
