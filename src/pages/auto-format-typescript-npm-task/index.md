@@ -1,7 +1,7 @@
 ---
 title: Auto-format typescript with a npm task
 date: '2022-10-02'
-spoiler: Keep your back-end & front-end dev's happy with this npm task
+spoiler: To help keep non-JavaScript developers from encountering issues when making changes to a React rendering, a simple npm task can be added to the project's package.json file to automatically format typescript using Prettier and ESLint rules. This keeps the code consistent without requiring additional tooling to be installed.
 ---
 
 In a [previous post](/scalable-head), I wrote about the workflow of a headless Sitecore project. 

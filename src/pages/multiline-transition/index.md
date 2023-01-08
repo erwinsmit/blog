@@ -1,7 +1,7 @@
 ---
 title: Multiline underline transition
 date: '2022-11-27'
-spoiler: How to create a multiline underline transition
+spoiler: To create an underline transition on multiline text links, one solution is to use a pseudo element with a background. This can be further customized with tweaks to the animation flow. Here is an example using React and extending the MUI Link component.
 ---
 
 For a project I had to implement an underline transition on text links. For single line transitions there are lot of examples where you set a background on a pseudo element. For multiline I had look a bit harder. I found this [great example](https://nickymeuleman.netlify.app/blog/css-animated-wrapping-underline) for multiline underline transitions. I tweaked it a bit so the animation flows from left to right. See below for a React implementation (extending MUI's Link component). 

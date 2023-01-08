@@ -1,7 +1,7 @@
 ---
 title: Sitecore JSS Next.js on Azure Static Web Apps
 date: '2022-10-26'
-spoiler: Steps required to getting JSS Next.js to work on Azure Static Web Apps
+spoiler: Azure Static Web Apps now support non-static features of Next.js, including Incremental Static Regeneration and Server Side Rendering. Learn more about the steps taken to deploy a Sitecore JSS Next.js project to Azure Static Web Apps, including working around problems encountered.
 ---
 
 Azure [announced a few weeks ago](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/extending-next-js-support-in-azure-static-web-apps/ba-p/3627975) that they now also support the non-static features from Next.js (e.g. [Incremental Static Regeneration](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration) & [Server Side Rendering](https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props)) on Azure Static Web Apps(SWA).

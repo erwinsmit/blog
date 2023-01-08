@@ -1,7 +1,7 @@
 ---
 title: Can we keep up with Vercel?
 date: '2022-04-05'
-spoiler: You can host Next.js without Vercel, supporting it in the long term can be tricky though
+spoiler: Last year the I spent time getting Sitecore JSS Next.js to work on Azure but encountered issues when updating to Next 12 and with Azure functions v4. I wonder if it's worth maintaining custom hosting solutions for Next.js.
 ---
 
 Last year we've spent quite some time getting [Sitecore JSS Next.js to work on Azure](/sitecore-nextjs-without-vercel) (with ISG & build-in APIs). However, some issues have come up since then.
