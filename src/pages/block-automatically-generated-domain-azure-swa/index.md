@@ -6,7 +6,7 @@ spoiler: Azure Static Web Apps creates automatically a domain like "blue-river-0
 
 Please note: This post applies for [Hybrid Next.js Azure Static Web Apps](https://learn.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs-hybrid)
 
-Azure Static Web Apps creates automatically a domain like `blue-river-096abc21e.2.azurestaticapps.net`. Even when you have created a custom domain for your Azure Static Web App it's not possible to [disable or block this domain](https://techcommunity.microsoft.com/t5/apps-on-azure/is-it-possible-to-disable-the-default-url-assigned-to-the-azure/m-p/2017272).
+Azure Static Web Apps automatically creates a domain like `blue-river-096abc21e.2.azurestaticapps.net`. Even when you have created a custom domain for your Azure Static Web App it's not possible to [disable or block this domain](https://techcommunity.microsoft.com/t5/apps-on-azure/is-it-possible-to-disable-the-default-url-assigned-to-the-azure/m-p/2017272).
 
 In a current **Sitecore JSS Next.js** project we are applying IP restrictions on our custom domains, but these automatically generated URLs can't be blocked using Web Application Firewall or Azure Frontdoor. So how do we make sure these URLs are not publicly accessible? 
 
