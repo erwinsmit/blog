@@ -12,7 +12,7 @@ In a current **Sitecore JSS Next.js** project we are applying IP restrictions on
 
 Luckily with Next.js you can use [middleware](https://nextjs.org/docs/advanced-features/middleware) for a while now. So my idea was to apply a redirect to the custom domain when I detect a `.azurestaticapps` host header. But, when you inspect all the headers on a request, no host header was present when an [azurestaticapps.net domain is used](https://github.com/Azure/static-web-apps/issues/1012). 
 
-Luckily, when you access the site using a custom domain, you DO get a header with the hostname in it. Using that you can create a redirect with a few lines of code in your _middleware.ts file:
+When you access the site using a custom domain, you DO get a header with the hostname in it. Using that you can create a redirect with a few lines of code in your _middleware.ts file:
 
 ```javascript
 const host = req.headers.get('x-forwarded-host');
