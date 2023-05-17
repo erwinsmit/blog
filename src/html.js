@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { DocSearch } from '@docsearch/react';
 
 export default class HTML extends React.Component {
   render() {
