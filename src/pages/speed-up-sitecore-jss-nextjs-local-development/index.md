@@ -47,7 +47,7 @@ All seconds are an average of a couple of runs. Sometimes it was 2 seconds quick
 That makes WSL 30% faster on install. 
 
 ### npm run build
-So the contains a couple of tasks actually, the JSS bootstrap task and the Next.js Build. 
+So the build contains a couple of tasks actually, the JSS bootstrap task and the Next.js Build. 
 Here the timing was more consistent, I guess because there is no dependency on download speed.
 
 - **Windows**: ~38 seconds
