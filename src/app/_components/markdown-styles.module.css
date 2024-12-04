@@ -16,3 +16,17 @@
 .markdown h3 {
   @apply text-2xl mt-8 mb-4 leading-snug;
 }
+
+.markdown pre {
+  @apply bg-gray-100;
+  @apply rounded-lg;
+  @apply overflow-x-auto;
+}
+
+.markdown code {
+  @apply text-sm;
+  @apply font-mono;
+}
+/* 
+<pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto">
+  <code class="text-sm font-mono"> */

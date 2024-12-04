@@ -31,7 +31,8 @@ export default async function Post(props: Params) {
             date={post.date}
             author={post.author}
           />
-          <PostBody content={content} />
+          <PostBody markdown={post.content} />
+          {/* <PostBody content={content} /> */}
         </article>
       </Container>
     </main>
