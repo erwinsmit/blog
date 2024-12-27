@@ -1,31 +1,39 @@
 import Container from "@/app/_components/container";
 import { EXAMPLE_PATH } from "@/lib/constants";
+import { Github, Linkedin } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-neutral-50 border-t border-neutral-200 dark:bg-slate-800">
-      <Container>
-        <div className="py-28 flex flex-col lg:flex-row items-center">
-          <h3 className="text-4xl lg:text-[2.5rem] font-bold tracking-tighter leading-tight text-center lg:text-left mb-10 lg:mb-0 lg:pr-4 lg:w-1/2">
-            Statically Generated with Next.js.
-          </h3>
-          <div className="flex flex-col lg:flex-row justify-center items-center lg:pl-4 lg:w-1/2">
-            <a
-              href="https://nextjs.org/docs/app/building-your-application/routing/layouts-and-templates"
-              className="mx-3 bg-black hover:bg-white hover:text-black border border-black text-white font-bold py-3 px-12 lg:px-8 duration-200 transition-colors mb-6 lg:mb-0"
-            >
-              Read Documentation
-            </a>
-            <a
-              href={`https://github.com/vercel/next.js/tree/canary/examples/${EXAMPLE_PATH}`}
-              className="mx-3 font-bold hover:underline"
-            >
-              View on GitHub
-            </a>
-          </div>
+    <section className="bg-gray-800 text-white py-12">
+      <div className="container mx-auto px-4 text-center">
+        <h2 className="text-2xl font-bold mb-6">Connect With Me</h2>
+        <div className="flex justify-center space-x-6">
+          <a
+            href="https://github.com/erwinsmit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-400 transition-colors"
+          >
+            <Github size={32} />
+            <span className="sr-only">GitHub</span>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/erwin-smit-40957840/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-400 transition-colors"
+          >
+            <Linkedin size={32} />
+            <span className="sr-only">LinkedIn</span>
+          </a>
+          3
+          {/* <a href="mailto:your.email@example.com" className="hover:text-blue-400 transition-colors">
+          <Mail size={32} />
+          <span className="sr-only">Email</span>
+        </a> */}
         </div>
-      </Container>
-    </footer>
+      </div>
+    </section>
   );
 }
 
