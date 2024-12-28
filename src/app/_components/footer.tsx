@@ -26,7 +26,7 @@ export function Footer() {
             <Linkedin size={32} />
             <span className="sr-only">LinkedIn</span>
           </a>
-          3
+
           {/* <a href="mailto:your.email@example.com" className="hover:text-blue-400 transition-colors">
           <Mail size={32} />
           <span className="sr-only">Email</span>

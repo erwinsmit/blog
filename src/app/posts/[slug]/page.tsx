@@ -21,20 +21,14 @@ export default async function Post(props: Params) {
 
   return (
     <main>
-      <Alert preview={post.preview} />
-      <Container>
-        <Header />
-        <article className="mb-32">
-          <PostHeader
-            title={post.title}
-            coverImage={post.coverImage}
-            date={post.date}
-            author={post.author}
-          />
-          <PostBody markdown={post.content} />
-          {/* <PostBody content={content} /> */}
-        </article>
-      </Container>
+      {/* <Alert preview={post.preview} /> */}
+      {/* <Container> */}
+      {/* <Header /> */}
+      {/* <PostHeader title={post.title} coverImage={post.coverImage} date={post.date} author={post.author} /> */}
+      <PostBody post={post} />
+      {/* <PostBody content={content} /> */}
+      {/* </article> */}
+      {/* </Container> */}
     </main>
   );
 }

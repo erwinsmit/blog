@@ -1,49 +1,34 @@
 import Markdown from "react-markdown";
-import markdownStyles from "./markdown-styles.module.css";
-
+import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { Post } from "@/interfaces/post";
+import markdownToHtml from "@/lib/markdownToHtml";
+import DateFormatter from "./date-formatter";
 
 type Props = {
-  content?: string;
-  markdown: string;
+  post: Post;
 };
 
-export function PostBody({ content, markdown }: Props) {
-  return (
-    <div className="max-w-2xl mx-auto">
-      {/* <div
-        className={markdownStyles["markdown"]}
-        dangerouslySetInnerHTML={{ __html: content }}
-      /> */}
-      <Markdown
-        remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeRaw]}
-        components={{
-          code({ node, inline, className, children, ...props }: any) {
-            const match = /language-(\w+)/.exec(className || "");
+export async function PostBody({ post }: Props) {
+  const content = await markdownToHtml(post.content || "");
 
-            return !inline && match ? (
-              <SyntaxHighlighter
-                style={dracula}
-                PreTag="div"
-                language={match[1]}
-                {...props}
-              >
-                {String(children).replace(/\n$/, "")}
-              </SyntaxHighlighter>
-            ) : (
-              <code className={className} {...props}>
-                {children}
-              </code>
-            );
-          },
-        }}
-      >
-        {markdown}
-      </Markdown>
-    </div>
+  return (
+    <article className="max-w-7xl mx-auto px-8 my-12">
+      <h1 className="w-full relative	mb-8 text-6xl font-extrabold tracking-normal text-center title-font">
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">{post.title}</span>
+      </h1>
+      <div className="flex items-center justify-center mb-16">
+        <p className="text-base font-medium text-gray-600 group-hover:text-gray-800">
+          <DateFormatter dateString={post.date} />
+        </p>
+      </div>
+
+      {/* Add 0 padding to nested pre tag */}
+      <div className="prose lg:prose-xl max-w-none prose-pre:p-0">
+        <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
+          {post.content}
+        </Markdown>
+      </div>
+    </article>
   );
 }

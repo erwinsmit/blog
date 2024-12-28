@@ -61,7 +61,7 @@ export default function PortfolioTimeline() {
       <main>
         <section className="bg-gray-100 py-16">
           <div className="container mx-auto px-4 ">
-            <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Highlighed projects</h2>
+            <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Highlighted Projects</h2>
             <div className="relative mx-auto">
               {/* Timeline line */}
               {/* <div className="absolute left-0  top-0 bottom-0 w-1 bg-blue-300 transform "></div> */}
@@ -86,7 +86,7 @@ export default function PortfolioTimeline() {
                         <strong>Client:</strong> {project.client}
                       </p>
                       <p className="text-sm text-gray-500 mb-2">
-                        <strong>On behalve of:</strong> {project.agency}
+                        <strong>On behalfe of:</strong> {project.agency}
                       </p>
                       <p className="text-sm font-semibold text-blue-600 mb-3">{project.date}</p>
                       <div className="flex flex-wrap gap-2">

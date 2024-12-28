@@ -1,7 +1,7 @@
 ---
 title: Sitecore XM Cloud multisite styling
 date: "2024-01-17"
-excerpt: How do you conditionally render a stylesheet based on the SXA site
+spoiler: How do you conditionally render a stylesheet based on the SXA site
 ---
 
 I started working on an interesting Sitecore headless project, so it's time to start blogging about my findings again!
@@ -17,10 +17,7 @@ In Next.js you can add your SCSS to the application with a simple import:
 ```javascript
 import "scss/styles.scss";
 
-function App({
-  Component,
-  pageProps,
-}: AppProps<SitecorePageProps>): JSX.Element {
+function App({ Component, pageProps }: AppProps<SitecorePageProps>): JSX.Element {
   const { dictionary, ...rest } = pageProps;
 
   return (
@@ -130,10 +127,7 @@ First, create a script that returns a short version of the commit hash:
 
 ```javascript
 const getCommitHash = function () {
-  return require("child_process")
-    .execSync('git log --pretty=format:"%h" -n1')
-    .toString()
-    .trim();
+  return require("child_process").execSync('git log --pretty=format:"%h" -n1').toString().trim();
 };
 
 module.exports = getCommitHash;
