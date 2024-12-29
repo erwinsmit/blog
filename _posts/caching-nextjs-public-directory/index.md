@@ -6,7 +6,7 @@ spoiler: By default assets from the public directory have no cache headers set. 
 
 By default assets from the public directory have no cache headers set. Usually you have assets that never change and are quite large in this directory. In a recent project I noticed that our font files were loaded on each browser request. As shown in the screenshot there is no cache header on the font file.
 
-![No cache header](/posts/no-cache-header.png)
+![No cache header](/blog/no-cache-header.png)
 
 This is easily solved by adding header configuration to your **next.config.js** file:
 

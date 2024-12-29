@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { SvgIcon } from "./logo";
 
 const Header = () => {
   return (
@@ -13,13 +12,8 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link href="/posts" className="hover:text-blue-200 transition duration-150 ease-in-out">
+              <Link href="/blog" className="hover:text-blue-200 transition duration-150 ease-in-out">
                 Blog
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" className="hover:text-blue-200 transition duration-150 ease-in-out">
-                Contact
               </Link>
             </li>
           </ul>

@@ -10,15 +10,7 @@ export function MoreStories({ posts }: Props) {
     <section className="container mx-auto ">
       <div className="mt-8">
         {posts.map((post) => (
-          <PostPreview
-            key={post.slug}
-            title={post.title}
-            coverImage={post.coverImage}
-            date={post.date}
-            author={post.author}
-            slug={post.slug}
-            spoiler={post.spoiler}
-          />
+          <PostPreview key={post.slug} title={post.title} date={post.date} slug={post.slug} spoiler={post.spoiler} />
         ))}
       </div>
     </section>

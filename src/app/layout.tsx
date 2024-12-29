@@ -1,9 +1,6 @@
 import Footer from "@/app/_components/footer";
-import { CMS_NAME, HOME_OG_IMAGE_URL } from "@/lib/constants";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import cn from "classnames";
-import { ThemeSwitcher } from "./_components/theme-switcher";
 
 import "./globals.css";
 import Header from "./_components/header";
@@ -12,11 +9,8 @@ import Container from "./_components/container";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: `Next.js Blog Example with ${CMS_NAME}`,
-  description: `A statically generated blog example using Next.js and ${CMS_NAME}.`,
-  openGraph: {
-    images: [HOME_OG_IMAGE_URL],
-  },
+  title: `Erwin Smit - Freelance frontend developer / fullstack developer`,
+  description: `Erwin Smit - Freelance frontend developer / fullstack developer`,
 };
 
 export default function RootLayout({
@@ -37,22 +31,11 @@ export default function RootLayout({
         <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
         <meta name="theme-color" content="#000" />
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
-        {/* <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"
-        ></link> */}
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/styles/github-dark.min.css"
-        ></link>
       </head>
       <body className={"bg-gray-100 "}>
-        {/* <Container> */}
         <Header />
-        {/* <ThemeSwitcher /> */}
         <main className="min-h-screen">{children}</main>
         <Footer />
-        {/* </Container> */}
       </body>
     </html>
   );

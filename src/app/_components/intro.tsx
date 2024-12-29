@@ -1,7 +1,5 @@
 import Image from "next/image";
 
-const skills = ["JavaScript", "TypeScript", "React", "Next.js", "Node.js", "GraphQL", "GRPC-JS", "Azure", "C#"];
-
 export function Intro() {
   return (
     <>
