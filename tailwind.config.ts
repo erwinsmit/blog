@@ -976,7 +976,7 @@ const config: Config = {
       "3/4": "75%",
       full: "100%",
     }),
-    size: ({ theme }) => ({
+    size: ({ theme }: { theme: any }) => ({
       auto: "auto",
       ...theme("spacing"),
       "1/2": "50%",

@@ -10,7 +10,7 @@ The two main issues with these websites are **Render blocking script tags** and 
 
 ## Render blocking script tags
 
-I created a static [html page](https://www.erwinsmit.com/performancepoc) that reflects how many Sitecore sites work, it has inline script tags that refer to React components. Although these components are already rendered server side they still need to be "Hydrated". Hydration of a React component adds all the client side magic like event listeners, state changes, hooks etc.
+I created a static [html page](https://www.erwinsmit.com/performancepoc/index.html) that reflects how many Sitecore sites work, it has inline script tags that refer to React components. Although these components are already rendered server side they still need to be "Hydrated". Hydration of a React component adds all the client side magic like event listeners, state changes, hooks etc.
 
 ![](/blog/hydration.jpg "Hydrate React component")
 
