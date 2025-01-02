@@ -15,41 +15,86 @@ const projects: Project[] = [
     title: "RH Marine",
     description: "Working on new applications using a custom design system. ",
     responsibility:
-      "Lead developer, Planning work. Coaching internal developers. Setting up CI/CD pipelines. Creating backend for frontends that communicate with Grpc backends",
+      "Lead developer, Planning work. Coaching internal developers. Setting up CI/CD pipelines. Backend-for-frontend development with gRPC integration",
     client: "RH Marine",
     agency: "Freelance",
     date: "Current project",
-    tags: ["Nextjs", "React", "Typescript", "Design systems", "CI/CD", "Backend for frontend", "Nodejs"],
+    tags: ["Next.js", "React", "Typescript", "Design systems", "CI/CD", "Backend-for-frontend", "Nodejs"],
   },
   {
     title: "VWPFS XM Cloud migration",
     description:
-      "Migrating VWPFS labels (e.g. Dutchlease, XLLease and many more) to the new Sitecore XM Cloud platform. Setting up a modern frontend using Nextjs that used the old React components from the previous solution. Migrating the backend logic from C# to Nodejs",
-    responsibility: "Lead developer, setting up the architecture and coaching the team",
+      "Led the migration of multiple VWPFS brands (DutchLease, XLLease, etc.) to Sitecore XM Cloud. Built a modern Next.js frontend integrating existing React components, while transitioning backend services from C# to Node.js",
+    responsibility: "Lead developer - Architecture design, technical leadership, and team mentoring",
     client: "Volkswagen Pon Financial Services",
     agency: "Macaw",
     date: "2024",
-    tags: ["Sitecore", "React", "Nextjs", "Nodejs", "C#", "Typescript"],
+    tags: ["Sitecore", "React", "Next.js", "Node.js", "C#", "TypeScript"],
   },
+
   {
     title: "VWPFS Online lease calculator",
     description:
-      "Created a portal for for fleet managers and drivers. It allows the fleetmanager to create lease policies and handle the lease requests from drivers. The drivers can request a lease car through the portal.",
+      "Developed a fleet management portal enabling fleet managers to create lease policies and process driver requests. The drivers also use the portal through a different role to configure and request a new lease car.",
     client: "Volkswagen Pon Financial Services",
     responsibility:
-      "Lead developer, creating the portal from scratch as an SPA. setting up a design system that allows multiple themes. Setting up CI/CD pipelines. Setting up DEV/TEST/PROD environments",
+      "Lead developer - Built SPA from ground up, implemented multi-theme design system, established CI/CD pipelines and multi-environment infrastructure (DEV/TEST/PROD)",
     agency: "Macaw",
     date: "2024",
-    tags: ["React", "React router", "Vite", "Graphql", "Typescript", "Keycloak"],
+    tags: ["React", "Storybook", "React Router", "Vite", "GraphQL", "TypeScript", "Keycloak"],
+  },
+  {
+    title: "Vorwerk design system",
+    description:
+      "Developed an accessibile and flexible design system for the various Vorwerk brands, including Thermomix and Kobold. ",
+    responsibility:
+      "Senior developer, creating a design system in Storybook, working closely with the blended design team.",
+    client: "Vorwerk",
+    agency: "Macaw",
+    date: "2023/2024",
+    tags: ["React", "TypeScript", "Storybook"],
+  },
+  {
+    title: "Noerr corporate website",
+    description:
+      "Developed a new headless corporate website (using Sitercore JSS) for Noerr, a germam law firm. The website consumes data from Sitecore, for vacancies it retrieves data from the workday API.",
+    responsibility: "Lead developer, creating a design system in Storybook, setting up CI/CD. ",
+    client: "Noerr",
+    agency: "Macaw",
+    date: "2023/2024",
+    tags: ["React", "Next.js", "TypeScript", "Storybook", "CI/CD", "Sitecore"],
+  },
+  {
+    title: "Smurfit Kappa accessibility project",
+    description:
+      "Smurfit Kappa wanted to pass the AA level of the WCAG guidelines. Working together with an accessibility agency we made the website accessible.",
+    responsibility: "Senior developer, implementing the changes and testing the website.",
+    agency: "Macaw",
+    date: "2023",
+    client: "Smurfit Kappa",
+    tags: ["WCAG", "Accessibility", "React", "TypeScript"],
+  },
+];
+
+const nonProfitProjects: Project[] = [
+  {
+    title: "Tuinstad Staalwijk website",
+    description: "Build a new website for the local community in my neighborhood. Using an easy to use CMS (tinaCMS)",
+    responsibility: "",
+    client: "Stichting Comité Tuinstad-Staalwijk",
+    agency: "Freelance",
+    date: "",
+    tags: ["React", "Next.js", "TypeScript", "TinaCMS"],
   },
 ];
 
 const otherClients = [
   { name: "Heineken", logo: "./assets/clients/heineken.png" },
   { name: "D-Reizen", logo: "./assets/clients/d-reizen.png" },
-  { name: "Client 3", logo: "/placeholder.svg?height=80&width=200" },
-  { name: "Client 4", logo: "/placeholder.svg?height=80&width=200" },
-  { name: "Client 5", logo: "/placeholder.svg?height=80&width=200" },
+  { name: "Regus", logo: "/assets/clients/regus.png" },
+  { name: "Onvz", logo: "/assets/clients/onvz.png" },
+  { name: "Intertrust", logo: "/assets/clients/intertrust.png" },
+  { name: "Anwb", logo: "/assets/clients/anwb.png" },
 ];
 
 export default function PortfolioTimeline() {
@@ -117,6 +162,44 @@ export default function PortfolioTimeline() {
                     height={80}
                     className="w-full h-auto object-contain"
                   />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-gray-100 py-16">
+          <div className="container mx-auto px-4 ">
+            <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Nonprofit Projects</h2>
+            <div className="relative mx-auto">
+              {nonProfitProjects.map((project, index) => (
+                <div key={index} className="mb-12 flex flex-col md:flex-row items-center max-w-2xl mx-auto">
+                  <div className="flex-1 w-full md:w-1/2 order-1 md:order-none">
+                    <div className="bg-white rounded-lg shadow-md p-6 mx-2 md:mx-4 relative">
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2">{project.title}</h3>
+                      <p className="text-gray-600 mb-4">{project.description}</p>
+                      {project.responsibility && (
+                        <p className="text-sm text-gray-500 mb-2">
+                          <strong>Responsibility:</strong> {project.responsibility}
+                        </p>
+                      )}
+                      <p className="text-sm text-gray-500 mb-1">
+                        <strong>Client:</strong> {project.client}
+                      </p>
+                      <p className="text-sm text-gray-500 mb-2">
+                        <strong>On behalfe of:</strong> {project.agency}
+                      </p>
+                      <p className="text-sm font-semibold text-blue-600 mb-3">{project.date}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {project.tags.map((tag, tagIndex) => (
+                          <span key={tagIndex} className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  {/* <div className="flex-1 w-full md:w-1/2 order-2 md:order-none"></div> */}
                 </div>
               ))}
             </div>

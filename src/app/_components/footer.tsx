@@ -4,7 +4,9 @@ export function Footer() {
   return (
     <section className="bg-gray-800 text-white py-12">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-2xl font-bold mb-6">Connect With Me</h2>
+        <h2 className="text-2xl font-bold mb-6" id="connect">
+          Connect With Me
+        </h2>
         <div className="flex justify-center space-x-6">
           <a
             href="https://github.com/erwinsmit"
@@ -24,11 +26,6 @@ export function Footer() {
             <Linkedin size={32} />
             <span className="sr-only">LinkedIn</span>
           </a>
-
-          {/* <a href="mailto:your.email@example.com" className="hover:text-blue-400 transition-colors">
-          <Mail size={32} />
-          <span className="sr-only">Email</span>
-        </a> */}
         </div>
       </div>
     </section>

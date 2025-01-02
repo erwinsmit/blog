@@ -29,51 +29,21 @@ export function Intro() {
               languages. I started with PHP, but in the last 10 years I mainly worked with Nodejs & C#. Besides frontend
               development, I also have experience settings up CI/CD pipelines, I also know my way around Azure.
             </p>
-            {/* <h3 className="text-2xl font-semibold text-gray-800 mb-4">Skills</h3> */}
-            {/* <div className="flex flex-wrap gap-2">
-              {skills.map((skill, index) => (
-                <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
-                  {skill}
-                </span>
-              ))}
-            </div> */}
+            <p className="text-gray-600 mb-8 text-lg text-center">
+              My main focus is contracting for companies that need help with their front-end development. I also like
+              shorter smaller projects (and sometimes non-profit). So feel free to{" "}
+              <a className="underline text-blue-600 hover:text-blue-800" href="#connect">
+                reach out
+              </a>{" "}
+              if you need help.
+            </p>
+            <p className="text-gray-600 mb-8 text-lg text-center">
+              My favorite stack is React.js & Typescript. But I don't mind working with other frameworks like Vuejs,
+              Angular among others.
+            </p>
           </div>
         </div>
       </section>
     </>
-
-    // <div className="bg-teal-100">
-    //   <div className="container mx-auto p-5">
-    //     <div className="text-center">
-    //       <div className="flex justify-center mb-4">
-    //         <img
-    //           src="https://pbs.twimg.com/profile_images/461249241952706560/aXScqorc_400x400.jpeg"
-    //           alt="Image"
-    //           className="rounded-full mb-4 shadow-xl border-8 border-primary"
-    //           style={{
-    //             maxWidth: "200px",
-    //           }}
-    //         />
-    //       </div>
-
-    //       <h2 className="font-medium text-gray-600 text-lg md:text-2xl mb-8">Erwin Smit</h2>
-
-    //       <h1 className="font-normal text-gray-900 text-4xl md:text-5xl leading-none mb-8">
-    //         Freelance Frontend Developer
-    //       </h1>
-
-    //       {/* <p className="font-normal text-gray-600 text-md md:text-xl mb-16">Experienced freelance frontend developer</p>
-
-    //       <p className="font-normal text-gray-600 text-md md:text-xl mb-16">
-    //         I'm an experienced freelance frontend developer with fullstack experience. Experience in various sectors and
-    //         clients.
-    //       </p>
-    //       <p className="font-normal text-gray-600 text-md md:text-xl mb-16">
-    //         I'm proactive, hands-on. I love clean code and 100% test-coverage but without losing focus on the project
-    //         objectives and the bigger picture.
-    //       </p> */}
-    //     </div>
-    //   </div>
-    // </div>
   );
 }
