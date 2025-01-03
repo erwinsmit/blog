@@ -31,7 +31,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#000" />
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       </head>
-      <body className={"bg-gray-100 "}>
+      <body className={`bg-gray-100 ${inter}`}>
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />

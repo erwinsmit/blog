@@ -1,4 +1,5 @@
 import Image from "next/image";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 interface Project {
   title: string;
@@ -15,7 +16,7 @@ const projects: Project[] = [
     title: "RH Marine",
     description: "Working on new applications using a custom design system. ",
     responsibility:
-      "Lead developer, Planning work. Coaching internal developers. Setting up CI/CD pipelines. Backend-for-frontend development with gRPC integration",
+      "Lead developer, planning work, coaching internal developers, setting up CI/CD pipelines, backend-for-frontend development with gRPC integration",
     client: "RH Marine",
     agency: "Freelance",
     date: "Current project",
@@ -25,7 +26,7 @@ const projects: Project[] = [
     title: "VWPFS XM Cloud migration",
     description:
       "Led the migration of multiple VWPFS brands (DutchLease, XLLease, etc.) to Sitecore XM Cloud. Built a modern Next.js frontend integrating existing React components, while transitioning backend services from C# to Node.js",
-    responsibility: "Lead developer - Architecture design, technical leadership, and team mentoring",
+    responsibility: "Lead developer, frontend architecture, team mentoring",
     client: "Volkswagen Pon Financial Services",
     agency: "Macaw",
     date: "2024",
@@ -38,7 +39,7 @@ const projects: Project[] = [
       "Developed a fleet management portal enabling fleet managers to create lease policies and process driver requests. The drivers also use the portal through a different role to configure and request a new lease car.",
     client: "Volkswagen Pon Financial Services",
     responsibility:
-      "Lead developer - Built SPA from ground up, implemented multi-theme design system, established CI/CD pipelines and multi-environment infrastructure (DEV/TEST/PROD)",
+      "Lead developer, built SPA from scratch, implemented multi-theme design system, created CI/CD pipelines and multi-environment infrastructure (DEV/TEST/PROD)",
     agency: "Macaw",
     date: "2024",
     tags: ["React", "Storybook", "React Router", "Vite", "GraphQL", "TypeScript", "Keycloak"],
@@ -57,8 +58,8 @@ const projects: Project[] = [
   {
     title: "Noerr corporate website",
     description:
-      "Developed a new headless corporate website (using Sitercore JSS) for Noerr, a germam law firm. The website consumes data from Sitecore, for vacancies it retrieves data from the workday API.",
-    responsibility: "Lead developer, creating a design system in Storybook, setting up CI/CD. ",
+      "Developed a new headless corporate website (using Sitercore JSS) for Noerr, a German law firm. The website consumes data from Sitecore, for vacancies it retrieves data from the workday API.",
+    responsibility: "Lead developer, created a design system in Storybook, set up CI/CD. ",
     client: "Noerr",
     agency: "Macaw",
     date: "2023/2024",
@@ -79,7 +80,7 @@ const projects: Project[] = [
 const nonProfitProjects: Project[] = [
   {
     title: "Tuinstad Staalwijk website",
-    description: "Build a new website for the local community in my neighborhood. Using an easy to use CMS (tinaCMS)",
+    description: "Built a new website for the local community in my neighborhood, using an easy to use CMS (tinaCMS)",
     responsibility: "",
     client: "Stichting Comité Tuinstad-Staalwijk",
     agency: "Freelance",
@@ -88,22 +89,40 @@ const nonProfitProjects: Project[] = [
   },
 ];
 
-const otherClients = [
-  { name: "Heineken", logo: "./assets/clients/heineken.png" },
-  { name: "D-Reizen", logo: "./assets/clients/d-reizen.png" },
-  { name: "Regus", logo: "/assets/clients/regus.png" },
-  { name: "Onvz", logo: "/assets/clients/onvz.png" },
-  { name: "Intertrust", logo: "/assets/clients/intertrust.png" },
-  { name: "Anwb", logo: "/assets/clients/anwb.png" },
+type OtherClient = {
+  name: string;
+  logo: string;
+  description: string;
+};
+
+const otherClients: OtherClient[] = [
+  {
+    name: "Heineken",
+    logo: "./assets/clients/heineken.png",
+    description: "Build new features for the Heineken.com platform as part of a scrum team",
+  },
+  {
+    name: "D-Reizen",
+    logo: "./assets/clients/d-reizen.png",
+    description: "Developed a booking platform to be used in the travelshops ",
+  },
+  { name: "Regus", logo: "/assets/clients/regus.png", description: "Worked on internal business applications" },
+  { name: "Onvz", logo: "/assets/clients/onvz.png", description: "Built the website for the 'Jaaah' label" },
+  {
+    name: "Intertrust",
+    logo: "/assets/clients/intertrust.png",
+    description: "Created a portal for Intertrust clients (Intertrust Iris)",
+  },
+  { name: "Anwb", logo: "/assets/clients/anwb.png", description: "Created an early version of Anwb Camping" },
 ];
 
 export default function PortfolioTimeline() {
   return (
     <div className="min-h-screen bg-gray-100">
       <main>
-        <section className="bg-gray-100 py-16">
+        <section className="bg-gray-100 py-12">
           <div className="container mx-auto px-4 ">
-            <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Highlighted Projects</h2>
+            <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Recent Projects</h2>
             <div className="relative mx-auto">
               {/* Timeline line */}
               {/* <div className="absolute left-0  top-0 bottom-0 w-1 bg-blue-300 transform "></div> */}
@@ -128,7 +147,7 @@ export default function PortfolioTimeline() {
                         <strong>Client:</strong> {project.client}
                       </p>
                       <p className="text-sm text-gray-500 mb-2">
-                        <strong>On behalfe of:</strong> {project.agency}
+                        <strong>On behalf of:</strong> {project.agency}
                       </p>
                       <p className="text-sm font-semibold text-blue-600 mb-3">{project.date}</p>
                       <div className="flex flex-wrap gap-2">
@@ -147,28 +166,45 @@ export default function PortfolioTimeline() {
           </div>
         </section>
 
-        <section className="bg-white py-16">
+        <section className="bg-white py-12">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
               Other Clients I've worked for over the years
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-center justify-items-center">
-              {otherClients.map((client, index) => (
-                <div key={index} className="w-full max-w-[200px]">
-                  <Image
-                    src={client.logo}
-                    alt={client.name}
-                    width={200}
-                    height={80}
-                    className="w-full h-auto object-contain"
-                  />
-                </div>
-              ))}
-            </div>
+            <Tooltip.Provider>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 justify-items-center">
+                {otherClients.map((client, index) => (
+                  <Tooltip.Root key={index}>
+                    <Tooltip.Trigger asChild>
+                      <div className="w-48 h-48 flex items-center justify-center p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer">
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={client.logo}
+                            alt={client.name}
+                            layout="fill"
+                            objectFit="contain"
+                            className="p-2"
+                          />
+                        </div>
+                      </div>
+                    </Tooltip.Trigger>
+                    <Tooltip.Portal>
+                      <Tooltip.Content
+                        className="bg-gray-800 text-white px-4 py-2 rounded-md text-sm max-w-xs"
+                        sideOffset={5}
+                      >
+                        {client.description}
+                        <Tooltip.Arrow className="fill-gray-800" />
+                      </Tooltip.Content>
+                    </Tooltip.Portal>
+                  </Tooltip.Root>
+                ))}
+              </div>
+            </Tooltip.Provider>
           </div>
         </section>
 
-        <section className="bg-gray-100 py-16">
+        <section className="bg-gray-100 py-12">
           <div className="container mx-auto px-4 ">
             <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Nonprofit Projects</h2>
             <div className="relative mx-auto">
@@ -187,7 +223,7 @@ export default function PortfolioTimeline() {
                         <strong>Client:</strong> {project.client}
                       </p>
                       <p className="text-sm text-gray-500 mb-2">
-                        <strong>On behalfe of:</strong> {project.agency}
+                        <strong>On behalf of:</strong> {project.agency}
                       </p>
                       <p className="text-sm font-semibold text-blue-600 mb-3">{project.date}</p>
                       <div className="flex flex-wrap gap-2">
