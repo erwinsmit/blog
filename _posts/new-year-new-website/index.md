@@ -32,7 +32,7 @@ Unfortunately, static Next.js [can't optimize the images](https://nextjs.org/doc
 }
 ```
 
-This script builds the website, copies the CNAME file to the dist directory and pushes the _dist_ directory to the gh-pages branch.
+This script builds the website, copies the CNAME file to the dist directory and pushes the dist directory to the gh-pages branch.
 
 3. **Create GitHub action**
 

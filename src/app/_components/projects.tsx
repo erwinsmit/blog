@@ -99,12 +99,12 @@ const otherClients: OtherClient[] = [
   {
     name: "Heineken",
     logo: "./assets/clients/heineken.png",
-    description: "Build new features for the Heineken.com platform as part of a scrum team",
+    description: "Built new features for the Heineken.com platform as part of a scrum team",
   },
   {
     name: "D-Reizen",
     logo: "./assets/clients/d-reizen.png",
-    description: "Developed a booking platform to be used in the travelshops ",
+    description: "Developed a booking platform to be used in the travel shops",
   },
   { name: "Regus", logo: "/assets/clients/regus.png", description: "Worked on internal business applications" },
   { name: "Onvz", logo: "/assets/clients/onvz.png", description: "Built the website for the 'Jaaah' label" },
