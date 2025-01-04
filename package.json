@@ -4,7 +4,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "npx serve@latest out",
-    "publish": "next build && cpx CNAME dist && gh-pages -b gh-pages-test -d dist"
+    "publish": "next build && cpx CNAME dist && gh-pages -b gh-pages-post -d dist"
   },
   "dependencies": {
     "@radix-ui/react-tooltip": "^1.1.6",

@@ -16,8 +16,8 @@ const Header = () => {
             <Link href="/">
               <div className="flex items-center space-x-4 bg-blue-700 rounded-full py-2 px-4">
                 <Image
-                  src="/assets/selfie.jpg"
-                  alt="Your Name"
+                  src="/assets/selfie2.jpg"
+                  alt="Erwin Smit"
                   width={40}
                   height={40}
                   className="rounded-full border-2 border-white"
