@@ -32,7 +32,7 @@ export function Intro() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <p className="text-gray-600 mb-8 text-lg text-center">
-              I am a developer with nearly 15 years of experience in creating robust and scalable web applications. My
+              I am a developer with 15 years of experience in creating robust and scalable web applications. My
               expertise lies in frontend development, though I'm also proficient in server-side languages. I began my
               career with PHP, but over the past decade I've primarily worked with Node.js & C#. Beyond frontend
               development, I also have experience in setting up CI/CD pipelines. I'm also skilled with Azure.
