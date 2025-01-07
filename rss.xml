@@ -7,7 +7,7 @@
         <link>https://erwinsmit.com</link>
         <description><![CDATA[ Writing about coding and things. ]]></description>
         <language>en</language>
-        <lastBuildDate>Tue, 07 Jan 2025 19:19:26 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 07 Jan 2025 20:06:25 GMT</lastBuildDate>
         <atom:link href="https://erwinsmit.com/rss.xml" rel="self" type="application/rss+xml"/>
         
         
@@ -386,7 +386,7 @@ if (!host &amp;&amp; process.env.BLOCK_SWA_DEFAULT_HOST) {
             <link>https://erwinsmit.com/blog/sitecore-jss-nextjs-on-azure-static-web-app</link>
             <guid>https://erwinsmit.com/blog/sitecore-jss-nextjs-on-azure-static-web-app</guid>
             <description><![CDATA[<p>Azure <a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/extending-next-js-support-in-azure-static-web-apps/ba-p/3627975">announced a few weeks ago</a> that they now also support the non-static features from Next.js (e.g. <a href="https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration">Incremental Static Regeneration</a> &amp; <a href="https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props">Server Side Rendering</a>) on Azure Static Web Apps(SWA).</p>
-<p>Although I&#39;ve already had a way of <a href="/sitecore-nextjs-without-vercel">hosting JSS Next.js</a> on Azure. I was curious to see if I was able to deploy JSS Next.js using <strong>Azure SWA</strong> (I use <strong>SWA</strong> as abbreviation for Static Web App from here).</p>
+<p>Although I&#39;ve already had a way of <a href="/blog/sitecore-nextjs-without-vercel">hosting JSS Next.js</a> on Azure. I was curious to see if I was able to deploy JSS Next.js using <strong>Azure SWA</strong> (I use <strong>SWA</strong> as abbreviation for Static Web App from here).</p>
 <p>Of course nothing is easy, so let&#39;s run through the problems I&#39;ve had.</p>
 <h2>Problem 1, getting it deployed</h2>
 <p>I created a new Sitecore JSS project using the <a href="https://doc.sitecore.com/xp/en/developers/hd/190/sitecore-headless-development/walkthrough--creating-a-jss-next-js-application-with-the-jss-cli.html">JSS CLI</a>. After that I followed the steps to <a href="https://learn.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs-hybrid">deploy a hybrid Next.js</a> website to Azure. This connects to your GitHub repo and automatically creates a GitHub action. There I got the first problem:</p>
@@ -402,7 +402,7 @@ if (!host &amp;&amp; process.env.BLOCK_SWA_DEFAULT_HOST) {
 <h2>Problem 2, EditingDataDiskCache doesn&#39;t work</h2>
 <p>When hitting the Experience Editor I noticed the API routes were returning 500 errors, in Azure Application Insights I got the following errors:</p>
 <p><code>Editing data cache miss for key 9f1a55c0-ad8b-51e4-8064-6e427bf80000-y3iv6vzpa3 at /tmp/if-you-need-to-delete-this-open-an-issue-sync-disk-cache/editing-data</code></p>
-<p>I know from <a href="/sitecore-jss-on-azure-functions/">experience</a> that these errors are coming from the <a href="https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/editing/editing-data-cache.ts">EditingDataDiskCache</a>. Apparently with Azure SWA you can&#39;t write and read stuff to the TMP directory. Also configuring a different TMP directory did not fix this problem.</p>
+<p>I know from <a href="/blog/sitecore-jss-on-azure-functions/">experience</a> that these errors are coming from the <a href="https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/editing/editing-data-cache.ts">EditingDataDiskCache</a>. Apparently with Azure SWA you can&#39;t write and read stuff to the TMP directory. Also configuring a different TMP directory did not fix this problem.</p>
 <p>So, I had to find a different way of saving the <em>Preview data</em> somewhere. In Azure this can be done cheap and easy with a Storage account resource. I created a Storage account, added a container to the Blob Storage and now I just had to find a way to read/write from there.</p>
 <p><img src="/blog/blob-storage.png" alt="Blob storage"></p>
 <p>Luckily Azure has good <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-nodejs?tabs=environment-variable-windows#upload-blobs-to-a-container">documentation</a> on this and a <a href="https://www.npmjs.com/package/@azure/storage-blob">NPM package</a>.</p>
@@ -466,9 +466,9 @@ We did just that last year.</p>
 <h2>Old solution,</h2>
 <p>Last year I&#39;ve worked on a way of hosting Sitecore Next.js with Azure:</p>
 <ul>
-<li><a href="/nextjs-on-azure-functions/">Next.js on Azure Functions</a></li>
-<li><a href="/deploy-azure-functions-github-actions/">Deploy Azure Functions with Github Actions</a></li>
-<li><a href="/sitecore-jss-on-azure-functions/">Sitecore JSS on Azure functions</a></li>
+<li><a href="/blog/nextjs-on-azure-functions/">Next.js on Azure Functions</a></li>
+<li><a href="/blog/deploy-azure-functions-github-actions/">Deploy Azure Functions with Github Actions</a></li>
+<li><a href="/blog/sitecore-jss-on-azure-functions/">Sitecore JSS on Azure functions</a></li>
 </ul>
 <p>This diagram explains how it all works together:</p>
 <p><img src="/blog/old-solution.svg" alt="Old solution"></p>
@@ -498,10 +498,10 @@ app.UseStaticFiles(new StaticFileOptions {
             <title><![CDATA[ Auto-format typescript with a npm task ]]></title>
             <link>https://erwinsmit.com/blog/auto-format-typescript-npm-task</link>
             <guid>https://erwinsmit.com/blog/auto-format-typescript-npm-task</guid>
-            <description><![CDATA[<p>In a <a href="/scalable-head">previous post</a>, I wrote about the workflow of a headless Sitecore project. 
+            <description><![CDATA[<p>In a <a href="/blog/scalable-head">previous post</a>, I wrote about the workflow of a headless Sitecore project.
 One of the things I like to do is add formatting rules with ESLint and Prettier. On the pull request build, I check if those rules are applied correctly before the code is allowed to be merged in.</p>
 <h2>Do Sitecore developers like this?</h2>
-<p>Not always, when a Sitecore developer who is less involved in the whole JavaScript world tries to make some changes in a React rendering you can get some issues. If they don&#39;t have Prettier installed in their code editor it will be inevitable that they will get errors on the PR build. </p>
+<p>Not always, when a Sitecore developer who is less involved in the whole JavaScript world tries to make some changes in a React rendering you can get some issues. If they don&#39;t have Prettier installed in their code editor it will be inevitable that they will get errors on the PR build.</p>
 <p>How can they fix this easily without all the tooling installed?</p>
 <p>By adding this simple npm task to your project&#39;s package.json:</p>
 <pre><code class="language-JSON">&quot;scripts&quot;: {
@@ -595,10 +595,10 @@ On the project, we specifically refer to <strong>React renderings</strong> withi
             <title><![CDATA[ Can we keep up with Vercel? ]]></title>
             <link>https://erwinsmit.com/blog/can-we-keep-up-with-vercel</link>
             <guid>https://erwinsmit.com/blog/can-we-keep-up-with-vercel</guid>
-            <description><![CDATA[<p>Last year we&#39;ve spent quite some time getting <a href="/sitecore-nextjs-without-vercel">Sitecore JSS Next.js to work on Azure</a> (with ISG &amp; build-in APIs). However, some issues have come up since then.</p>
-<p>First of all, everything broke when I updated to <a href="https://nextjs.org/blog/next-12">Next 12</a> and I had to make some changes to get it to work again. I was getting some weird re-directs. </p>
-<p>Later <a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/azure-functions-v4-versus-v3/ba-p/3276055">Azure functions v4</a> was released and proxies are not supported anymore. </p>
-<p>Things like this make me wonder if it&#39;s worth trying to maintain the custom hosting solutions of Next.js and support all the functionality. With Vercel everything <strong>just works</strong>. </p>
+            <description><![CDATA[<p>Last year we&#39;ve spent quite some time getting <a href="/blog/sitecore-nextjs-without-vercel">Sitecore JSS Next.js to work on Azure</a> (with ISG &amp; build-in APIs). However, some issues have come up since then.</p>
+<p>First of all, everything broke when I updated to <a href="https://nextjs.org/blog/next-12">Next 12</a> and I had to make some changes to get it to work again. I was getting some weird re-directs.</p>
+<p>Later <a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/azure-functions-v4-versus-v3/ba-p/3276055">Azure functions v4</a> was released and proxies are not supported anymore.</p>
+<p>Things like this make me wonder if it&#39;s worth trying to maintain the custom hosting solutions of Next.js and support all the functionality. With Vercel everything <strong>just works</strong>.</p>
 ]]></description>
             <pubDate>Tue, 05 Apr 2022 00:00:00 GMT</pubDate>
           </item>
@@ -830,9 +830,9 @@ const UserSearch: React.FC&lt;UserSearchProps&gt; = ({ fields, rendering }): JSX
             <title><![CDATA[ Sitecore JSS on Azure Functions ]]></title>
             <link>https://erwinsmit.com/blog/sitecore-jss-on-azure-functions</link>
             <guid>https://erwinsmit.com/blog/sitecore-jss-on-azure-functions</guid>
-            <description><![CDATA[<p>As described in a previous post, we managed to host Next.js using a custom server in <a href="/nextjs-on-azure-functions/">Azure Functions</a>. Now let&#39;s see if this also works for Sitecore JSS. </p>
+            <description><![CDATA[<p>As described in a previous post, we managed to host Next.js using a custom server in <a href="/blog/nextjs-on-azure-functions/">Azure Functions</a>. Now let&#39;s see if this also works for Sitecore JSS.</p>
 <h2>Frontend only</h2>
-<p>For just the public facing part it was no problem, the exact same code as used in the custom server <a href="/nextjs-on-azure-functions/">previously</a> worked fine. 
+<p>For just the public facing part it was no problem, the exact same code as used in the custom server <a href="/blog/nextjs-on-azure-functions/">previously</a> worked fine.
 However to get the experience editor working we faced some challenges.</p>
 <h2>Experience editor</h2>
 <p>To get the Experience editor to work we have to do some more work. Mainly because the Next.js <a href="https://github.com/Sitecore/jss/tree/dev/samples/nextjs/src/pages/api/editing">API routes</a> are not supported when using a <a href="https://nextjs.org/docs/advanced-features/custom-server">custom server</a>.</p>
@@ -845,21 +845,19 @@ However to get the experience editor working we faced some challenges.</p>
 How these endpoints work together is explained well in the <a href="https://jss.sitecore.com/docs/nextjs/experience-editor/architecture">JSS Docs</a>.</p>
 <p>Implementing these endpoints was done with the following code, this example is for the <a href="https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/middleware/editing-render-middleware.ts">Editing Render Middleware</a>:</p>
 <pre><code class="language-javascript">import { AzureFunction, Context, HttpRequest } from &quot;@azure/functions&quot;;
-import { EditingRenderMiddleware } from &#39;@sitecore-jss/sitecore-jss-nextjs/middleware&#39;;
+import { EditingRenderMiddleware } from &quot;@sitecore-jss/sitecore-jss-nextjs/middleware&quot;;
 
-const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise&lt;void&gt; {    
-    const handler = new EditingRenderMiddleware().getHandler();
+const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise&lt;void&gt; {
+  const handler = new EditingRenderMiddleware().getHandler();
 
-    try {
-        await handler(context.req, context.res);
-
-    } catch (e) {
-        context.log(e);
-        context.res = {
-            status: 500
-        };
-    }
-
+  try {
+    await handler(context.req, context.res);
+  } catch (e) {
+    context.log(e);
+    context.res = {
+      status: 500,
+    };
+  }
 };
 
 export default httpTrigger;
@@ -867,7 +865,7 @@ export default httpTrigger;
 <h3>Response handler</h3>
 <p>The problem is that the response from Azure does not contain the same methods as Vercel. An <a href="https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/middleware/editing-render-middleware.ts#L86">example</a> is seen here:</p>
 <pre><code class="language-javascript">return res.status(405).json({
-    html: `&lt;html&gt;&lt;body&gt;Invalid request method &#39;${method}&#39;&lt;/body&gt;&lt;/html&gt;`,
+  html: `&lt;html&gt;&lt;body&gt;Invalid request method &#39;${method}&#39;&lt;/body&gt;&lt;/html&gt;`,
 });
 </code></pre>
 <p>Azure Functions will return errors that these methods don&#39;t exist. These methods are used throughout the Middlewares from Sitecore JSS. Do we need to replace all those middlewares? That would be a lot of work.</p>
@@ -884,7 +882,7 @@ export default httpTrigger;
 
     nextContextRes.setPreviewData = (previewData: string) =&gt; {
         const manifest = require(&#39;.next/prerender-manifest.json&#39;);
-        
+
         const cookies = setPreviewData(previewData, manifest.preview);
 
         nextContextRes.headers = {
@@ -901,7 +899,7 @@ etc etc...
     try {
         await handler(customContextReq, nextResponseHandler);
 </code></pre>
-<p>Creating the <code>setPreview</code> method was a pain. Because the correct functions are not <a href="https://github.com/vercel/next.js/blob/5ddee4494bf1fbcfd91ce81bc59f8de66949c9fc/packages/next/server/api-utils.ts#L420">exposed by Next.js</a>. For this reason I ended up doing quite a bit of copy-pasting from the Next.js repository to get it to work. </p>
+<p>Creating the <code>setPreview</code> method was a pain. Because the correct functions are not <a href="https://github.com/vercel/next.js/blob/5ddee4494bf1fbcfd91ce81bc59f8de66949c9fc/packages/next/server/api-utils.ts#L420">exposed by Next.js</a>. For this reason I ended up doing quite a bit of copy-pasting from the Next.js repository to get it to work.</p>
 <h3>Editing data cache</h3>
 <p>Another issue we faced was the caching middleware throwing errors. After some digging the <a href="https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/middleware/editing-data-cache.ts#L24">following line</a> caused an issue:</p>
 <pre><code class="language-javascript">  constructor() {
@@ -909,13 +907,13 @@ etc etc...
     this.cache = new Cache(&#39;editing-data&#39;, { compression: &#39;gzip&#39;, location: os.tmpdir() });
   }
 </code></pre>
-<p><code>os.tempdir()</code> was pointing to a directory where a Consumption Based Azure Function was not allowed to read/write to. </p>
+<p><code>os.tempdir()</code> was pointing to a directory where a Consumption Based Azure Function was not allowed to read/write to.</p>
 <p>To resolve this, we created a custom EditingDataCache middleware function that sets a different directory. That middleware is added as a parameter to the EditingDataMiddleWare:</p>
 <pre><code class="language-javascript">const handler = new EditingDataMiddleware({
-    editingDataCache: editingDataDiskCache
+  editingDataCache: editingDataDiskCache,
 }).getHandler();
 </code></pre>
-<p>It would be nice if this directory could be set as a parameter to the existing EditingDataDiskCache class. Hopefully, this <a href="https://github.com/Sitecore/jss/pull/839">pull request</a> will sort that out. </p>
+<p>It would be nice if this directory could be set as a parameter to the existing EditingDataDiskCache class. Hopefully, this <a href="https://github.com/Sitecore/jss/pull/839">pull request</a> will sort that out.</p>
 <h2>Tell Sitecore where to look for the Azure Function</h2>
 <p>Finally tell sitecore where to look for the Azure Function. This can be done in the config files of the Sitecore instance.</p>
 <pre><code class="language-xml">&lt;app name=&quot;jss-nextjs-app&quot;
@@ -924,7 +922,7 @@ etc etc...
     serverSideRenderingEngineApplicationUrl=&quot;https://${yourfunctionapp}.azurewebsites.net/&quot;
 /&gt;
 </code></pre>
-<p>That&#39;s it, those were the problems we faced. Hopefully this could be helpful for anyone else facing similar issues. </p>
+<p>That&#39;s it, those were the problems we faced. Hopefully this could be helpful for anyone else facing similar issues.</p>
 ]]></description>
             <pubDate>Wed, 27 Oct 2021 00:00:00 GMT</pubDate>
           </item>
@@ -934,7 +932,7 @@ etc etc...
             <link>https://erwinsmit.com/blog/deploy-azure-functions-github-actions</link>
             <guid>https://erwinsmit.com/blog/deploy-azure-functions-github-actions</guid>
             <description><![CDATA[<p>When deploying Azure Functions the most straightforward approach is to use the <strong>actions/checkout@v2</strong> <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-github-actions">recommended by Azure</a></p>
-<p>However, there are some restrictions with this approach. Using this approach. The Azure Functions will only work using the <strong><a href="https://docs.microsoft.com/en-us/azure/azure-functions/run-functions-from-deployment-package">Run from package option</a></strong>. There are two reasons why this wasn&#39;t great for a <a href="/nextjs-on-azure-functions">Next.js custom server</a>.</p>
+<p>However, there are some restrictions with this approach. Using this approach. The Azure Functions will only work using the <strong><a href="https://docs.microsoft.com/en-us/azure/azure-functions/run-functions-from-deployment-package">Run from package option</a></strong>. There are two reasons why this wasn&#39;t great for a <a href="/blog/nextjs-on-azure-functions">Next.js custom server</a>.</p>
 <ol>
 <li><p>Next.js requires to have write access for its <a href="https://nextjs.org/docs/basic-features/data-fetching#incremental-static-regeneration">Incremental Static Generation</a>. With the <strong>Run from package option</strong> you can&#39;t use this feature.</p>
 </li>
