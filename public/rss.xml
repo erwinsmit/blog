@@ -7,12 +7,12 @@
         <link>https://erwinsmit.com</link>
         <description><![CDATA[ Writing about coding and things. ]]></description>
         <language>en</language>
-        <lastBuildDate>Sun, 05 Jan 2025 18:29:47 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 07 Jan 2025 19:19:26 GMT</lastBuildDate>
         <atom:link href="https://erwinsmit.com/rss.xml" rel="self" type="application/rss+xml"/>
         
         
           <item>
-            <title>New year, new website</title>
+            <title><![CDATA[ New year, new website ]]></title>
             <link>https://erwinsmit.com/blog/new-year-new-website</link>
             <guid>https://erwinsmit.com/blog/new-year-new-website</guid>
             <description><![CDATA[<p>My website used to run on Gatsby, inspired by Dan Abramov&#39;s old <a href="https://github.com/gaearon/overreacted.io/tree/main">overreacted blog</a>. To update all the dependencies, there were too many breaking changes, so I thought I might as well change to Next.js. I wanted to change my website for a while since I&#39;m now a freelance developer. I still keep all the (older) blog items but added my profile and projects to the homepage.</p>
@@ -70,7 +70,7 @@ jobs:
           </item>
         
           <item>
-            <title>Sitecore XM Cloud multisite styling</title>
+            <title><![CDATA[ Sitecore XM Cloud multisite styling ]]></title>
             <link>https://erwinsmit.com/blog/xmcloud-nextjs-multisite-styling</link>
             <guid>https://erwinsmit.com/blog/xmcloud-nextjs-multisite-styling</guid>
             <description><![CDATA[<p>I started working on an interesting Sitecore headless project, so it&#39;s time to start blogging about my findings again! 
@@ -210,7 +210,7 @@ function App({ Component, pageProps }: AppProps&lt;SitecorePageProps&gt;): JSX.E
           </item>
         
           <item>
-            <title>My frontend stack in 2023</title>
+            <title><![CDATA[ My frontend stack in 2023 ]]></title>
             <link>https://erwinsmit.com/blog/bullet-proof-frontend-stack-2023</link>
             <guid>https://erwinsmit.com/blog/bullet-proof-frontend-stack-2023</guid>
             <description><![CDATA[<p>My frontend stack in 2023, what are my choices and the reasoning behind them:</p>
@@ -261,7 +261,7 @@ Older server-side technologies have issues with CSS in JS too (e.g. <a href="htt
           </item>
         
           <item>
-            <title>Speed up Sitecore JSS Next.js local development</title>
+            <title><![CDATA[ Speed up Sitecore JSS Next.js local development ]]></title>
             <link>https://erwinsmit.com/blog/speed-up-sitecore-jss-nextjs-local-development</link>
             <guid>https://erwinsmit.com/blog/speed-up-sitecore-jss-nextjs-local-development</guid>
             <description><![CDATA[<p>Sitecore developers are traditionally .NET developers and .NET developers traditionally use Windows for their local development environments. 
@@ -315,7 +315,7 @@ Dell XPS, 12th generation i7, 32GB RAM</p>
           </item>
         
           <item>
-            <title>Block generated domains by Azure Static Web Apps</title>
+            <title><![CDATA[ Block generated domains by Azure Static Web Apps ]]></title>
             <link>https://erwinsmit.com/blog/block-automatically-generated-domain-azure-swa</link>
             <guid>https://erwinsmit.com/blog/block-automatically-generated-domain-azure-swa</guid>
             <description><![CDATA[<p>Please note: This post applies for <a href="https://learn.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs-hybrid">Hybrid Next.js Azure Static Web Apps</a></p>
@@ -341,7 +341,7 @@ if (!host &amp;&amp; process.env.BLOCK_SWA_DEFAULT_HOST) {
           </item>
         
           <item>
-            <title>Add caching to Sitecore JSS Next.js public directory</title>
+            <title><![CDATA[ Add caching to Sitecore JSS Next.js public directory ]]></title>
             <link>https://erwinsmit.com/blog/caching-nextjs-public-directory</link>
             <guid>https://erwinsmit.com/blog/caching-nextjs-public-directory</guid>
             <description><![CDATA[<p>By default assets from the public directory have no cache headers set. Usually you have assets that never change and are quite large in this directory. In a recent project I noticed that our font files were loaded on each browser request. As shown in the screenshot there is no cache header on the font file.</p>
@@ -367,7 +367,7 @@ if (!host &amp;&amp; process.env.BLOCK_SWA_DEFAULT_HOST) {
           </item>
         
           <item>
-            <title>Multiline underline transition</title>
+            <title><![CDATA[ Multiline underline transition ]]></title>
             <link>https://erwinsmit.com/blog/multiline-transition</link>
             <guid>https://erwinsmit.com/blog/multiline-transition</guid>
             <description><![CDATA[<p>For a project I had to implement an underline transition on text links. For single line transitions there are lot of examples where you set a background on a pseudo element. For multiline I had look a bit harder. I found this <a href="https://nickymeuleman.netlify.app/blog/css-animated-wrapping-underline">great example</a> for multiline underline transitions. I tweaked it a bit so the animation flows from left to right. See below for a React implementation (extending MUI&#39;s Link component).</p>
@@ -382,7 +382,7 @@ if (!host &amp;&amp; process.env.BLOCK_SWA_DEFAULT_HOST) {
           </item>
         
           <item>
-            <title>Sitecore JSS Next.js on Azure Static Web Apps</title>
+            <title><![CDATA[ Sitecore JSS Next.js on Azure Static Web Apps ]]></title>
             <link>https://erwinsmit.com/blog/sitecore-jss-nextjs-on-azure-static-web-app</link>
             <guid>https://erwinsmit.com/blog/sitecore-jss-nextjs-on-azure-static-web-app</guid>
             <description><![CDATA[<p>Azure <a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/extending-next-js-support-in-azure-static-web-apps/ba-p/3627975">announced a few weeks ago</a> that they now also support the non-static features from Next.js (e.g. <a href="https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration">Incremental Static Regeneration</a> &amp; <a href="https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props">Server Side Rendering</a>) on Azure Static Web Apps(SWA).</p>
@@ -444,7 +444,7 @@ const handler = new EditingDataMiddleware({ editingDataCache: editingDataCache }
           </item>
         
           <item>
-            <title>Sitecore JSS Next.js without Vercel</title>
+            <title><![CDATA[ Sitecore JSS Next.js without Vercel ]]></title>
             <link>https://erwinsmit.com/blog/sitecore-nextjs-without-vercel</link>
             <guid>https://erwinsmit.com/blog/sitecore-nextjs-without-vercel</guid>
             <description><![CDATA[<p>As we all know by now, Vercel is a great platform to host your Next.js apps. I currently use it for some small projects and I love the developer experience.
@@ -495,7 +495,7 @@ app.UseStaticFiles(new StaticFileOptions {
           </item>
         
           <item>
-            <title>Auto-format typescript with a npm task</title>
+            <title><![CDATA[ Auto-format typescript with a npm task ]]></title>
             <link>https://erwinsmit.com/blog/auto-format-typescript-npm-task</link>
             <guid>https://erwinsmit.com/blog/auto-format-typescript-npm-task</guid>
             <description><![CDATA[<p>In a <a href="/scalable-head">previous post</a>, I wrote about the workflow of a headless Sitecore project. 
@@ -515,7 +515,7 @@ One of the things I like to do is add formatting rules with ESLint and Prettier.
           </item>
         
           <item>
-            <title>Create a scalable head for Sitecore JSS</title>
+            <title><![CDATA[ Create a scalable head for Sitecore JSS ]]></title>
             <link>https://erwinsmit.com/blog/scalable-head</link>
             <guid>https://erwinsmit.com/blog/scalable-head</guid>
             <description><![CDATA[<p>I recently worked on a headless project with Sitecore, the way of working I choose there worked really well in my opinion. In this post, I like to talk about the choices I made and how they helped the team create a good workflow.</p>
@@ -592,7 +592,7 @@ On the project, we specifically refer to <strong>React renderings</strong> withi
           </item>
         
           <item>
-            <title>Can we keep up with Vercel?</title>
+            <title><![CDATA[ Can we keep up with Vercel? ]]></title>
             <link>https://erwinsmit.com/blog/can-we-keep-up-with-vercel</link>
             <guid>https://erwinsmit.com/blog/can-we-keep-up-with-vercel</guid>
             <description><![CDATA[<p>Last year we&#39;ve spent quite some time getting <a href="/sitecore-nextjs-without-vercel">Sitecore JSS Next.js to work on Azure</a> (with ISG &amp; build-in APIs). However, some issues have come up since then.</p>
@@ -604,7 +604,7 @@ On the project, we specifically refer to <strong>React renderings</strong> withi
           </item>
         
           <item>
-            <title>Integrate OrderCloud with Sitecore JSS Next.js</title>
+            <title><![CDATA[ Integrate OrderCloud with Sitecore JSS Next.js ]]></title>
             <link>https://erwinsmit.com/blog/ordercloud-sitecore-jss-nextjs</link>
             <guid>https://erwinsmit.com/blog/ordercloud-sitecore-jss-nextjs</guid>
             <description><![CDATA[<p>In this blog post, I like to explain how easy it is to add some products from OrderCloud to a pre-rendered page in Sitecore JSS using Next.js</p>
@@ -687,7 +687,7 @@ export default ProductList;
           </item>
         
           <item>
-            <title>Add external datasource to Sitecore JSS</title>
+            <title><![CDATA[ Add external datasource to Sitecore JSS ]]></title>
             <link>https://erwinsmit.com/blog/add-external-datasource-to-sitecore-jss</link>
             <guid>https://erwinsmit.com/blog/add-external-datasource-to-sitecore-jss</guid>
             <description><![CDATA[<h2>Sitecore JSS GraphQL out of the box</h2>
@@ -827,7 +827,7 @@ const UserSearch: React.FC&lt;UserSearchProps&gt; = ({ fields, rendering }): JSX
           </item>
         
           <item>
-            <title>Sitecore JSS on Azure Functions</title>
+            <title><![CDATA[ Sitecore JSS on Azure Functions ]]></title>
             <link>https://erwinsmit.com/blog/sitecore-jss-on-azure-functions</link>
             <guid>https://erwinsmit.com/blog/sitecore-jss-on-azure-functions</guid>
             <description><![CDATA[<p>As described in a previous post, we managed to host Next.js using a custom server in <a href="/nextjs-on-azure-functions/">Azure Functions</a>. Now let&#39;s see if this also works for Sitecore JSS. </p>
@@ -930,7 +930,7 @@ etc etc...
           </item>
         
           <item>
-            <title>Deploy Azure Functions with GitHub Actions using AzCopy</title>
+            <title><![CDATA[ Deploy Azure Functions with GitHub Actions using AzCopy ]]></title>
             <link>https://erwinsmit.com/blog/deploy-azure-functions-github-actions</link>
             <guid>https://erwinsmit.com/blog/deploy-azure-functions-github-actions</guid>
             <description><![CDATA[<p>When deploying Azure Functions the most straightforward approach is to use the <strong>actions/checkout@v2</strong> <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-github-actions">recommended by Azure</a></p>
@@ -1020,7 +1020,7 @@ jobs:
           </item>
         
           <item>
-            <title>Next.js on Azure Functions</title>
+            <title><![CDATA[ Next.js on Azure Functions ]]></title>
             <link>https://erwinsmit.com/blog/nextjs-on-azure-functions</link>
             <guid>https://erwinsmit.com/blog/nextjs-on-azure-functions</guid>
             <description><![CDATA[<p>Next.js is a great framework for creating react applications. I was always a fan of <strong>SSG (Static Site Generation)</strong> using for example Gatsby (this blog is using Gatsby too). 
@@ -1175,7 +1175,7 @@ export async function getStaticProps() {
           </item>
         
           <item>
-            <title>Speed up your Sitecore React implementation</title>
+            <title><![CDATA[ Speed up your Sitecore React implementation ]]></title>
             <link>https://erwinsmit.com/blog/speed-up-your-sitecore-react-implementation</link>
             <guid>https://erwinsmit.com/blog/speed-up-your-sitecore-react-implementation</guid>
             <description><![CDATA[<p>On a lot of Sitecore sites that jumped on the React bandwagon a while ago I notice some performance issues. In this post I will explain how to fix this and make your Sitecore/React implementation almost as fast as a site built with <a href="https://www.erwinsmit.com/make-your-sxa-site-perform/">Stencil components</a></p>
@@ -1440,7 +1440,7 @@ loadComponents().then(() =&gt; {
           </item>
         
           <item>
-            <title>Get intellisense on your Stencil webcomponents in VS Code</title>
+            <title><![CDATA[ Get intellisense on your Stencil webcomponents in VS Code ]]></title>
             <link>https://erwinsmit.com/blog/webcomponents-intellisense</link>
             <guid>https://erwinsmit.com/blog/webcomponents-intellisense</guid>
             <description><![CDATA[<p>As discussed in the previous blogpost we are happy with the combination of <a href="https://www.erwinsmit.com/make-your-sxa-site-perform/">Sitecore SXA &amp; Stencil webcomponents</a>. However there was a small detail that was annoying me...</p>
@@ -1466,7 +1466,7 @@ With minimal effort you can also generate a custom-elements.json for intellisens
           </item>
         
           <item>
-            <title>How to make your Sitecore SXA site perform</title>
+            <title><![CDATA[ How to make your Sitecore SXA site perform ]]></title>
             <link>https://erwinsmit.com/blog/make-your-sxa-site-perform</link>
             <guid>https://erwinsmit.com/blog/make-your-sxa-site-perform</guid>
             <description><![CDATA[<p>From my experience websites that are built using Sitecore SXA with the standard themes enabled don&#39;t perform very well. In this post I dive into the root cause of this problem and how to fix this.</p>
@@ -1644,7 +1644,7 @@ Web Components have been around for a while, but now Microsoft is quickly killin
           </item>
         
           <item>
-            <title>Exploring the apollo graphql stack</title>
+            <title><![CDATA[ Exploring the apollo graphql stack ]]></title>
             <link>https://erwinsmit.com/blog/getting-started-with-apollo-federation</link>
             <guid>https://erwinsmit.com/blog/getting-started-with-apollo-federation</guid>
             <description><![CDATA[<h2>Why?</h2>
@@ -1839,7 +1839,7 @@ In the Film type there is a reference to WatchListItem, because this will be res
           </item>
         
           <item>
-            <title>Creating local npm package for sharing between multiple react applications</title>
+            <title><![CDATA[ Creating local npm package for sharing between multiple react applications ]]></title>
             <link>https://erwinsmit.com/blog/local-npm-package-to-share-between-react-apps</link>
             <guid>https://erwinsmit.com/blog/local-npm-package-to-share-between-react-apps</guid>
             <description><![CDATA[<h2>The usecase</h2>
@@ -1958,7 +1958,7 @@ export * from &#39;./dep2.ts&#39;
           </item>
         
           <item>
-            <title>Azure devops create pipeline "Cannot read property 'childFolders' of undefined"</title>
+            <title><![CDATA[ Azure devops create pipeline "Cannot read property 'childFolders' of undefined" ]]></title>
             <link>https://erwinsmit.com/blog/azure-devops-create-pipeline-error</link>
             <guid>https://erwinsmit.com/blog/azure-devops-create-pipeline-error</guid>
             <description><![CDATA[<h2>Problems creating a new release pipeline in Azure Devops</h2>

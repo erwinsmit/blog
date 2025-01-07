@@ -6,7 +6,7 @@ spoiler: Deploy Azure Functions directly to File Share
 
 When deploying Azure Functions the most straightforward approach is to use the **actions/checkout@v2** [recommended by Azure](https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-github-actions)
 
-However, there are some restrictions with this approach. Using this approach. The Azure Functions will only work using the **[Run from package option](https://docs.microsoft.com/en-us/azure/azure-functions/run-functions-from-deployment-package)**. There are two reasons why this wasn't great for a [Next.js custom server](/nextjs-on-azure-functions).
+However, there are some restrictions with this approach. Using this approach. The Azure Functions will only work using the **[Run from package option](https://docs.microsoft.com/en-us/azure/azure-functions/run-functions-from-deployment-package)**. There are two reasons why this wasn't great for a [Next.js custom server](/blog/nextjs-on-azure-functions).
 
 1. Next.js requires to have write access for its [Incremental Static Generation](https://nextjs.org/docs/basic-features/data-fetching#incremental-static-regeneration). With the **Run from package option** you can't use this feature.
 

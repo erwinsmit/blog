@@ -39,7 +39,7 @@ export function Intro() {
             </p>
 
             <p className="text-gray-600 mb-8 text-lg text-center">
-              I enjoy sharing knowledge and was awarded{" "}
+              I enjoy sharing knowledge and as a result I was awarded{" "}
               <a
                 className="underline text-blue-600 hover:text-blue-800"
                 href="https://mvp.sitecore.com/en/Directory/Profile?id=f3ffcdb2e6f640a7a13008dab5a5ea18"

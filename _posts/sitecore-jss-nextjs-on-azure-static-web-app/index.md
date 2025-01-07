@@ -6,7 +6,7 @@ spoiler: Azure Static Web Apps now support non-static features of Next.js, inclu
 
 Azure [announced a few weeks ago](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/extending-next-js-support-in-azure-static-web-apps/ba-p/3627975) that they now also support the non-static features from Next.js (e.g. [Incremental Static Regeneration](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration) & [Server Side Rendering](https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props)) on Azure Static Web Apps(SWA).
 
-Although I've already had a way of [hosting JSS Next.js](/sitecore-nextjs-without-vercel) on Azure. I was curious to see if I was able to deploy JSS Next.js using **Azure SWA** (I use **SWA** as abbreviation for Static Web App from here).
+Although I've already had a way of [hosting JSS Next.js](/blog/sitecore-nextjs-without-vercel) on Azure. I was curious to see if I was able to deploy JSS Next.js using **Azure SWA** (I use **SWA** as abbreviation for Static Web App from here).
 
 Of course nothing is easy, so let's run through the problems I've had.
 
@@ -37,7 +37,7 @@ When hitting the Experience Editor I noticed the API routes were returning 500 e
 
 `Editing data cache miss for key 9f1a55c0-ad8b-51e4-8064-6e427bf80000-y3iv6vzpa3 at /tmp/if-you-need-to-delete-this-open-an-issue-sync-disk-cache/editing-data`
 
-I know from [experience](/sitecore-jss-on-azure-functions/) that these errors are coming from the [EditingDataDiskCache](https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/editing/editing-data-cache.ts). Apparently with Azure SWA you can't write and read stuff to the TMP directory. Also configuring a different TMP directory did not fix this problem.
+I know from [experience](/blog/sitecore-jss-on-azure-functions/) that these errors are coming from the [EditingDataDiskCache](https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/editing/editing-data-cache.ts). Apparently with Azure SWA you can't write and read stuff to the TMP directory. Also configuring a different TMP directory did not fix this problem.
 
 So, I had to find a different way of saving the _Preview data_ somewhere. In Azure this can be done cheap and easy with a Storage account resource. I created a Storage account, added a container to the Blob Storage and now I just had to find a way to read/write from there.
 

@@ -26,7 +26,7 @@ export async function generateRssFeed() {
 
             return `
           <item>
-            <title>${post.title}</title>
+            <title><![CDATA[ ${post.title} ]]></title>
             <link>${baseUrl}/blog/${post.slug}</link>
             <guid>${baseUrl}/blog/${post.slug}</guid>
             <description><![CDATA[${postContentMarkDownToHtml}]]></description>

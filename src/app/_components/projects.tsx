@@ -172,11 +172,11 @@ export default function PortfolioTimeline() {
               Other Clients I've worked for over the years
             </h2>
             <Tooltip.Provider>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 justify-items-center">
+              <div className="flex flex-wrap gap-4 justify-center">
                 {otherClients.map((client, index) => (
                   <Tooltip.Root key={index}>
                     <Tooltip.Trigger asChild>
-                      <div className="w-48 h-48 flex items-center justify-center p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer">
+                      <div className="w-40 h-40 flex items-center justify-center p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer">
                         <div className="relative w-full h-full">
                           <Image
                             src={client.logo}

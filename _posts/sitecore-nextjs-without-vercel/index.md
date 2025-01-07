@@ -26,9 +26,9 @@ We did just that last year.
 
 Last year I've worked on a way of hosting Sitecore Next.js with Azure:
 
-- [Next.js on Azure Functions](/nextjs-on-azure-functions/)
-- [Deploy Azure Functions with Github Actions](/deploy-azure-functions-github-actions/)
-- [Sitecore JSS on Azure functions](/sitecore-jss-on-azure-functions/)
+- [Next.js on Azure Functions](/blog/nextjs-on-azure-functions/)
+- [Deploy Azure Functions with Github Actions](/blog/deploy-azure-functions-github-actions/)
+- [Sitecore JSS on Azure functions](/blog/sitecore-jss-on-azure-functions/)
 
 This diagram explains how it all works together:
 
