@@ -1,0 +1,1998 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0" 
+      xmlns:atom="http://www.w3.org/2005/Atom"
+      xmlns:content="http://purl.org/rss/1.0/modules/content/">
+      <channel>
+        <title><![CDATA[ Erwin Smit blog. ]]></title>
+        <link>https://erwinsmit.com</link>
+        <description><![CDATA[ Writing about coding and things. ]]></description>
+        <language>en</language>
+        <lastBuildDate>Tue, 07 Jan 2025 19:19:26 GMT</lastBuildDate>
+        <atom:link href="https://erwinsmit.com/rss.xml" rel="self" type="application/rss+xml"/>
+        
+        
+          <item>
+            <title><![CDATA[ New year, new website ]]></title>
+            <link>https://erwinsmit.com/blog/new-year-new-website</link>
+            <guid>https://erwinsmit.com/blog/new-year-new-website</guid>
+            <description><![CDATA[<p>My website used to run on Gatsby, inspired by Dan Abramov&#39;s old <a href="https://github.com/gaearon/overreacted.io/tree/main">overreacted blog</a>. To update all the dependencies, there were too many breaking changes, so I thought I might as well change to Next.js. I wanted to change my website for a while since I&#39;m now a freelance developer. I still keep all the (older) blog items but added my profile and projects to the homepage.</p>
+<p>Migrating the blog was pretty easy. The blog posts are written in Markdown; all I had to do was change the way they are built into pages.</p>
+<p>Vercel would&#39;ve been the easiest way to host the website; however, I like the way the website used to run on GitHub Pages as part of the repository. This website can easily run as a static website, so GitHub Pages is ideal.</p>
+<p><strong>Three steps to host Next.js on GitHub Pages:</strong></p>
+<ol>
+<li><strong>Add static export to next.config.ts</strong></li>
+</ol>
+<pre><code class="language-typescript">const nextConfig = {
+  output: &quot;export&quot;,
+  images: { unoptimized: true },
+  distDir: &quot;dist&quot;,
+};
+</code></pre>
+<p>Unfortunately, static Next.js <a href="https://nextjs.org/docs/pages/building-your-application/deploying/static-exports#unsupported-features">can&#39;t optimize the images</a> for you with the standard loader, so make sure you do this yourself!</p>
+<ol start="2">
+<li><strong>Create publish task</strong></li>
+</ol>
+<pre><code class="language-json">&quot;scripts&quot;: {
+    &quot;publish&quot;: &quot;next build &amp;&amp; cpx CNAME dist &amp;&amp; gh-pages -b gh-pages -d dist&quot;
+}
+</code></pre>
+<p>This script builds the website, copies the CNAME file to the dist directory and pushes the dist directory to the gh-pages branch.</p>
+<ol start="3">
+<li><strong>Create GitHub action</strong></li>
+</ol>
+<pre><code class="language-yml">name: Publish website
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: &quot;20&quot;
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/erwinsmit/blog
+      - run: npm ci
+      - run: npm run publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+</code></pre>
+<p>Although you can publish the changes locally, using a pipeline is a nicer way of publishing the website. Each time the main branch is updated, the website is now automatically built and published.</p>
+<p>Check out <a href="https://github.com/erwinsmit/blog">the blog on GitHub!</a></p>
+]]></description>
+            <pubDate>Fri, 03 Jan 2025 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Sitecore XM Cloud multisite styling ]]></title>
+            <link>https://erwinsmit.com/blog/xmcloud-nextjs-multisite-styling</link>
+            <guid>https://erwinsmit.com/blog/xmcloud-nextjs-multisite-styling</guid>
+            <description><![CDATA[<p>I started working on an interesting Sitecore headless project, so it&#39;s time to start blogging about my findings again! 
+Currently, I&#39;m working on a project where a SXA multisite setup is migrated to XM Cloud.</p>
+<p>Handling the multisite setup is now very easy thanks to the <a href="https://doc.sitecore.com/xp/en/developers/hd/21/sitecore-headless-development/the-next-js-multisite-add-on.html">multisite Next.js addon</a> provided by the JSS team. </p>
+<p>However, one thing I can&#39;t find in the documentation, how do you use a specific stylesheet for each SXA site? 
+We are leaving the styling as-is, so I want to load the existing SCSS files into Next.js.</p>
+<p>In Next.js you can add your SCSS to the application with a simple import:</p>
+<pre><code class="language-javascript">import &#39;scss/styles.scss&#39;;
+
+function App({ Component, pageProps }: AppProps&lt;SitecorePageProps&gt;): JSX.Element {
+  const { dictionary, ...rest } = pageProps;
+  
+  return (
+    &lt;&gt;
+      &lt;I18nProvider lngDict={dictionary} locale={pageProps.locale}&gt;
+        &lt;Component {...rest} /&gt;
+      &lt;/I18nProvider&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<p>The problem I have here, you only know which site you are on <strong>within</strong> the App function. And within the App function, it&#39;s not possible to import SCSS. With a couple of steps, I have worked around this.</p>
+<h2>1. Build your SCSS yourself</h2>
+<p>Instead of using Next.js to build the SCSS, setup a webpack file yourself:</p>
+<pre><code class="language-javascript">module.exports = {
+    entry: {
+        siteA: [&#39;./scss/siteA/main.scss&#39;],
+        siteB: [&#39;./scss/siteB/main.scss&#39;],
+    },
+    output: {
+        path: path.join(__dirname, &#39;public/static&#39;),     
+    },
+    module: {
+        rules: [
+            {
+                // Using MiniCssExtractPlugin to write the output to its own file.
+                test: /\.scss$/,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
+                    {
+                        loader: &#39;css-loader&#39;,
+                        options: {
+                            importLoaders: 2
+                        }
+                    },
+                    {
+                        loader: &#39;postcss-loader&#39;,
+                    },
+                    {
+                        loader: &#39;sass-loader&#39;,
+                        options: {
+                            implementation: require(&quot;sass&quot;),
+                        }
+                    }
+                ]
+            },
+            
+        ]
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: ({ chunk }) =&gt; `${chunk.name.replace(&#39;/js/&#39;, &#39;/css/&#39;)}.css`,
+        })
+    ]
+</code></pre>
+<p>Now add the following tasks to your package.json:</p>
+<pre><code class="language-json">&quot;build:scss&quot;: &quot;rimraf public/static &amp;&amp; webpack --config webpack.scss.config.js --mode production&quot;,
+&quot;scss:watch&quot;: &quot;rimraf public/static &amp;&amp; webpack --config webpack.scss.config.js --mode development --watch&quot;,
+</code></pre>
+<p>Add the watch and build tasks to the existing start and build scripts so they are run during development and build:</p>
+<pre><code class="language-json">&quot;build&quot;: &quot;npm-run-all --serial bootstrap next:build build:scss&quot;,
+&quot;start:connected&quot;: &quot;npm-run-all --serial bootstrap --parallel next:dev start:watch-components scss:watch&quot;,    
+</code></pre>
+<p>As you notice I am using the <code>public/static</code> directory for build assets, so it&#39;s a good idea to add <code>public/static</code> to your .gitignore file and remove the directory on each build (using <a href="https://www.npmjs.com/package/rimraf">rimraf</a> in the example).</p>
+<p>In the <code>_app.tsx</code> you can now refer to the correct stylesheet based on the SXA site:</p>
+<pre><code class="language-javascript">/* eslint-disable @next/next/no-css-tags */
+function App({ Component, pageProps }: AppProps&lt;SitecorePageProps&gt;): JSX.Element {
+  const { dictionary, ...rest } = pageProps;
+  
+  return (
+    &lt;&gt;
+    &lt;Head&gt;
+      &lt;link rel=&quot;stylesheet&quot; href={`/static/${(pageProps.site.name)}.css`} /&gt;
+    &lt;/Head&gt;
+</code></pre>
+<p>I added the <code>/* eslint-disable @next/next/no-css-tags */</code> line because <a href="https://nextjs.org/docs/messages/no-css-tags">Next.js doesn&#39;t like it</a> when you add CSS with a regular stylesheet link. I think this is silly, we have been adding stylesheets this way for 20 years. So I have no problem using this eslint-disable line. I&#39;m also not seeing any performance concerns here.</p>
+<h2>2. What about caching?</h2>
+<p>By default the public directory from Next.js does not cache, see my <a href="https://www.erwinsmit.com/caching-nextjs-public-directory/">previous blog post</a> on how to resolve that. How do you make sure users don&#39;t see a stale version when new CSS is deployed?</p>
+<p>First, I tried to use the <code>BUILD_ID</code> (located in the .next directory) from Next as a prefix to the CSS path. However, that can&#39;t be accessed on build-time because the <code>BUILD_ID</code> is not generated until the build is actually complete. </p>
+<p>So instead, I decided to use the current <strong>commit hash</strong>, meaning that with each build there will automatically be a fresh CSS file with a long cache-header. </p>
+<p>First, create a script that returns a short version of the commit hash:</p>
+<p><strong>getCommitHash.js</strong></p>
+<pre><code class="language-javascript">const getCommitHash = function() {
+    return (
+        require(&#39;child_process&#39;)
+        .execSync(&#39;git log --pretty=format:&quot;%h&quot; -n1&#39;)
+        .toString()
+        .trim()
+    );
+}
+
+module.exports = getCommitHash;
+</code></pre>
+<p>In the webpack config responsible for building the CSS, place the CSS files in a path containing the commit hash:</p>
+<pre><code class="language-javascript">module.exports = {
+    entry: {
+        siteA: [&#39;./scss/siteA/main.scss&#39;],
+        siteB: [&#39;./scss/siteB/main.scss&#39;],
+    },
+    output: {
+        path: path.join(__dirname, &#39;public/static&#39;, getCommitHash()),     
+    },
+</code></pre>
+<p>Expose the commit hash as an environment variable in the next.config.js:</p>
+<pre><code class="language-javascript">const nextConfig = {
+  env: {
+    PUBLIC_URL: publicUrl,
+    COMMIT_HASH: getCommitHash(),
+  },
+</code></pre>
+<p>And refer to this environment variable in the _app.tsx:</p>
+<pre><code class="language-javascript">
+function App({ Component, pageProps }: AppProps&lt;SitecorePageProps&gt;): JSX.Element {
+  const { dictionary, ...rest } = pageProps;
+  return (
+    &lt;&gt;
+    &lt;Head&gt;
+      &lt;link rel=&quot;stylesheet&quot; href={`/static/${process.env.COMMIT_HASH}/${(pageProps.site.name)}.css`} /&gt;
+    &lt;/Head&gt;
+</code></pre>
+<p>That&#39;s it! Now you have a unique stylesheet on each SXA site without any caching problems. Hope you find it useful. </p>
+]]></description>
+            <pubDate>Wed, 17 Jan 2024 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ My frontend stack in 2023 ]]></title>
+            <link>https://erwinsmit.com/blog/bullet-proof-frontend-stack-2023</link>
+            <guid>https://erwinsmit.com/blog/bullet-proof-frontend-stack-2023</guid>
+            <description><![CDATA[<p>My frontend stack in 2023, what are my choices and the reasoning behind them:</p>
+<h2>The basics, same-old every year</h2>
+<ul>
+<li><strong>React</strong></li>
+</ul>
+<p>React is still the safe choice, it&#39;s by far the most popular framework for building the components for the view in any project. 
+Yes, Svelte, Vue, and Angular are all great too. But is there something those frameworks can do that React can&#39;t? </p>
+<ul>
+<li><strong>Typescript</strong></li>
+</ul>
+<p>Typescript is a no-brainer. There are no serious alternatives.</p>
+<h2>Components</h2>
+<p>After doing some revision on custom build components (e.g. Accordions, Modals, etc) for accessibility improvements I made the decision I&#39;m never going to build common UI patterns from scratch. </p>
+<p>So for some projects, I have used UI libraries. Mainly <a href="https://mui.com/">MUI</a> and <a href="https://react.fluentui.dev/?path=/docs/concepts-introduction--page">FluentUI</a>. The developer experience with these libraries is great, you get accessibility out of the box, and the components are well thought out and flexible enough to match custom designs. However, they also have a problem called <strong>CSS in JS</strong>. More about this problem below (Styling). </p>
+<p>In the new composable world let&#39;s also make our components composable with a <strong>Headless UI</strong>.</p>
+<p>Therefore I choose to work with <a href="https://www.radix-ui.com/">Radix</a>, a great library that covers the basic functionalities you need on every project (Tabs, Tooltip, etc) but can be styled with your favorite styling approach. </p>
+<p>Other libraries that do the same thing: <a href="https://react-spectrum.adobe.com/react-aria/">React Aria</a>, <a href="https://headlessui.com/">Headless UI</a>, and <a href="https://reach.tech/">Reach UI</a>.</p>
+<h2>Styling</h2>
+<p>I have been a big fan of <strong>CSS in JS</strong> as an alternative to the SCSS projects using <a href="https://getbem.com/">BEM</a>. I love the fact that I don&#39;t have to switch contexts when I&#39;m using variables in CSS or in TSX. Also, automatic refactoring and the &quot;find all references&quot; button in CSS code is something I would always miss writing SCSS/BEM. </p>
+<p>But, CSS in JS is not a good bet anymore. It&#39;s strongly discouraged to use CSS in JS with React server components.
+Older server-side technologies have issues with CSS in JS too (e.g. <a href="https://github.com/reactjs/React.NET/issues/970">React.NET</a>). </p>
+<p><a href="https://dev.to/srmagura/why-were-breaking-up-wiht-css-in-js-4g9b">Good read from one of the Emotion maintainers</a> (<a href="https://emotion.sh/docs/introduction">Emotion</a> is the engine behind MUI):</p>
+<p>In my opinion, it would be a bad decision to build your front end using this technique if there is a chance it has to be server-side generated one day.</p>
+<p>Unless I&#39;m 100% sure the components are always used client-side only, I don&#39;t like to take that risk. Since we already have nice functional components from Radix (or another Headless UI) we just need CSS to make them look good. </p>
+<p>What are my options?</p>
+<h3>SCSS with BEM</h3>
+<p>Is of course capable of making the components look good, but I don&#39;t like to step back in developer experience. I have also seen too many projects where knowledge about the architecture was required to apply clean changes. As a result, when other developers worked on the project and applied quick changes, the quality of the codebase degraded making maintenance and future development hard. Plus, the mental effort it takes to come up with classes like &quot;inner&quot;, &quot;container&quot; and &quot;wrapper&quot; feel like a waste. </p>
+<h3>Tailwind</h3>
+<p><a href="https://tailwindcss.com/">Tailwind</a> is great for its simplicity. It&#39;s great for React components because you never have to leave your TSX file, it&#39;s all right there. There is also no risk in breaking stuff by accident, everything is scoped to the component. But there are still two reasons that stop me from using Tailwind for a work project. </p>
+<ol>
+<li><strong>Controversy</strong></li>
+</ol>
+<p>Developers who always took pride in setting up a clean SCSS architecture with nice names often hate Tailwind. I still want to be friends with those developers. </p>
+<ol start="2">
+<li><strong>Typescript?</strong></li>
+</ol>
+<p>You either need to become very good in mesmerizing Tailwind classes or use tooling to work well with Tailwind. There is also no compiler that slaps you in the face when you misspell a classname. </p>
+<h3>Vanilla Extract</h3>
+<p>In my opinion, <a href="https://vanilla-extract.style/">Vanilla Extract</a> is a good &quot;Everyone&#39;s friend&quot;. CSS in JS fans will like the Typescript support and the SCSS/BEM crew will like the way it&#39;s just like regular CSS and create nice descriptive class names. When switching from Tsx to Css.ts extensions I love the fact I don&#39;t have to switch syntax for accessing theme variables. When I access a theme variable that doesn&#39;t exist, the compiler will punish me for doing so but VS Code will warn me beforehand (unlike with SCSS). </p>
+<p>There are other tools that work in a similar way (<a href="https://stitches.dev/">Stitches</a>, <a href="https://panda-css.com/">Panda CSS</a>). I don&#39;t really care if I ever have to use another one as they are all pretty similar. It&#39;s just a nice Typescript layer over regular CSS Modules. </p>
+<h2>Monorepo</h2>
+<p>For monorepos, I like to use <a href="https://nx.dev/">NX</a>, I have used Lerna and NPM workspaces in the past. They also worked fine, but I had to think and do more stuff myself. </p>
+<p>NX delivers out of the box a nice developer experience with scaffolding scripts, task runners, etc. Monorepos helped me in creating isolated &quot;UI component&quot; packages, I will explain in a later blog post why I&#39;m a fan of this. </p>
+]]></description>
+            <pubDate>Thu, 31 Aug 2023 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Speed up Sitecore JSS Next.js local development ]]></title>
+            <link>https://erwinsmit.com/blog/speed-up-sitecore-jss-nextjs-local-development</link>
+            <guid>https://erwinsmit.com/blog/speed-up-sitecore-jss-nextjs-local-development</guid>
+            <description><![CDATA[<p>Sitecore developers are traditionally .NET developers and .NET developers traditionally use Windows for their local development environments. 
+However, for running Next.js applications locally, Windows is not the best OS in my opinion. Everything that runs with Node will likely perform better on a Linux system. </p>
+<p>But, for a while, it&#39;s possible to run a Linux environment on Windows using WSL. Setting WSL up for your development setup is done with the following steps: </p>
+<ol>
+<li><a href="https://learn.microsoft.com/en-us/windows/wsl/install">Install WSL</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-vscode">Set up WSL for VScode</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl">Set up Node using NVM</a></li>
+</ol>
+<p><strong>Make sure your projects are installed in your ~/projects directory (not in /mnt, performance is awful in the /mnt directory)</strong></p>
+<p>To be honest I don&#39;t have any hard evidence that running your projects on Linux is actually faster, I just had a feeling it always was.
+Let&#39;s do some tests and see if (and how) much difference it actually makes.</p>
+<p>Recently I worked on a Sitecore JSS Next.js project where the codebase is pretty big, with a lot of content, and lots of components using a Monorepo.</p>
+<p>I&#39;ve added a node script to measure the speed of <em>npm install</em> &amp; <em>npm run build</em>. I used this <a href="https://www.npmjs.com/package/execution-time">npm package</a> to measure and format time. </p>
+<p><strong>Time <code>npm run build</code> and <code>npm install</code></strong></p>
+<pre><code class="language-javascript">const {execSync} = require(&#39;child_process&#39;)
+
+const perf = require(&#39;execution-time&#39;)();
+
+perf.start();
+
+execSync(&quot;npm install&quot;);
+//execSync(&quot;npm run build&quot;);
+
+const results = perf.stop();
+console.log(results.time / 1000); 
+</code></pre>
+<h2>The results</h2>
+<p>All seconds are an average of a couple of runs. Sometimes it was 2 seconds quicker or slower, never any big differences. </p>
+<h3>npm install</h3>
+<ul>
+<li><strong>Windows</strong>: ~80 seconds</li>
+<li><strong>WSL</strong>: ~55 seconds</li>
+</ul>
+<p>That makes WSL 30% faster on install. </p>
+<h3>npm run build</h3>
+<p>So the build contains a couple of tasks actually, the JSS bootstrap task and the Next.js Build. 
+Here the timing was more consistent, I guess because there is no dependency on download speed.</p>
+<ul>
+<li><strong>Windows</strong>: ~38 seconds</li>
+<li><strong>WSL</strong>: ~31 seconds</li>
+</ul>
+<p>So the builds on WSL run roughly 20% quicker. The difference doesn&#39;t seem big, but when developing locally these builds need to run all the time. </p>
+<p>Conclusion, For the amount of effort it requires, I think it&#39;s worth running the frontend of your projects in WSL. 
+As an added benefit, you will also never get any <a href="https://learn.microsoft.com/en-us/windows/wsl/case-sensitivity">casing errors</a>.</p>
+<p>I used Node version 18 for the tests on a
+Dell XPS, 12th generation i7, 32GB RAM</p>
+]]></description>
+            <pubDate>Fri, 25 Aug 2023 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Block generated domains by Azure Static Web Apps ]]></title>
+            <link>https://erwinsmit.com/blog/block-automatically-generated-domain-azure-swa</link>
+            <guid>https://erwinsmit.com/blog/block-automatically-generated-domain-azure-swa</guid>
+            <description><![CDATA[<p>Please note: This post applies for <a href="https://learn.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs-hybrid">Hybrid Next.js Azure Static Web Apps</a></p>
+<p>Azure Static Web Apps automatically creates a domain like <code>blue-river-096abc21e.2.azurestaticapps.net</code>. Even when you have created a custom domain for your Azure Static Web App it&#39;s not possible to <a href="https://techcommunity.microsoft.com/t5/apps-on-azure/is-it-possible-to-disable-the-default-url-assigned-to-the-azure/m-p/2017272">disable or block this domain</a>.</p>
+<p>In a current <strong>Sitecore JSS Next.js</strong> project we are applying IP restrictions on our custom domains, but these automatically generated URLs can&#39;t be blocked using Web Application Firewall or Azure Frontdoor. So how do we make sure these URLs are not publicly accessible? </p>
+<p>Luckily with Next.js you can use <a href="https://nextjs.org/docs/advanced-features/middleware">middleware</a> for a while now. So my idea was to apply a redirect to the custom domain when I detect a <code>.azurestaticapps</code> host header. But, when you inspect all the headers on a request, no host header was present when an <a href="https://github.com/Azure/static-web-apps/issues/1012">azurestaticapps.net domain is used</a>. </p>
+<p>When you access the site using a custom domain, you DO get a header with the hostname in it. Using that you can create a redirect with a few lines of code in your _middleware.ts file:</p>
+<pre><code class="language-javascript">const host = req.headers.get(&#39;x-forwarded-host&#39;);
+
+const blockedHostRedirect = process.env.BLOCKED_HOST_REDIRECT || &#39;https://www.erwinsmit.com&#39;;
+
+// When x-forwarded-host header is not set, a default URL is used (e.g. blue-river-096abc21e.2.azurestaticapps.net)
+// so redirect to blockedHostRedirect
+if (!host &amp;&amp; process.env.BLOCK_SWA_DEFAULT_HOST) {
+    return NextResponse.redirect(blockedHostRedirect);
+}
+</code></pre>
+<p>I like to switch features on or off using environment variables, <code>process.env.BLOCK_SWA_DEFAULT_HOST</code> is used to switch the redirect on or off. 
+<code>process.env.BLOCKED_HOST_REDIRECT</code> is used for specifying a domain it should redirect to.</p>
+<p>There you go, using Nextjs middelware it is possible to block access to the automatically generated URLs. </p>
+]]></description>
+            <pubDate>Wed, 22 Feb 2023 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Add caching to Sitecore JSS Next.js public directory ]]></title>
+            <link>https://erwinsmit.com/blog/caching-nextjs-public-directory</link>
+            <guid>https://erwinsmit.com/blog/caching-nextjs-public-directory</guid>
+            <description><![CDATA[<p>By default assets from the public directory have no cache headers set. Usually you have assets that never change and are quite large in this directory. In a recent project I noticed that our font files were loaded on each browser request. As shown in the screenshot there is no cache header on the font file.</p>
+<p><img src="/blog/no-cache-header.png" alt="No cache header"></p>
+<p>This is easily solved by adding header configuration to your <strong>next.config.js</strong> file:</p>
+<pre><code class="language-javascript"> async headers() {
+    return [
+        {
+            source: &#39;/fonts/(.*)&#39;,
+            headers: [
+                {
+                    key: &#39;Cache-Control&#39;,
+                    value: &#39;public, max-age=31536000, stale-while-revalidate&#39;,
+                }
+            ]
+        }
+    ]
+}
+</code></pre>
+<p>A font file never changes and is usually quite large, so this will save a lot of bandwidth!</p>
+]]></description>
+            <pubDate>Sun, 08 Jan 2023 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Multiline underline transition ]]></title>
+            <link>https://erwinsmit.com/blog/multiline-transition</link>
+            <guid>https://erwinsmit.com/blog/multiline-transition</guid>
+            <description><![CDATA[<p>For a project I had to implement an underline transition on text links. For single line transitions there are lot of examples where you set a background on a pseudo element. For multiline I had look a bit harder. I found this <a href="https://nickymeuleman.netlify.app/blog/css-animated-wrapping-underline">great example</a> for multiline underline transitions. I tweaked it a bit so the animation flows from left to right. See below for a React implementation (extending MUI&#39;s Link component).</p>
+<iframe src="https://codesandbox.io/embed/animated-multi-line-underline-dbmg1g?fontsize=14&hidenavigation=1&theme=dark&view=preview"
+     style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+     title="animated-multi-line-underline"
+     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+   ></iframe>
+]]></description>
+            <pubDate>Sun, 27 Nov 2022 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Sitecore JSS Next.js on Azure Static Web Apps ]]></title>
+            <link>https://erwinsmit.com/blog/sitecore-jss-nextjs-on-azure-static-web-app</link>
+            <guid>https://erwinsmit.com/blog/sitecore-jss-nextjs-on-azure-static-web-app</guid>
+            <description><![CDATA[<p>Azure <a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/extending-next-js-support-in-azure-static-web-apps/ba-p/3627975">announced a few weeks ago</a> that they now also support the non-static features from Next.js (e.g. <a href="https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration">Incremental Static Regeneration</a> &amp; <a href="https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props">Server Side Rendering</a>) on Azure Static Web Apps(SWA).</p>
+<p>Although I&#39;ve already had a way of <a href="/sitecore-nextjs-without-vercel">hosting JSS Next.js</a> on Azure. I was curious to see if I was able to deploy JSS Next.js using <strong>Azure SWA</strong> (I use <strong>SWA</strong> as abbreviation for Static Web App from here).</p>
+<p>Of course nothing is easy, so let&#39;s run through the problems I&#39;ve had.</p>
+<h2>Problem 1, getting it deployed</h2>
+<p>I created a new Sitecore JSS project using the <a href="https://doc.sitecore.com/xp/en/developers/hd/190/sitecore-headless-development/walkthrough--creating-a-jss-next-js-application-with-the-jss-cli.html">JSS CLI</a>. After that I followed the steps to <a href="https://learn.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs-hybrid">deploy a hybrid Next.js</a> website to Azure. This connects to your GitHub repo and automatically creates a GitHub action. There I got the first problem:</p>
+<p><code>SystemError [ERR_SYSTEM_ERROR]: A system error occurred: uv_os_get_passwd returned ENOENT (no such file or directory)</code>.</p>
+<p><img src="/blog/action-error.png" alt="GitHub action error"></p>
+<p>So the <code>username-sync</code> package is the culprit, this is a dependency from the <a href="https://www.npmjs.com/package/sync-disk-cache">sync-disk-cache</a> npm package. Sitecore JSS is using this npm package to solve the <a href="https://nextjs.org/docs/advanced-features/preview-mode#previewdata-size-limits">2kb preview data problem</a>.</p>
+<p>So apparently the <code>username-sync</code> package doesn&#39;t play nicely on GitHub actions. I worked around it by <a href="https://github.com/erwinsmit/swa-jss/tree/master/username-sync">overwriting this package</a> with a hardcoded value.</p>
+<p>Before the <code>next:build</code> I copied the patch into the node_modules directory overwriting the original npm package.</p>
+<pre><code class="language-json">package.json
+&quot;build&quot;: &quot;ncp username-sync node_modules/username-sync &amp;&amp; npm-run-all --serial bootstrap next:build&quot;
+</code></pre>
+<p>And it worked! We now have a nice fast frontend with a fast simple pipeline. But then I went to the Experience Editor...</p>
+<h2>Problem 2, EditingDataDiskCache doesn&#39;t work</h2>
+<p>When hitting the Experience Editor I noticed the API routes were returning 500 errors, in Azure Application Insights I got the following errors:</p>
+<p><code>Editing data cache miss for key 9f1a55c0-ad8b-51e4-8064-6e427bf80000-y3iv6vzpa3 at /tmp/if-you-need-to-delete-this-open-an-issue-sync-disk-cache/editing-data</code></p>
+<p>I know from <a href="/sitecore-jss-on-azure-functions/">experience</a> that these errors are coming from the <a href="https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/editing/editing-data-cache.ts">EditingDataDiskCache</a>. Apparently with Azure SWA you can&#39;t write and read stuff to the TMP directory. Also configuring a different TMP directory did not fix this problem.</p>
+<p>So, I had to find a different way of saving the <em>Preview data</em> somewhere. In Azure this can be done cheap and easy with a Storage account resource. I created a Storage account, added a container to the Blob Storage and now I just had to find a way to read/write from there.</p>
+<p><img src="/blog/blob-storage.png" alt="Blob storage"></p>
+<p>Luckily Azure has good <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-nodejs?tabs=environment-variable-windows#upload-blobs-to-a-container">documentation</a> on this and a <a href="https://www.npmjs.com/package/@azure/storage-blob">NPM package</a>.</p>
+<p>With this package it&#39;s as easy as this to upload blobs.</p>
+<pre><code class="language-javascript">export class EditingDataBlobCache implements EditingDataCache {
+  private containerClient: ContainerClient;
+
+  constructor() {
+    const blobServiceClient = BlobServiceClient.fromConnectionString(
+      process.env.AZURE_STORAGE_CONNECTION_STRING
+    );
+
+    this.containerClient = blobServiceClient.getContainerClient(process.env.AZURE_BLOB_CONTAINER);
+  }
+
+  async set(key: string, editingData: EditingData): Promise&lt;void&gt; {
+    const blobName = key + &#39;.txt&#39;;
+    const blockBlobClient = this.containerClient.getBlockBlobClient(blobName);
+    // Upload data to the blob
+    const data = JSON.stringify(editingData);
+    const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
+  }
+</code></pre>
+<p>All I had to do was create a custom <a href="https://github.com/erwinsmit/swa-jss/blob/master/src/lib/editing/editing-data-cache.ts">EditingDataDiskCache</a> implementation and plug that into the Sitecore JSS code. The plugging is well supported by the JSS codebase, the implementation can be passed as follows on the <code>api/editing/data/[key].ts</code> API route:</p>
+<pre><code class="language-javascript">import { EditingDataDiskCache } from &quot;lib/editing/editing-data-cache&quot;;
+const handler = new EditingDataMiddleware({ editingDataCache: editingDataCache }).getHandler();
+</code></pre>
+<p>So the architecture looks as illustrated below. This is an updated diagram from the <a href="https://doc.sitecore.com/xp/en/developers/hd/190/sitecore-headless-development/architecture-and-apis-for-integrating-jss-next-js-apps-with-sitecore-editors.html">Sitecore documentation</a> where the regular disk cache is replaced with our own implementation.</p>
+<p><img src="/blog/new-architecture.png" alt="New architecture"></p>
+<p>And now it all works! So do I prefer using Azure SWA over my own custom <a href="/sitecore-nextjs-without-vercel">solution</a>? I think I do, mainly for these reasons:</p>
+<ul>
+<li>The API routes are automatically transformed into Azure Functions</li>
+<li>Deploying is much easier, no large custom pipelines, just use the pipeline from Azure SWA, configure the environment variables and you&#39;re good to go!</li>
+</ul>
+<p>Sometimes you have to kill your babies. At least I&#39;ve learned a lot about Next.js &amp; JSS in the process!</p>
+<p>For the code, have a look at my <a href="https://github.com/erwinsmit/swa-jss">repo</a>. The required customizations can be found in the folder <a href="https://github.com/erwinsmit/swa-jss/tree/master/src/lib/editing">src/lib/editing</a>.</p>
+]]></description>
+            <pubDate>Wed, 26 Oct 2022 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Sitecore JSS Next.js without Vercel ]]></title>
+            <link>https://erwinsmit.com/blog/sitecore-nextjs-without-vercel</link>
+            <guid>https://erwinsmit.com/blog/sitecore-nextjs-without-vercel</guid>
+            <description><![CDATA[<p>As we all know by now, Vercel is a great platform to host your Next.js apps. I currently use it for some small projects and I love the developer experience.
+It&#39;s so easy to handle deployments, preview pull requests (you get a unique URL for each pull request), real performance monitoring (using <a href="https://web.dev/vitals/">Core Web Vitals</a>), and much more.</p>
+<p>But... There are some drawbacks to Vercel.</p>
+<ul>
+<li><p>Most clients my from my employer <a href="https://www.macaw.nl">Macaw</a> already pay for a hosting provider, in the Microsoft world, this is Azure. It&#39;s hard to also sell Vercel in that case.</p>
+</li>
+<li><p>The pricing is hard to predict, it goes from <strong>free</strong> to <strong>10 dollars a month</strong> to <strong>enterprise</strong>. In Azure for example this is more transparent, with the <a href="https://azure.microsoft.com/en-us/pricing/calculator/">cost calculator</a> you can get a decent estimate.</p>
+</li>
+</ul>
+<p><img src="/blog/vercel-pricing.png" alt="Vercel pricing"></p>
+<ul>
+<li><strong>GDPR</strong> is especially a hard requirement for German clients. The GDPR is more strict in Germany than in other countries, although Vercel claims to cover GDPR in the EU, it does not seem to make the same amount of effort as Azure with a dedicated <a href="https://azure.microsoft.com/en-us/support/legal/privacy-statement/germany/">German cloud</a>. Disclaimer: Legal stuff is not my strong suit</li>
+</ul>
+<p>I understand that some of these issues are not a problem when you use <a href="https://www.sitecore.com/products/xm-cloud">Sitecore XM Cloud</a>. Sitecore won&#39;t be hosted on Azure and Vercel comes as a package with the deal (as I understand). However, that&#39;s still in the future and some clients might not want to use XM Cloud because they prefer to host Sitecore themselves.</p>
+<p>So, it&#39;s worth discovering options on how to do all this without the dependency on Vercel.
+We did just that last year.</p>
+<h2>Old solution,</h2>
+<p>Last year I&#39;ve worked on a way of hosting Sitecore Next.js with Azure:</p>
+<ul>
+<li><a href="/nextjs-on-azure-functions/">Next.js on Azure Functions</a></li>
+<li><a href="/deploy-azure-functions-github-actions/">Deploy Azure Functions with Github Actions</a></li>
+<li><a href="/sitecore-jss-on-azure-functions/">Sitecore JSS on Azure functions</a></li>
+</ul>
+<p>This diagram explains how it all works together:</p>
+<p><img src="/blog/old-solution.svg" alt="Old solution"></p>
+<p>When I worked on this, Azure Functions version 3 was the latest version. Now it&#39;s version 4 and proxies are not <a href="https://learn.microsoft.com/en-us/azure/azure-functions/functions-proxies#legacy-functions-proxies">supported anymore</a>.
+This December, support for Azure Functions version 3 will be switched off so this solution is not viable anymore.</p>
+<h2>A new proxy</h2>
+<p>So we got back to the drawing board and came up with the following solution:</p>
+<p><img src="/blog/new-solution.svg" alt="New solution"></p>
+<p>Instead of using Azure Function proxies a .NET application with <a href="https://microsoft.github.io/reverse-proxy/">YARP (Yet another reverse proxy)</a> is used. What I like about YARP is that you almost need no code at all to get it running.
+Almost all the proxy rules are configured through the appsettings alone, see: <a href="https://github.com/macaw-cad/nextjs-on-azure/blob/main/YarpProxy/appsettings.Development.json">https://github.com/macaw-cad/nextjs-on-azure/blob/main/YarpProxy/appsettings.Development.json</a>.</p>
+<p>Only for the static files from Next.js a couple of lines of code are necessary to mount the file share.</p>
+<pre><code class="language-js">var nextMount = builder.Configuration.GetValue&lt;string&gt;(&quot;NextMount&quot;);
+
+app.UseStaticFiles(new StaticFileOptions {
+    FileProvider = new PhysicalFileProvider(nextMount),
+    RequestPath = &quot;/_next&quot;
+});
+</code></pre>
+<p>That was pretty much it, we were able to re-use the code from the old solution and simply replaced the Azure functions proxy with a different one.</p>
+<p>Just after I wrote this blog post, Azure announced that Azure Static Web Apps will support Next.js with ISR/SSR &amp; API routes soon. See the announcement about <a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/extending-next-js-support-in-azure-static-web-apps/ba-p/3627975">Next.js support here</a>.</p>
+<p>Will be interesting to see if the Sitecore JSS Next.js SDK will also work with this, perhaps coming up in a blog post soon!</p>
+]]></description>
+            <pubDate>Mon, 10 Oct 2022 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Auto-format typescript with a npm task ]]></title>
+            <link>https://erwinsmit.com/blog/auto-format-typescript-npm-task</link>
+            <guid>https://erwinsmit.com/blog/auto-format-typescript-npm-task</guid>
+            <description><![CDATA[<p>In a <a href="/scalable-head">previous post</a>, I wrote about the workflow of a headless Sitecore project. 
+One of the things I like to do is add formatting rules with ESLint and Prettier. On the pull request build, I check if those rules are applied correctly before the code is allowed to be merged in.</p>
+<h2>Do Sitecore developers like this?</h2>
+<p>Not always, when a Sitecore developer who is less involved in the whole JavaScript world tries to make some changes in a React rendering you can get some issues. If they don&#39;t have Prettier installed in their code editor it will be inevitable that they will get errors on the PR build. </p>
+<p>How can they fix this easily without all the tooling installed?</p>
+<p>By adding this simple npm task to your project&#39;s package.json:</p>
+<pre><code class="language-JSON">&quot;scripts&quot;: {
+    &quot;fix-format&quot;: &quot;eslint --ext js,ts,tsx src --fix &amp;&amp; prettier --write \&quot;src/**/*.{ts,tsx}\&quot;&quot;
+},
+</code></pre>
+<p>Running this task will automatically format the typescript using the rules set by Prettier and ESLint.</p>
+<p>Keep the code nice and consistent without annoying the non-JavaScript developers!</p>
+]]></description>
+            <pubDate>Sun, 02 Oct 2022 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Create a scalable head for Sitecore JSS ]]></title>
+            <link>https://erwinsmit.com/blog/scalable-head</link>
+            <guid>https://erwinsmit.com/blog/scalable-head</guid>
+            <description><![CDATA[<p>I recently worked on a headless project with Sitecore, the way of working I choose there worked really well in my opinion. In this post, I like to talk about the choices I made and how they helped the team create a good workflow.</p>
+<p>What do I mean by scalable in this context? By scalable I mean a few things:</p>
+<ul>
+<li>The head should be able to work with data model changes.</li>
+<li>The head should be able to perform well even if there are hundreds of different components in the application.</li>
+<li>The head should be able to look good in different color themes, different font sizes, different spacings, etc.</li>
+<li>The team that develops the head should be able to scale well, and new members should be able to easily integrate into the project without any domain or Sitecore knowledge.</li>
+</ul>
+<h2>Monorepo</h2>
+<p>Within the Monorepo I created a clear separation between UI components and the Sitecore JSS Next.js application.
+See the following drawing:</p>
+<p><img src="/blog/monorepo.png" alt="Monorepo"></p>
+<p>This monorepo is using NPM workspaces in combination with Turborepo, this works well but there are a lot of similar tools that achieve the same thing.
+With monorepo&#39;s it&#39;s common to have <strong>packages</strong> and <strong>apps</strong>. Packages refer to internal codebases and apps are meant for applications that will be seen by a non-technical end-user. See the example from Turborepo for an <a href="https://turborepo.org/docs/getting-started/create-new#2-exploring-your-new-repo">excellent example</a>.</p>
+<p>In the drawing above we have a couple of apps and packages:</p>
+<ul>
+<li><strong>UI components</strong>, this is where the front-end developers create their React components in <a href="https://storybook.js.org/">Storybook</a> out of the context of the client&#39;s project or Sitecore</li>
+<li><strong>Next.js corporate app</strong>, the Sitecore JSS Next.js SDK connecting to the Corporate JSS website setup in Sitecore. This app is depending on the UI components package.</li>
+<li><strong>Next.js career app</strong>, the same as above but pointing at a different website within Sitecore.</li>
+<li><strong>Apps/storefront</strong>, a fictional example of an app connected to <a href="https://ordercloud.io/">Sitecore Ordercloud</a>. This doesn&#39;t exist (yet), but it explains the need of creating components that can work in all sorts of applications within the same monorepo.</li>
+</ul>
+<p>Why does a monorepo helps us scale?</p>
+<ul>
+<li><p><strong>Connect multiple (Next.js) apps with UI components</strong>.
+This architecture allows us to set up multiple apps consuming the same set of components and other sharable code.</p>
+</li>
+<li><p><strong>Perfect for letting FE developer focus on small parts (without Sitecore experience).</strong>
+A front end developer might never have to leave Storybook. In fact, this might even help to create generic flexible components without project or Sitecore domain stuff built in.</p>
+</li>
+<li><p><strong>Perfect for Sitecore devs to work on an app without having to worry about mark-up or styling.</strong>
+They only have to worry about the contract, the difference between the data model from Sitecore and the property types set in the UI component. Just a bit of data-mapping instead of juggling HTML classes, divs and spans.</p>
+</li>
+<li><p><strong>Using npm workspaces with Turborepo. Ensures easy task management and fast builds.</strong>
+Turborepo uses caching for it&#39;s builds. That means that it only builds packages/apps that have changes. So even when the monorepo is huge, it will still perform with fast build times.</p>
+</li>
+<li><p><strong>Multiple apps / packages share the same node_modules.</strong>
+The same node_modules are shared across the apps and packages when the versions are the same. So also the &quot;npm install&quot; should remain fast.</p>
+</li>
+</ul>
+<h2>Component system / CSS JS</h2>
+<p>I&#39;m a big fan of not re-inventing the wheel on simple components that exist on all projects (Accordion/Tabs etc). Although they are easily created from scratch I see a lot of examples that are built poorly or are not accessible. When using a base component system like <a href="https://mui.com/">MUI</a> or <a href="https://reach.tech/">Reach</a> you don&#39;t have to manually add the correct aria attributes and you&#39;re ensured they work using the keyboard, screen reader, etc.</p>
+<p>For this project, I picked MUI as a base system for all our components. The components are great and easily customized (no it doesn&#39;t have to look like material UI) but you also get a good theming system based on <a href="https://emotion.sh/">Emotion</a> (a styled component library).</p>
+<p>This theming system allows you to create consistency in the design implementation. And all this while using the IntelliSense of Typescript.</p>
+<p>Even when you don&#39;t want to use any of the components from MUI I would still consider using it as an Emotion boilerplate. It works great with Next.js apps (including the Sitecore <a href="https://github.com/Sitecore/jss/tree/dev/packages/sitecore-jss-nextjs">JSS Next.js SDK</a>). The CSS is automatically code-split, meaning that you can have 100s of components in your application but still a small CSS/JS bundle for the end-user.</p>
+<h2>Rules of engagement</h2>
+<p>Couple of rules I use on this project.</p>
+<h3>Build your component with theme variables (support for multiple themes)</h3>
+<p><img src="/blog/theme-variables.png" alt="Theme variables">
+Avoid hard-coded spacing units and colors as much as possible. This way the components can be globally adjusted to be used in all sorts of contexts.</p>
+<h3>Never use mark-up or styling in client-facing app</h3>
+<p><img src="/blog/no-markup-or-styling.png" alt="No mark-up or styling">
+Don&#39;t add class names or styling to the React components within you&#39;re Sitecore consuming Next.js apps. The whole point of this setup is to have a clear separation between UI components and Sitecore-related stuff. If this is done anyway, the design system created in Storybook is not leading anymore.</p>
+<h3>Use Graphql aliases where possible</h3>
+<p><img src="/blog/graphql-alias.png" alt="Graphql Alias">
+When Graphql queries, <a href="https://doc.sitecore.com/xp/en/developers/hd/190/sitecore-headless-development/integrated-graphql-in-jss-apps.html">integrated or connected</a>, the rendering will be more future-proof if aliases are used. If the property names change in the future, the rendering component will still work. Only the query will need to be changed.</p>
+<h2>Connect component to Sitecore</h2>
+<p>Now when all the above is done, it&#39;s very easy to create a React rendering for Sitecore.
+On the project, we specifically refer to <strong>React renderings</strong> within the Sitecore Next.js app. The components with the UI component package are called just components. This prevents confusion.</p>
+<ol>
+<li><p><strong>Create a component within the JSS Next.js app as specified in Sitecore</strong>
+<img src="/blog/component-name.png" alt="Component name Sitecore"></p>
+</li>
+<li><p><strong>Component should get registered in the componentFactory.ts file automatically (using Sitecore JSS Bootstrap script)</strong>
+<img src="/blog/component-factory.png" alt="Component factory"></p>
+</li>
+<li><p><strong>Now, within the React rendering, refer to the component from the &quot;UI components&quot; package, map the properties from Sitecore to the model used in UI components and it&#39;s done!</strong>
+<img src="/blog/finished-rendering.png" alt="Finished rendering"></p>
+</li>
+</ol>
+]]></description>
+            <pubDate>Mon, 26 Sep 2022 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Can we keep up with Vercel? ]]></title>
+            <link>https://erwinsmit.com/blog/can-we-keep-up-with-vercel</link>
+            <guid>https://erwinsmit.com/blog/can-we-keep-up-with-vercel</guid>
+            <description><![CDATA[<p>Last year we&#39;ve spent quite some time getting <a href="/sitecore-nextjs-without-vercel">Sitecore JSS Next.js to work on Azure</a> (with ISG &amp; build-in APIs). However, some issues have come up since then.</p>
+<p>First of all, everything broke when I updated to <a href="https://nextjs.org/blog/next-12">Next 12</a> and I had to make some changes to get it to work again. I was getting some weird re-directs. </p>
+<p>Later <a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/azure-functions-v4-versus-v3/ba-p/3276055">Azure functions v4</a> was released and proxies are not supported anymore. </p>
+<p>Things like this make me wonder if it&#39;s worth trying to maintain the custom hosting solutions of Next.js and support all the functionality. With Vercel everything <strong>just works</strong>. </p>
+]]></description>
+            <pubDate>Tue, 05 Apr 2022 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Integrate OrderCloud with Sitecore JSS Next.js ]]></title>
+            <link>https://erwinsmit.com/blog/ordercloud-sitecore-jss-nextjs</link>
+            <guid>https://erwinsmit.com/blog/ordercloud-sitecore-jss-nextjs</guid>
+            <description><![CDATA[<p>In this blog post, I like to explain how easy it is to add some products from OrderCloud to a pre-rendered page in Sitecore JSS using Next.js</p>
+<h2>First, make a storefront</h2>
+<p>To be able to do this you need to create an OrderCloud marketplace and have some products.
+I created a free OrderCloud account and ran these commands to automatically create a marketplace filled with products and facets:</p>
+<ul>
+<li><code>npm i @ordercloud/seeding -g</code></li>
+<li><code>seed https://raw.githubusercontent.com/ordercloud-api/ordercloud-seed/main/seeds/Simple-B2C.yml -u={username} -p={password</code></li>
+</ul>
+<p>Next, log in to your marketplace and make a note of the Storefront App ID:
+<img src="/blog/api-key.jpg" alt="Storefront App ID"></p>
+<p>Add this ID along with these OrderCloud variables to the .env file in the root of your JSS Next.js project:</p>
+<pre><code>NEXT_PUBLIC_OC_CLIENT_ID={AddYourStorefrontAppIdHere}
+NEXT_PUBLIC_OC_SCOPE=Shopper,MeAddressAdmin
+NEXT_PUBLIC_OC_BASE_API_URL=https://sandboxapi.ordercloud.io
+NEXT_PUBLIC_OC_ALLOW_ANONYMOUS=false
+</code></pre>
+<h2>Initialise OrderCloud in your app</h2>
+<p>In the _app.tsx add the following code to create a connection to Ordercloud using the Ordercloud Javascript SDK:</p>
+<pre><code class="language-javascript">import { Configuration, Tokens, Auth } from &quot;ordercloud-javascript-sdk&quot;;
+
+(async function(){
+    const clientId = process.env.NEXT_PUBLIC_OC_CLIENT_ID || &quot;&quot;;
+    const baseApiUrl = process.env.NEXT_PUBLIC_OC_BASE_API_URL;
+    const scope = process.env.NEXT_PUBLIC_OC_SCOPE?.split(&quot;,&quot;);
+
+    Configuration.Set({
+      clientID: clientId,
+      baseApiUrl: baseApiUrl,
+      cookieOptions: { prefix: &quot;hds-nextjs&quot;, path: &quot;/&quot; },
+    });
+
+    const authResponse = await Auth.Anonymous(clientId, scope || ([&quot;&quot;] as ApiRole[]));
+
+    Tokens.SetAccessToken(authResponse.access_token);
+
+})();
+</code></pre>
+<p>Now you have access to all the OrderCloud stuff throughout your application. If you only need OrderCloud on a specific set of routes, consider moving this logic somewhere else.</p>
+<p>To display some products with an active facet pre-selected I have created a simple Sitecore component where the facet is set in the Sitecore admin. Component definition:</p>
+<pre><code class="language-javascript">export default function (manifest: Manifest): void {
+  manifest.addComponent({
+    name: &quot;ProductList&quot;,
+    icon: SitecoreIcon.DocumentTag,
+    fields: [{ name: &quot;colorfacet&quot;, type: CommonFieldTypes.SingleLineText }],
+  });
+}
+</code></pre>
+<h2>Get the products</h2>
+<p>In the actual component implementation, the products are fetched using the <code>Me.ListProducts</code> function. To inject the data into the component return the response in <code>getStaticProps</code>. Now the data is available within the component using <code>useComponentProps</code>.</p>
+<p>See the code below for an example:</p>
+<pre><code class="language-javascript">import { ListPageWithFacets, Me, RequiredDeep, BuyerProduct } from &quot;ordercloud-javascript-sdk&quot;;
+
+const ProductList: React.FC&lt;ProductListProps&gt; = ({ rendering, fields }): JSX.Element =&gt; {
+  const data = useComponentProps &lt; RequiredDeep &lt; ListPageWithFacets &lt; BuyerProduct &gt;&gt;&gt; rendering.uid;
+};
+
+export const getStaticProps: GetStaticComponentProps = async (rendering) =&gt; {
+  try {
+    const response = await Me.ListProducts({
+      filters: {
+        &quot;xp.Facets.Color&quot;: rendering.fields.colorfacet.value,
+      },
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
+export default ProductList;
+</code></pre>
+<p>As a result, we now have products from our OrderCloud marketplace rendered on Next.js build-time. Fast and good for SEO!</p>
+<p><img src="/blog/ordercloud-products.jpg" alt="OrderCloud products"></p>
+]]></description>
+            <pubDate>Sat, 27 Nov 2021 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Add external datasource to Sitecore JSS ]]></title>
+            <link>https://erwinsmit.com/blog/add-external-datasource-to-sitecore-jss</link>
+            <guid>https://erwinsmit.com/blog/add-external-datasource-to-sitecore-jss</guid>
+            <description><![CDATA[<h2>Sitecore JSS GraphQL out of the box</h2>
+<p>The Sitecore JSS Next.js SDK has great built-in <a href="https://doc.sitecore.com/en/developers/hd/190/sitecore-headless-development/use-graphql-to-fetch-component-level-data-in-jss-next-js-apps.html">tooling</a> for querying the Sitecore GraphQL endpoint.
+In this blog post, I will explain how to use the same tooling but for external data sources.</p>
+<h2>Consume external Graphql API</h2>
+<p>For demo purposes, I picked the excellent API from GitHub. This is free to use, the only thing you need is a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">personal access token</a>. When that&#39;s all set up you can use the <a href="https://docs.github.com/en/graphql/overview/explorer">explorer</a> to explore all the data you can fetch.</p>
+<h3>Extend introspection script</h3>
+<p>Sitecore JSS uses <a href="https://github.com/piglovesyou/graphql-let">graphql-let</a> for automatically generating types for the GraphQL results. A .graphql file is automatically picked up by this tool. It analyses the query and as a result, generates a .d.ts file next to it.
+With this .d.ts file you can import the required types:</p>
+<pre><code class="language-javascript">import { GithubUserSearchQuery } from &quot;./userSearch.github.graphql&quot;;
+</code></pre>
+<p>Before this is possible graphql-let needs an introspection schema. The schema is created by the <a href="https://doc.sitecore.com/en/developers/hd/190/sitecore-headless-development/introspecting-the-graphql-schema-in-jss-next-js-apps.html">graphl-update</a> task.</p>
+<p>To add the GitHub introspection schema we need to extend the script <code>scripts\fetch-graphql-introspection-data.ts</code> with an introspection call to the GitHub GraphQL endpoint:</p>
+<pre><code class="language-javascript">(async function () {
+  try {
+    const introSpectionQuery = {};
+
+    const githubResults = await fetch(&quot;https://api.github.com/graphql&quot;, {
+      method: &quot;POST&quot;,
+      headers: {
+        &quot;Content-Type&quot;: &quot;application/json&quot;,
+        Authorization: `bearer ${process.env.GHUB_PRIVATE_KEY}`,
+      },
+      body: JSON.stringify(introSpectionQuery),
+    });
+
+    const githubData = await githubResults.json();
+    fs.writeFile(&quot;./src/temp/GraphQLIntrospectionResultGithub.json&quot;, JSON.stringify(githubData, null, 2), (err) =&gt; {
+      if (err) {
+        console.error(&quot;Error writing GraphQLIntrospectionResultGithub file&quot;, err);
+        return;
+      }
+
+      console.log(&quot;GraphQL Github Introspection Data successfully fetched!&quot;);
+    });
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
+  }
+})();
+</code></pre>
+<p>I used this <a href="https://gist.github.com/craigbeck/b90915d49fda19d5b2b17ead14dcd6da">introspection query</a> to get all the required types.
+Now when you run <strong>npm run update:graphql</strong> you get a nice big schema with all the types from the GitHub GraphQL API.</p>
+<h3>Add additional graphql-let configuration file</h3>
+<p>To point graphql-let to this schema file I&#39;ve added this file to the root of the project <strong>.graphql-let-github</strong></p>
+<pre><code class="language-yml">schema:
+  - &quot;./src/temp/GraphQLIntrospectionResultGithub.json&quot;
+documents: &quot;src/**/*.github.graphql&quot;
+plugins:
+  - typescript
+  - typescript-operations
+  - typed-document-node
+
+cacheDir: .generated
+config:
+  useIndexSignature: true
+</code></pre>
+<p>Change the <strong>bootstrap</strong> npm script to:</p>
+<pre><code class="language-json">&quot;bootstrap&quot;: &quot;ts-node --project tsconfig.scripts.json scripts/bootstrap.ts &amp;&amp; graphql-let &amp;&amp; graphql-let --config .graphql-let-github.yml&quot;
+</code></pre>
+<p>This generates all the types when running <strong>npm start</strong></p>
+<p>To also receive updated types while you&#39;re actively developing update <strong>next.config.js</strong> with the following lines:</p>
+<pre><code class="language-javascript">const applyGraphQLCodeGenerationLoaders = (config, options) =&gt; {
+  config.module.rules.push({
+    test: /\.sitecore.graphql$/,
+    exclude: /node_modules/,
+    use: [options.defaultLoaders.babel, { loader: &#39;graphql-let/loader&#39; }],
+  })
+
+  config.module.rules.push({
+    test: /\.github.graphql$/,
+    exclude: /node_modules/,
+    use: [options.defaultLoaders.babel, { loader: &#39;graphql-let/loader&#39;, options: { configFile: &quot;.graphql-let-github.yml&quot; } }],
+  })
+</code></pre>
+<p>As you see I suffix the Sitecore GraphQL queries with <strong>.sitecore.graphql</strong> and the GitHub queries with <strong>.github.graphql</strong>. Because both types of queries have their own configuration.</p>
+<h3>Add a query to a component</h3>
+<p>Now that&#39;s all in place we can add some GraphQL data to a component. Next to the component that will consume the data, we will create <strong>userSearch.github.graphql</strong>:</p>
+<pre><code class="language-graphql">query githubUserSearch($organisation: String!) {
+  organization(login: $organisation) {
+    membersWithRole(first: 100) {
+      nodes {
+        ... on User {
+          name
+          company
+          email
+          avatarUrl
+          location
+          login
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>This query accepts an Organisation as a parameter. The query asks for the first 100 members of the organisation found. Within the nodes, the User Fragment is used to get a couple of properties of each user.</p>
+<p>To get this data into the component as static props (so the query is done on build-time) the method <strong>getStaticProps</strong> needs to be exported. With Next.js this can usually only be done on page level but Sitecore JSS added some magic to also allow this on component level:</p>
+<pre><code class="language-javascript">const query = require(&quot;raw-loader!./userSearch.github.graphql&quot;).default;
+
+export const getStaticProps: GetStaticComponentProps = async (rendering) =&gt; {
+  try {
+    const githubResults = await fetch(&quot;https://api.github.com/graphql&quot;, {
+      method: &quot;POST&quot;,
+      headers: {
+        &quot;Content-Type&quot;: &quot;application/json&quot;,
+        Authorization: `bearer ${process.env.GHUB_PRIVATE_KEY}`,
+      },
+
+      body: JSON.stringify({
+        query: query,
+        variables: { organisation: rendering.fields?.organisation?.value },
+      }),
+    });
+
+    const githubData = await githubResults.json();
+
+    return githubData.data;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+</code></pre>
+<p>The organisation field is passed down from Sitecore, so the content editor can pick the GitHub organisation. <a href="https://doc.sitecore.com/en/developers/hd/190/sitecore-headless-development/create-a-new-component-in-a-jss-next-js-app-using-the-code-first-development-workflow.html">Read more</a> on how to add fields to components using the JSS Cli (I prefer this over clicking away in the Sitecore admin).</p>
+<p>Within the component the data can now be consumed with the <strong>useComponentProps</strong> hook:</p>
+<pre><code class="language-javascript">import { GetStaticComponentProps } from &quot;@sitecore-jss/sitecore-jss-nextjs&quot;;
+import { GithubUserSearchQuery } from &quot;./userSearch.github.graphql&quot;;
+
+const UserSearch: React.FC&lt;UserSearchProps&gt; = ({ fields, rendering }): JSX.Element =&gt; {
+    const data = rendering.uid ? useComponentProps&lt;GithubUserSearchQuery&gt;(rendering.uid) : null;
+</code></pre>
+<p>With the type added to the <strong>useComponentProps</strong> function we get IntelliSense based on the query we created, how cool is that!</p>
+<p><img src="/blog/vscode.jpg" alt="Intellisense"></p>
+]]></description>
+            <pubDate>Tue, 23 Nov 2021 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Sitecore JSS on Azure Functions ]]></title>
+            <link>https://erwinsmit.com/blog/sitecore-jss-on-azure-functions</link>
+            <guid>https://erwinsmit.com/blog/sitecore-jss-on-azure-functions</guid>
+            <description><![CDATA[<p>As described in a previous post, we managed to host Next.js using a custom server in <a href="/nextjs-on-azure-functions/">Azure Functions</a>. Now let&#39;s see if this also works for Sitecore JSS. </p>
+<h2>Frontend only</h2>
+<p>For just the public facing part it was no problem, the exact same code as used in the custom server <a href="/nextjs-on-azure-functions/">previously</a> worked fine. 
+However to get the experience editor working we faced some challenges.</p>
+<h2>Experience editor</h2>
+<p>To get the Experience editor to work we have to do some more work. Mainly because the Next.js <a href="https://github.com/Sitecore/jss/tree/dev/samples/nextjs/src/pages/api/editing">API routes</a> are not supported when using a <a href="https://nextjs.org/docs/advanced-features/custom-server">custom server</a>.</p>
+<p>Luckily these routes are easy to replicate using Azure Functions. So we created two Azure Functions that serves the:</p>
+<ul>
+<li>Editing Render Middleware</li>
+<li>Editing Data Middleware</li>
+</ul>
+<p>Why do you need two endpoints for the Experience editor? This is to enable the <strong><a href="https://nextjs.org/docs/advanced-features/preview-mode">Preview mode</a></strong> in Next.js. The preview mode bypasses all the clever stuff like <strong>ISG</strong> (Incremental Static Generation).
+How these endpoints work together is explained well in the <a href="https://jss.sitecore.com/docs/nextjs/experience-editor/architecture">JSS Docs</a>.</p>
+<p>Implementing these endpoints was done with the following code, this example is for the <a href="https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/middleware/editing-render-middleware.ts">Editing Render Middleware</a>:</p>
+<pre><code class="language-javascript">import { AzureFunction, Context, HttpRequest } from &quot;@azure/functions&quot;;
+import { EditingRenderMiddleware } from &#39;@sitecore-jss/sitecore-jss-nextjs/middleware&#39;;
+
+const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise&lt;void&gt; {    
+    const handler = new EditingRenderMiddleware().getHandler();
+
+    try {
+        await handler(context.req, context.res);
+
+    } catch (e) {
+        context.log(e);
+        context.res = {
+            status: 500
+        };
+    }
+
+};
+
+export default httpTrigger;
+</code></pre>
+<h3>Response handler</h3>
+<p>The problem is that the response from Azure does not contain the same methods as Vercel. An <a href="https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/middleware/editing-render-middleware.ts#L86">example</a> is seen here:</p>
+<pre><code class="language-javascript">return res.status(405).json({
+    html: `&lt;html&gt;&lt;body&gt;Invalid request method &#39;${method}&#39;&lt;/body&gt;&lt;/html&gt;`,
+});
+</code></pre>
+<p>Azure Functions will return errors that these methods don&#39;t exist. These methods are used throughout the Middlewares from Sitecore JSS. Do we need to replace all those middlewares? That would be a lot of work.</p>
+<p>The easiest fix was to create a function that transforms all the Vercel specific functions to a format Azure understands. So we created a Responsehandler function that accepts the Azure Function context and attaches the Vercel specific functions:</p>
+<pre><code class="language-javascript">export const getNextResponseHandler = (context: Context) =&gt; {
+
+    const nextContextRes = context.res;
+
+    nextContextRes.status = (statusCode: number) =&gt; {
+        nextContextRes.status = statusCode;
+
+        return nextContextRes;
+    }
+
+    nextContextRes.setPreviewData = (previewData: string) =&gt; {
+        const manifest = require(&#39;.next/prerender-manifest.json&#39;);
+        
+        const cookies = setPreviewData(previewData, manifest.preview);
+
+        nextContextRes.headers = {
+            &#39;Set-Cookie&#39;: cookies.join(&#39;;&#39;),
+            &#39;Content-Type&#39;: &quot;application/json; charset=utf-8&quot;
+        };
+    };
+
+etc etc...
+</code></pre>
+<p>Now this method can be used within the Azure Function:</p>
+<pre><code class="language-javascript">const nextResponseHandler = getNextResponseHandler(context);
+
+    try {
+        await handler(customContextReq, nextResponseHandler);
+</code></pre>
+<p>Creating the <code>setPreview</code> method was a pain. Because the correct functions are not <a href="https://github.com/vercel/next.js/blob/5ddee4494bf1fbcfd91ce81bc59f8de66949c9fc/packages/next/server/api-utils.ts#L420">exposed by Next.js</a>. For this reason I ended up doing quite a bit of copy-pasting from the Next.js repository to get it to work. </p>
+<h3>Editing data cache</h3>
+<p>Another issue we faced was the caching middleware throwing errors. After some digging the <a href="https://github.com/Sitecore/jss/blob/dev/packages/sitecore-jss-nextjs/src/middleware/editing-data-cache.ts#L24">following line</a> caused an issue:</p>
+<pre><code class="language-javascript">  constructor() {
+    // Use gzip compression and store using the OS temp directory (Vercel Serverless Functions have temp directory access)
+    this.cache = new Cache(&#39;editing-data&#39;, { compression: &#39;gzip&#39;, location: os.tmpdir() });
+  }
+</code></pre>
+<p><code>os.tempdir()</code> was pointing to a directory where a Consumption Based Azure Function was not allowed to read/write to. </p>
+<p>To resolve this, we created a custom EditingDataCache middleware function that sets a different directory. That middleware is added as a parameter to the EditingDataMiddleWare:</p>
+<pre><code class="language-javascript">const handler = new EditingDataMiddleware({
+    editingDataCache: editingDataDiskCache
+}).getHandler();
+</code></pre>
+<p>It would be nice if this directory could be set as a parameter to the existing EditingDataDiskCache class. Hopefully, this <a href="https://github.com/Sitecore/jss/pull/839">pull request</a> will sort that out. </p>
+<h2>Tell Sitecore where to look for the Azure Function</h2>
+<p>Finally tell sitecore where to look for the Azure Function. This can be done in the config files of the Sitecore instance.</p>
+<pre><code class="language-xml">&lt;app name=&quot;jss-nextjs-app&quot;
+    ...
+    serverSideRenderingEngineEndpointUrl=&quot;https://${yourfunctionapp}.azurewebsites.net/api/editing/render&quot;
+    serverSideRenderingEngineApplicationUrl=&quot;https://${yourfunctionapp}.azurewebsites.net/&quot;
+/&gt;
+</code></pre>
+<p>That&#39;s it, those were the problems we faced. Hopefully this could be helpful for anyone else facing similar issues. </p>
+]]></description>
+            <pubDate>Wed, 27 Oct 2021 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Deploy Azure Functions with GitHub Actions using AzCopy ]]></title>
+            <link>https://erwinsmit.com/blog/deploy-azure-functions-github-actions</link>
+            <guid>https://erwinsmit.com/blog/deploy-azure-functions-github-actions</guid>
+            <description><![CDATA[<p>When deploying Azure Functions the most straightforward approach is to use the <strong>actions/checkout@v2</strong> <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-github-actions">recommended by Azure</a></p>
+<p>However, there are some restrictions with this approach. Using this approach. The Azure Functions will only work using the <strong><a href="https://docs.microsoft.com/en-us/azure/azure-functions/run-functions-from-deployment-package">Run from package option</a></strong>. There are two reasons why this wasn&#39;t great for a <a href="/nextjs-on-azure-functions">Next.js custom server</a>.</p>
+<ol>
+<li><p>Next.js requires to have write access for its <a href="https://nextjs.org/docs/basic-features/data-fetching#incremental-static-regeneration">Incremental Static Generation</a>. With the <strong>Run from package option</strong> you can&#39;t use this feature.</p>
+</li>
+<li><p>Because there is no write access it&#39;s also not possible to use the <a href="https://social.technet.microsoft.com/wiki/contents/articles/36467.understanding-the-azure-app-service-editor.aspx">Azure App Service Editor</a>. During development I love this feature to test changes quickly without having to wait for deployments.</p>
+</li>
+</ol>
+<h2>Alternative ways for deploying Azure Function with GitHub Actions</h2>
+<h3>Using the Azure CLI</h3>
+<p>Instead of using the recommended <strong>actions/checkout@v2</strong> it&#39;s also possible to use the Azure CLI directly in the .yml file. Before doing so, it&#39;s required to run a <a href="https://github.com/marketplace/actions/azure-login">login command</a> first. To run this you&#39;ll need deployment credentials which can be generated through the <a href="https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart">Azure Cloud Shell</a> for example.</p>
+<p>If you have the required permissions within your organisation you&#39;re in business! Now you can run all the <a href="https://docs.microsoft.com/en-us/cli/azure/functionapp/deployment">deploy commands</a> available for Azure Functions.</p>
+<p>I did not have the required permissions to create deployment credentials. Also, when trying to run this locally I found the deployments pretty slow. Just the Azure Functions are deployed quickly but with the Azure Functions also came a big Next.js build folder and their NPM dependencies (with and without remote builds).</p>
+<h3>Using AZ Copy</h3>
+<p>This is the solution I picked for deploying Azure Functions. It&#39;s reasonably quick for big projects and I have full access to the Azure App Service Editor and write access. Let&#39;s show the implementation step by step.</p>
+<ol>
+<li><p><strong>Create the Function App</strong>
+<img src="/blog/create-function-app.jpg" alt="Function setup"></p>
+</li>
+<li><p><strong>Select or create a new storage account</strong>
+<img src="/blog/storage-account.jpg" alt="Create storage account"></p>
+</li>
+<li><p><strong>See how the Function App is connected</strong>
+<img src="/blog/storage-account-connection.jpg" alt="Storage account connection"></p>
+</li>
+</ol>
+<p>This helped me to understand how the deployments to Azure Function Apps work. I figured out that all it takes is to upload a set of files to the <code>wwwroot</code> folder of the <code>fileshare</code> within the storage account.</p>
+<ol start="4">
+<li><strong>Set up the GitHub action</strong>
+See below an example on a yml I use for the deployment of an Azure Function. Place this file in the <code>.github</code> directory of your project and GitHub will automatically recognise the file and add the Action to the UI.</li>
+</ol>
+<p>Personally, I like to use the <code>workflow_dispatch</code> event. I don&#39;t like to run a full build on each time I push some code.</p>
+<pre><code class="language-yml">name: Deploy Azure Function
+
+on: [workflow_dispatch]
+
+env:
+  NODE_VERSION: &quot;14.x&quot;
+  ## Enter the path to your storage account and include the name of the file share
+  AZUREFUNCDEST: &quot;https://${pathtostoreageaccount}.file.core.windows.net/${filesharename}/site/wwwroot&quot;
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+    steps:
+      - name: &quot;Checkout GitHub Action&quot;
+        uses: actions/checkout@main
+
+      - name: Setup Node ${{ env.NODE_VERSION }} Environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      ## Install a community package that adds the azcopy tool
+      - name: Install azcopy
+        uses: kheiakiyama/install-azcopy-action@v1.0.3
+
+      ## Build your application, replace Lerna with NPM/Yarn if that&#39;s more suitable for your project
+      - name: &quot;Lerna bootstrap &amp; azure functions build&quot;
+        shell: pwsh
+        run: |
+          lerna bootstrap
+          npm run build
+          popd
+
+      ## Clean up the directory before copying the new stuff over
+      - uses: kheiakiyama/install-azcopy-action@v1
+        with:
+          version: &quot;v10&quot;
+      - run: azcopy_v10 rm &#39;${{ env.AZUREFUNCDEST }}?${{ secrets.SECRETSASTOKEN }}&#39; --recursive
+
+      ## Copy the contents of the azure functions
+      - uses: kheiakiyama/install-azcopy-action@v1
+        with:
+          version: &quot;v10&quot;
+      - run: azcopy_v10 copy &#39;./packages/azure-functions/*&#39; &#39;${{ env.AZUREFUNCDEST }}?${{ secrets.SECRETSASTOKEN }}&#39; --recursive
+</code></pre>
+<p>To authenticate the copying of the files, generate a SAS Token on the storage account.
+<img src="/blog/sas-token.jpg" alt="Generate SAS token"></p>
+<p>Add the SAS Token to the GitHub secrets:
+<img src="/blog/github-secret.jpg" alt="GitHub secret"></p>
+<p>There you go, now you can run the GitHub action and your Azure Function will be deployed. Hopefully, this could be a useful alternative for deploying Azure Functions using GitHub Actions!</p>
+]]></description>
+            <pubDate>Fri, 15 Oct 2021 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Next.js on Azure Functions ]]></title>
+            <link>https://erwinsmit.com/blog/nextjs-on-azure-functions</link>
+            <guid>https://erwinsmit.com/blog/nextjs-on-azure-functions</guid>
+            <description><![CDATA[<p>Next.js is a great framework for creating react applications. I was always a fan of <strong>SSG (Static Site Generation)</strong> using for example Gatsby (this blog is using Gatsby too). 
+Websites using <strong>SSG</strong> have low hosting costs. No computing power is needed for rendering stuff to the end-user. With the great tooling available it still feels dynamic, you can still use a CMS, you just need to run a new build when some content has changed.</p>
+<p>This is all great but when you make content changes all the time it is not that scalable. Sometimes you also still need SSR (Server Side Rendering). With Next.js you can have both at the same time! For me the key advantages of Next.js are:</p>
+<ul>
+<li><strong>SSG</strong> (Build pages as static assets on build-time)</li>
+<li><strong>SSR</strong> (Serve pages server-side rendered on request)</li>
+<li><strong>ISG</strong> (Incremental Static Generation)</li>
+</ul>
+<p><strong>ISG</strong> is a great feature, a page that is statically rendered using SSG can still update on request when the <a href="https://nextjs.org/docs/basic-features/data-fetching"><em>revalidate</em></a> time on a page has expired. A real-life scenario would be:</p>
+<ol>
+<li>User 1 requests the &quot;/contact&quot; page where revalidate is set to 10 (seconds). The page is not generated on build time so a static asset is created on the server containing the HTML.</li>
+<li>User 2 enters the contact page a few seconds later, it will receive the statically generated HTML triggered by event <strong>1</strong> above.</li>
+<li>User 1 refreshes the page 10 seconds later, the page will update itself and will be served as a static asset to the next user that enters the page within 10 seconds.</li>
+</ol>
+<p>With the use case described above, you wonder why you would ever need SSR. I&#39;m also not sure when you still need it, you could say it&#39;s necessary when the content is unique per visitor (price information for example). 
+But if that&#39;s the case, you could also fetch the data using client-side calls, unique content specifically for a user should not be important for SEO. </p>
+<p>At Macaw we build a lot of stuff with Sitecore so I&#39;m excited to see Sitecore JSS supports Next.js out of the box! However, there are some challenges...</p>
+<h2>Hosting Next.js without Vercel</h2>
+<p>Next.js recommends you host your Next.js application on Vercel, this makes perfect sense because Vercel is the company behind Next.js. In Vercel you simply link your Next.js Github repository, click next a few times and you have a Next.js site up and running!</p>
+<p>Most of our clients already pay for an Azure subscription, so it doesn&#39;t always make sense for the clients to also pay for Vercel. This makes their IT landscape less consistent. </p>
+<p>Also the pricing is hard to calculate. For a developer creating a hobby website, it&#39;s free which is great. For a bit more bandwidth you pay $20 per member (I assume developer team member). Anything above that is a big mystery because you will fall into the Enterprise bracket. I heard some mixed <a href="https://www.reddit.com/r/nextjs/comments/ikr8jv/understanding_optimizing_nextjs_usage_on_vercel/">experiences</a> about that.</p>
+<p>In other projects, we learned that you get the most bang for buck performance hosting your application in (consumption-based) Azure Functions. You only pay for the number of requests you get and it can scale up to infinity. </p>
+<p>So how do you run Next.js on an Azure function? We decided to figure this out first with a basic Next.js website before diving into the Sitecore JSS implementation. </p>
+<h2>Next.js custom server within an Azure Function</h2>
+<p>Our project is set up with Lerna using the following folder structure:</p>
+<ul>
+<li><code>packages/nextjs-app</code></li>
+<li><code>packages/nextjs-azure-functions</code></li>
+</ul>
+<p>Within the <code>nextjs-app</code> package we have an app generated by default using the Next.JS CLI. For demonstration purposes, we have a page that&#39;s generated using <code>getServerSideProps</code> for SSR and a page using <code>getStaticProps</code> for SSG. </p>
+<p>In the <code>nextjs-azure-functions</code> we have created a function for the custom server. The custom server is based on the examples provided by Next.js and placed in the context of an Azure Function. A custom server is required because you can&#39;t just run <code>next start</code> within an Azure Function. </p>
+<pre><code class="language-javascript">module.exports = async function (context: Context, req: HttpRequest) {
+    if (!app) {
+        app = next({ 
+            dev: false        
+        });
+
+        await app.prepare();
+        handle = app.getRequestHandler();
+    }
+
+    const path = (req?.params?.remainingPath &amp;&amp; req?.params?.remainingPath !== &quot;nextjsserver&quot;) ? `/${req?.params?.remainingPath}` : &quot;/index&quot;
+    
+    const protocol = req.url.includes(&quot;https&quot;) ? &quot;https://&quot; : &quot;http://&quot;;
+    const parsedUrl = new URL(`${path}`, `${protocol}${process.env.WEBSITE_HOSTNAME}`);
+
+    // This fixes the &quot;__nextlocale of undefined&quot; error
+    parsedUrl.search = {};
+
+    try {
+        await handle(req as unknown as IncomingMessage, context.res as unknown as ServerResponse, parsedUrl);
+    } catch(e) {
+        context.res = {
+            status: 500,
+            body: path + JSON.stringify(e)
+        };
+    }
+}
+</code></pre>
+<p>The main challenge here was to add support for the routing, this is solved using the <code>remainingPath</code> parameter. This parameter is passed to the Azure Function using the <a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-proxies">proxies.json</a></p>
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;http://json.schemastore.org/proxies&quot;,
+  &quot;proxies&quot;: {
+    &quot;rootpaths&quot;: {
+      &quot;disabled&quot;: false,
+      &quot;matchCondition&quot;: {
+        &quot;methods&quot;: [ &quot;GET&quot;, &quot;OPTIONS&quot; ],
+        &quot;route&quot;: &quot;{*remainingPath}&quot;
+      },
+      &quot;backendUri&quot;: &quot;https://localhost/nextjsserver/{remainingPath}&quot;
+    }
+  }
+}    
+</code></pre>
+<p>Using this proxy the subpath after the baseurl is passed as a parameter. So when <a href="https://nextjsapp.com/category/tv">https://nextjsapp.com/category/tv</a> is requested <code>category/tv</code> will be the parameter passed to the Azure Function. Great, this works! </p>
+<p>But... The static assets from Next.js are not showing up. E.g. when <code>_next/static/css/0c24874fa9ebf63f8a34.css</code> is requested, it will try to render a route within Next.js instead of serving the static file. </p>
+<h2>Resolving static assets</h2>
+<p>Also, this challenge can be solved with proxies:</p>
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;http://json.schemastore.org/proxies&quot;,
+  &quot;proxies&quot;: {
+    ...
+    &quot;staticFiles&quot;: {
+      &quot;disabled&quot;: false,
+      &quot;matchCondition&quot;: {
+        &quot;methods&quot;: [ &quot;GET&quot;, &quot;OPTIONS&quot; ],
+        &quot;route&quot;: &quot;_next/static/{*path}&quot;
+      },
+      &quot;backendUri&quot;: &quot;https://localhost/serveStaticFile?path={path}&quot;
+    }
+  }
+}
+</code></pre>
+<p>With this configuration, we catch all the requests that start with <code>next/static</code> and catch everything after that in a parameter called path. This parameter is passed to an azure function called <code>serveStaticFile</code> which looks like this:</p>
+<pre><code class="language-javascript">import { Context, HttpRequest } from &quot;@azure/functions&quot;;
+
+const fs = require(&#39;fs&#39;).promises;
+const path = require(&quot;path&quot;);
+
+const nextPath = path.dirname(require.resolve(&quot;../../basic-nextjs-example/.next/BUILD_ID&quot;));
+
+module.exports = async function (context: Context, req: HttpRequest) {
+    const staticFilePath = req?.query?.path;
+
+    try {
+        const data = await fs.readFile(path.join(nextPath, &quot;static&quot;, staticFilePath));
+
+        return {
+            body: data
+        }
+
+    } catch {
+        return {
+            body: `File not found ${JSON.stringify(req.query)}`
+        }
+    }
+}
+</code></pre>
+<p>This example could be more sophisticated with the inclusion of the Content-Type header. But the modern browsers seem to handle this fine. </p>
+<h2>Choosing the right CDN</h2>
+<p>While picking the CDN for your Azure Function it&#39;s important to pick one that supports this Response Header correctly: </p>
+<p><code>cache-control: s-maxage=10,stale-while-revalidate</code></p>
+<p>You want the s-maxage value to be the same value as configured for <code>revalidate</code> in <code>getStaticProps</code></p>
+<pre><code class="language-javascript">// static site generation...
+export async function getStaticProps() {
+    const res = await fetch(&#39;https://baconipsum.com/api/?type=meat-and-filler&#39;)
+    const meats = await res.json()
+    const now = new Date();
+
+    return {
+        props: {
+            meats,
+            date: `${now.toLocaleDateString()} - ${now.toLocaleTimeString()}`
+        },
+        revalidate: 10
+    }
+}
+</code></pre>
+<p>Not all <a href="https://docs.microsoft.com/en-us/azure/cdn/cdn-features">CDN&#39;s</a> in Azure support this. Only <code>Standard Microsoft</code> and <code>Premium Verizon</code> support this feature currently.</p>
+<h2>What&#39;s next?</h2>
+<p>This is my first post about my investigation on Next.js on azure and Sitecore JSS. Coming up are posts about:</p>
+<ul>
+<li>Deploying Azure Functions using Github actions</li>
+<li>Sitecore JSS on azure functions</li>
+<li>Creating components in Sitecore JSS</li>
+<li>Integrate Sitecore OrderCloud and other services in Sitecore JSS</li>
+</ul>
+]]></description>
+            <pubDate>Wed, 13 Oct 2021 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Speed up your Sitecore React implementation ]]></title>
+            <link>https://erwinsmit.com/blog/speed-up-your-sitecore-react-implementation</link>
+            <guid>https://erwinsmit.com/blog/speed-up-your-sitecore-react-implementation</guid>
+            <description><![CDATA[<p>On a lot of Sitecore sites that jumped on the React bandwagon a while ago I notice some performance issues. In this post I will explain how to fix this and make your Sitecore/React implementation almost as fast as a site built with <a href="https://www.erwinsmit.com/make-your-sxa-site-perform/">Stencil components</a></p>
+<p>The two main issues with these websites are <strong>Render blocking script tags</strong> and <strong>unused javascript</strong>. Let&#39;s fix it!</p>
+<h2>Render blocking script tags</h2>
+<p>I created a static <a href="https://www.erwinsmit.com/performancepoc/index.html">html page</a> that reflects how many Sitecore sites work, it has inline script tags that refer to React components. Although these components are already rendered server side they still need to be &quot;Hydrated&quot;. Hydration of a React component adds all the client side magic like event listeners, state changes, hooks etc.</p>
+<p><img src="/blog/hydration.jpg" alt="" title="Hydrate React component"></p>
+<p>It&#39;s no exception to have about 20 of these inline script tags on the page to hydrate all the necessary React components. There are two issues with this approach. Every script tag that is not at the absolute bottom of the page <strong>blocks the rendering</strong> of the HTML that follows, so the footer will not be rendered <strong>until</strong> the script tags in the main section are executed. The same applies for the rendering of the main section, this will not happen until the hydration of the header navigation is completed. For performance reasons this is not ideal, the HTML of the components is already server side rendered meaning that the user can see and interact with most of the HTML.</p>
+<p>The <strong>second issue</strong> with this approach is the dependency on global modules within the script tags, &quot;ClientX.default.Navigation&quot; needs to be registered on the Window object otherwise runtime exceptions will occur. Therefore the JavaScript bundle responsible for registering these components is at the top of the page. As a result the browser first needs to load and execute this script before it can render the HTML. You can imagine tools like Google Lighthouse are not happy with this!</p>
+<p><img src="/blog/lighthouse-not-happy.jpg" alt="" title="Lighthouse isn&#39;t happy!"></p>
+<h3>How to fix this?</h3>
+<p>In the entrypoint for the client bundle the code usually looks like this:</p>
+<pre><code class="language-javascript">import &quot;expose-loader?exposes=React!react&quot;;
+import &quot;expose-loader?exposes=ReactDOM!react-dom&quot;;
+import &quot;expose-loader?exposes=ClientX!../src/components&quot;;
+</code></pre>
+<p>React &amp; ReactDOM are exposed to the window object and src/components refers to a entrypoint for all the components used within the sitecore rendering. That entrypoint is usually built up with a lot of imports and exports:</p>
+<pre><code class="language-javascript">import SearchResults from &quot;./30_Organisms/Blog/BlogPostsOverview&quot;;
+import SearchBox from &quot;./30_Organisms/SearchBox/container&quot;;
+import BlogPostDetails from &quot;./30_Organisms/Blog/BlogPostDetails&quot;;
+import Contact from &quot;./20_Molecules/Contact&quot;;
+import NavigationSearchBox from &quot;./30_Organisms/SearchBox/variants/SimpleSearchBox&quot;;
+import BannerTeaser from &quot;./20_Molecules/Teasers/BannerTeaser&quot;;
+
+export default {
+  BlockTeaser,
+  Button,
+  FAQ,
+  FAQList,
+  NavigationImageList,
+  FooterMainImage,
+};
+</code></pre>
+<p>This causes the components to be registered on the window object like &quot;window.ClientX.default.FAQ&quot;</p>
+<p>To fix the render blocking we first put HTML comments <!-- --> around all the hydration script. I also added a react-data-hydrate attribute so they are easily distinguishable from other inline scripts (e.g. Google tag manager).</p>
+<pre><code class="language-html">&lt;!--&lt;script data-react-hydrate&gt;
+        ReactDOM.hydrate(React.createElement(ClientX.default.Navigation, 
+        { &quot;module&quot;: &quot;ClientX.default.Navigation&quot;, &quot;id&quot;: &quot;a2feda75-fd69-4811-962a-dd5411e3e7dd&quot;, &quot;name&quot;: &quot;Main Navigation&quot;, &quot;variant&quot;: &quot;vertical&quot;, &quot;editing&quot;: false, &quot;datasource&quot;: { &quot;id&quot;: &quot;518f590a-a4cc-446a-be85-b44efc8e4f6c&quot; } } ))
+    &lt;/script&gt;--&gt;
+</code></pre>
+<p>Now let&#39;s change the entrypoint to the following:</p>
+<pre><code class="language-javascript">import &quot;expose-loader?exposes=React!react&quot;;
+import &quot;expose-loader?exposes=ReactDOM!react-dom&quot;;
+import &quot;expose-loader?exposes=ClientX!../src/components&quot;;
+
+const bodyHtml = document.body.innerHTML;
+const scriptTagExpression = /(?=&lt;!--&lt;script data-react-hydrate)([\s\S]*?)--&gt;/gm;
+const scriptTagContentsExpression = /^&lt;!--|--&gt;$|&lt;script data-react-hydrate&gt;|&lt;\/script&gt;/g;
+
+const matches = scriptTagExpression.exec(bodyHtml);
+matches?.forEach((match) =&gt; {
+  const scriptTag = match.replace(scriptTagContentsExpression, &quot;&quot;);
+
+  try {
+    Function(scriptTag)();
+  } catch (e) {
+    console.error(&quot;hydrating error:&quot;, e, scriptTag);
+  }
+  return &quot;&quot;;
+});
+</code></pre>
+<p>With a regex we collect all the hydration scripts, and execute them by creating a function from the string and execute it directly. Now we can also move the reference to the client bundle to the bottom of the page as done <a href="https://www.erwinsmit.com/performancepoc/without-render-blockers.html">here</a>.</p>
+<p>As a result, the Google Lighthouse warning is almost gone!</p>
+<p><img src="/blog/lighthouse-no-render-blockers.jpg" alt="" title="Lighthouse almost happy"></p>
+<p>It&#39;s still complaining about the css bundle blocking things, to fix that usually applying CSSPurge as discussed in a <a href="https://www.erwinsmit.com/make-your-sxa-site-perform/">previous blog post</a> is enough.</p>
+<h2>Unused JavaScript</h2>
+<p>As discussed above, the entrypoint imports all the components to be exported and exposed to the Window object. Because not all pages use the same set of components, you will always have a lot of unused JavaScript sitting on the page.
+Google Lighthouse is not happy with this.</p>
+<p><img src="/blog/lighthouse-unused-javascript.jpg" alt="" title="Google Lighthouse unused JavaScript"></p>
+<p>The suggestions from Google Lighthouse to look at &quot;React.lazy()&quot; or &quot;loadable-components&quot; are not useful for this type of React implementation. Because it&#39;s no React application. It&#39;s a couple of React components loaded separately on the page.
+For fixing this we need to <strong>think outside of the React box</strong>. This problem can be tackled with the following steps:</p>
+<ol>
+<li>Find out which components are used on a page</li>
+<li>Dynamically load these components using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">dynamic imports</a></li>
+<li>Expose the components on the window object</li>
+</ol>
+<h3>Find out which components are used on a page</h3>
+<p>With more regex magic we can create a array with the component names used on the page.</p>
+<pre><code class="language-javascript">const namespace = &quot;ClientX&quot;;
+const regex = new RegExp(String.raw`${namespace}.default.+?(?=\W)`, &quot;gm&quot;);
+
+const bodyHtml = document.body.innerHTML;
+const allComponents = [...new Set(bodyHtml.match(regex))];
+</code></pre>
+<p>With the code above we grab all the components referenced in the inline script tags. With the &quot;new Set&quot; hack we remove all the duplicate keys.</p>
+<p>Resulting in this array:</p>
+<pre><code class="language-javascript">[&quot;ClientX.default.Navigation&quot;, &quot;ClientX.default.Section&quot;, &quot;ClientX.default.HeroTeaser&quot;, &quot;ClientX.default.USPHeader&quot;];
+</code></pre>
+<h3>Dynamically load the components</h3>
+<p>To allow the components to be dynamically loaded we need to change the way we currently create the index file for the components.</p>
+<p>The old way:</p>
+<pre><code class="language-javascript">import Navigation from &#39;./20_Molecules/NavigationMenu/container&#39;;
+import Section from &#39;./02_Wrappers/structure/Section&#39;;
+import HeroTeaser from &#39;./30_Organisms/HeroTeaser/container&#39;),
+import USPHeader from &#39;./20_Molecules/Headers/USPHeader&#39;),
+import BannerTeaser from &#39;./20_Molecules/Teasers/BannerTeaser&#39;)
+
+export default {
+    Navigation,
+    Section,
+    HeroTeaser,
+    USPHeader,
+    BannerTeaser
+}
+</code></pre>
+<p>Instead, create a component loader object that adds a async function to every component key and add it to the client entrypoint:</p>
+<pre><code class="language-javascript">const componentLoader = {
+  Navigation: () =&gt; import(&quot;../src/components/20_Molecules/NavigationMenu/container&quot;),
+  Section: () =&gt; import(&quot;../src/components/02_Wrappers/structure/Section&quot;),
+  HeroTeaser: () =&gt; import(&quot;../src/components/30_Organisms/HeroTeaser/container&quot;),
+  USPHeader: () =&gt; import(&quot;../src/components/20_Molecules/Headers/USPHeader&quot;),
+  BannerTeaser: () =&gt; import(&quot;../src/components/20_Molecules/Teasers/BannerTeaser&quot;),
+};
+</code></pre>
+<p>Next, create an async function that loops over the &quot;allComponents&quot; array, load the imports and assigning them to the window object.</p>
+<pre><code class="language-typescript">type ReactWindow = Window &amp; {
+  [namespace]: {
+    default: { [key: string]: () =&gt; void };
+  };
+};
+
+const reactWindow = window as unknown as ReactWindow;
+
+async function loadComponents() {
+  reactWindow[namespace] = { default: {} };
+  const componentNamesExpression = new RegExp(`${namespace}.default.+?(?=\\W)`, &quot;gm&quot;);
+
+  const allComponents = [...new Set(bodyHtml.match(componentNamesExpression))];
+  const componentPromises: Array&lt;() =&gt; Promise&lt;{ default: any }&gt;&gt; = [];
+
+  for (const component of allComponents) {
+    const componentsSplit = component.split(&quot;.&quot;);
+    const componentName = componentsSplit[componentsSplit.length - 1];
+    const componentPromise: () =&gt; Promise&lt;any&gt; = componentLoader[componentName];
+
+    if (componentPromise) {
+      componentPromises.push(componentPromise);
+    }
+  }
+
+  const tasks = componentPromises.map((task) =&gt; task()); // Run all the imports in parallel
+  const components = await Promise.all(tasks); // get the results
+
+  components.forEach((component, i) =&gt; {
+    const componentsSplit = allComponents[i].split(&quot;.&quot;);
+    const componentName = componentsSplit[componentsSplit.length - 1];
+
+    if (component) {
+      reactWindow[namespace].default[componentName] = component.default;
+    }
+  });
+}
+</code></pre>
+<p>Now, if all is well, you will see a whole bunch of JavaScript files loaded in your requests instead of the one big bundle.</p>
+<p><img src="/blog/codesplitting-requests.jpg" alt="" title="Code splitting requests"></p>
+<p>This is all great, and the amount of JavaScript loaded in total is already lower. But when running the <a href="https://www.npmjs.com/package/webpack-bundle-analyzer">webpack-bundle-analyzer</a> I noticed there is some duplicate code across the bundles.</p>
+<p><img src="/blog/duplicate-code.jpg" alt="" title="Duplicate code"></p>
+<p>&quot;Icons.tsx&quot; and &quot;SafeRenderDatasourceComponent.tsx&quot; are included in multiple bundles. This is still better than having one big bundle as before but this can be easily fixed!</p>
+<p>One way of achieving this is to dynamically load &quot;Icons.tsx&quot; in all the components, however this is error prone and it&#39;s a lot of manual work.</p>
+<p>My preference is to figure out which components are most likely re-used within a project and force these in a dedicated bundle. This can be done in the webpack configuration:</p>
+<pre><code class="language-javascript">optimization: {
+    splitChunks: {
+        cacheGroups: {
+            atoms: {
+                name: &quot;atoms&quot;,
+                test: /[\\/]components[\\/]10_Atoms[\\/]/,
+                enforce: true
+            },
+            hocs: {
+                name: &quot;hocs&quot;,
+                test: /[\\/]components[\\/]01_HOCs[\\/]/,
+
+            }
+        }
+    }
+}
+</code></pre>
+<p>As a result the amount of JavaScript loaded has more than halved in size on most pages!</p>
+<h3>Why is webpack not splitting the bundles?</h3>
+<p>While working on a project that hasn&#39;t updated for a while these things where stopping webpack from splitting the bundles:</p>
+<ul>
+<li>Old version of webpack</li>
+<li>Old version of typescript</li>
+<li>Deprecated loader &quot;awesome-typescript-loader&quot; was used, replace with <a href="ts-loader">https://github.com/TypeStrong/ts-loader</a></li>
+<li>Module was not set to &quot;esnext&quot; in the tsconfig.json</li>
+</ul>
+<p>Fixing the items above already decreased the bundle size by quite a bit without code splitting. Probably by better treeshaking algorithms.</p>
+<h2>The final code</h2>
+<p>With the following code in your entrypoint you combine the best of both worlds. No more render blocking script tags and a lean and mean JavaScript bundle. Enjoy your fast new project!</p>
+<pre><code class="language-typescript">import &quot;expose-loader?exposes=React!react&quot;;
+import &quot;expose-loader?exposes=ReactDOM!react-dom&quot;;
+
+const namespace = &quot;ClientX&quot;;
+type ReactWindow = Window &amp; {
+  [namespace]: {
+    default: { [key: string]: () =&gt; void };
+  };
+};
+
+const reactWindow = window as unknown as ReactWindow;
+const bodyHtml = document.body.innerHTML;
+
+const componentLoader = {
+  Navigation: async () =&gt; import(&quot;../src/components/20_Molecules/NavigationMenu/container&quot;),
+  Section: async () =&gt; import(&quot;../src/components/02_Wrappers/structure/Section&quot;),
+  HeroTeaser: async () =&gt; import(&quot;../src/components/30_Organisms/HeroTeaser/container&quot;),
+  USPHeader: async () =&gt; import(&quot;../src/components/20_Molecules/Headers/USPHeader&quot;),
+  VehicleGridContainer: async () =&gt; import(&quot;../src/components/30_Organisms/VehicleGrid/VehicleGrid&quot;),
+};
+
+// 1. Only load the components that are present on the page
+async function loadComponents() {
+  reactWindow[namespace] = { default: {} };
+  const componentNamesExpression = new RegExp(`${namespace}.default.+?(?=\\W)`, &quot;gm&quot;);
+
+  const allComponents = [...new Set(bodyHtml.match(componentNamesExpression))];
+  const componentPromises: Array&lt;() =&gt; Promise&lt;{ default: any }&gt;&gt; = [];
+
+  for (const component of allComponents) {
+    const componentsSplit = component.split(&quot;.&quot;);
+    const componentName = componentsSplit[componentsSplit.length - 1];
+    const componentPromise: () =&gt; Promise&lt;any&gt; = componentLoader[componentName];
+
+    if (componentPromise) {
+      componentPromises.push(componentPromise);
+    }
+  }
+
+  const tasks = componentPromises.map((task) =&gt; task()); // Run all the imports in parallel
+  const components = await Promise.all(tasks); // get the results
+
+  components.forEach((component, i) =&gt; {
+    const componentsSplit = allComponents[i].split(&quot;.&quot;);
+    const componentName = componentsSplit[componentsSplit.length - 1];
+
+    if (component) {
+      reactWindow[namespace].default[componentName] = component.default;
+    }
+  });
+}
+
+// 2. Execute the react hydrate after the page is loaded...
+loadComponents().then(() =&gt; {
+  const scriptTagExpression = /(?=&lt;!--&lt;script data-react-hydrate)([\s\S]*?)--&gt;/gm;
+  const scriptTagContentsExpression = /^&lt;!--|--&gt;$|&lt;script data-react-hydrate&gt;|&lt;\/script&gt;/g;
+
+  const matches = scriptTagExpression.exec(bodyHtml);
+  matches?.forEach((match) =&gt; {
+    const scriptTag = match.replace(scriptTagContentsExpression, &quot;&quot;);
+
+    try {
+      Function(scriptTag)();
+    } catch (e) {
+      console.error(&quot;hydrating error:&quot;, e, scriptTag);
+    }
+    return &quot;&quot;;
+  });
+});
+</code></pre>
+]]></description>
+            <pubDate>Thu, 11 Feb 2021 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Get intellisense on your Stencil webcomponents in VS Code ]]></title>
+            <link>https://erwinsmit.com/blog/webcomponents-intellisense</link>
+            <guid>https://erwinsmit.com/blog/webcomponents-intellisense</guid>
+            <description><![CDATA[<p>As discussed in the previous blogpost we are happy with the combination of <a href="https://www.erwinsmit.com/make-your-sxa-site-perform/">Sitecore SXA &amp; Stencil webcomponents</a>. However there was a small detail that was annoying me...</p>
+<p>StencilJS has great <a href="https://stenciljs.com/docs/typed-components#typed-components">Typescript support</a> so when you use Stencil webcomponents in .TSX files you get great intellisense in VS Code.
+With minimal effort you can also generate a custom-elements.json for intellisense on your Stencil Components in static .html files.</p>
+<p>To do so, add this object to your stencil.config.ts:</p>
+<pre><code class="language-javascript">{
+    type: &#39;docs-vscode&#39;,
+    file: &#39;./{replace-with-your-dist-path}/custom-elements.json&#39;
+}
+</code></pre>
+<p>When Stencil created the json file, add a reference in .vscode/settings.json:</p>
+<pre><code class="language-json">{
+  &quot;html.customData&quot;: [&quot;./{replace-with-your-dist-path}/custom-elements.json&quot;]
+}
+</code></pre>
+<p>Now you get intellisense on static html files!
+<img src="/blog/intellisense.gif" alt="html intellisense"></p>
+<h2>Now what about Scriban?</h2>
+<p>By default VS Code does not support Scriban so you will need to install an extension. You can either install a standard <a href="https://marketplace.visualstudio.com/items?itemName=xoofx.scriban">Scriban extension</a> or the great <a href="https://marketplace.visualstudio.com/items?itemName=adamnaj.sitecore-scriban">Sitecore Scriban Extension</a> that also gives you autocompletion on Sitecore specific methods and objects. At the writing of this blog there is no support yet for intellisense on Stencil Components, but when <a href="https://github.com/AdamNaj/SitecoreScriban-vscode/pull/2">version 0.2.1</a> is released you will get the same great intellisense on your Scriban files as well! It&#39;s small improvements on developer experience like this that can make a great difference in the daily lives of Sitecore developers.</p>
+]]></description>
+            <pubDate>Thu, 21 Jan 2021 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ How to make your Sitecore SXA site perform ]]></title>
+            <link>https://erwinsmit.com/blog/make-your-sxa-site-perform</link>
+            <guid>https://erwinsmit.com/blog/make-your-sxa-site-perform</guid>
+            <description><![CDATA[<p>From my experience websites that are built using Sitecore SXA with the standard themes enabled don&#39;t perform very well. In this post I dive into the root cause of this problem and how to fix this.</p>
+<h2>The problems with Sitecore SXA and frontend code</h2>
+<p>To put it bluntly, the performance from Sitecore out of the box is not great. We can measure this with <a href="https://developers.google.com/web/tools/lighthouse">Google Lighthouse</a>, a tool standard available in the Chrome browser that rates your website on performance (among other things).</p>
+<p>Let&#39;s have a look at the Lighthouse report with the standard theme switched on.</p>
+<p><img src="/blog/lightspeed-standard.jpg" alt="alt text" title="Lightspeed report SXA wireframe"></p>
+<p>As we can see we lose 0.8 seconds with unused JavaScript, that time alone should already be enough to load a whole website. But instead we just loaded JavaScript that is just sitting there doing nothing! With the unused CSS combined we can gain almost a full second by just removing what we don&#39;t actually use.</p>
+<p>Let&#39;s have a look at the <strong>JavaScript sources</strong>
+<img src="/blog/javascript-sources-standard.jpg" alt="alt text" title="Javascript sources SXA wireframe">
+That is 1.2MB of JavaScript! And this will be loaded on every page. So even if you have a page with some rich text and no interaction, you will still get 1.2MB of JavaScript loaded on your page. Even for complex JavaScript applications this is a lot.</p>
+<p>And the <strong>CSS sources</strong>
+<img src="/blog/css-sources-standard.jpg" alt="alt text" title="Css sources SXA wireframe">
+Also here the amount of loaded CSS is huge, because SXA is including a lot of 3rd-party CSS code for styling components you might not even use.</p>
+<h2>Where is this all coming from?</h2>
+<p>The standard theme in SXA is very bloated. To clarify this, the following list of libraries are included in the core-libraries base theme.</p>
+<p>I included some comments on why you would not want the respective library loaded on every page of your website:</p>
+<table>
+<thead>
+<tr>
+<th>KB</th>
+<th>Library</th>
+<th>Comments</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>332</td>
+<td>&#39;xaquery.min.js&#39;</td>
+<td>This is jQuery wrapped in the XA (eXperience Accelerator) namespace. So if you don&#39;t need/use it, this results in 332kb of unused JavaScript</td>
+</tr>
+<tr>
+<td>212</td>
+<td>fullcalendar.min.js</td>
+<td>Required for the calendar component of SXA. How many pages have a calendar on them. Because there is no lazy-loading available, in most pages you will have 212kb of unused JavaScript</td>
+</tr>
+<tr>
+<td>156</td>
+<td>&#39;mediaelement-and-player.min.js&#39;</td>
+<td>This library is a very old wrapper around the HTML5 video element, unnecessary in this day and age</td>
+</tr>
+<tr>
+<td>72</td>
+<td>galleria-157.min.js</td>
+<td>This library is used by the carousel component. Do you want a carousel on every page? <a href="http://shouldiuseacarousel.com/">Do you even need a carousel</a>?</td>
+</tr>
+<tr>
+<td>72</td>
+<td>lo-dash.min.js</td>
+<td>Lodash is a JavaScript utility library. With lodash you usually only need a couple of functions, however in the core-libraries base theme they are nearly all included</td>
+</tr>
+<tr>
+<td>52</td>
+<td>moment.min.js</td>
+<td><a href="https://momentjs.com/docs/#/-project-status">Deprecated</a>. A huge library for displaying... dates</td>
+</tr>
+<tr>
+<td>48</td>
+<td>jquerymCustomScrollbar.min.js</td>
+<td>Overwriting scrollbars with this library is an anti-pattern</td>
+</tr>
+<tr>
+<td>44</td>
+<td>typeahead.min.js</td>
+<td></td>
+</tr>
+<tr>
+<td>24</td>
+<td>hammer.min.js</td>
+<td></td>
+</tr>
+<tr>
+<td>20</td>
+<td>backbone-min.min.js</td>
+<td></td>
+</tr>
+<tr>
+<td>20</td>
+<td>modernizr.min.js</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>vimeo.min.js</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>dailymotion.min.js</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>twitch.min.js</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>facebook.min.js</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>gcal.min.js</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>soundcloud.min.js</td>
+<td><a href="https://soundcloud.com/">Soundcloud</a> is cool... but how many sites do need Soundcloud?!</td>
+</tr>
+<tr>
+<td>4</td>
+<td>&#39;flash-polyfill (1).min.js&#39;</td>
+<td>Flash! Those were the days...</td>
+</tr>
+<tr>
+<td>4</td>
+<td>jqueryuitouch-punchmin.min.js</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>ie-origin-fix.min.js</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>So with all the above code we are already above 1MB, and that&#39;s just library code! This does not even include your custom components code which I won&#39;t go into, because this should already be enough motivation to do something about this. If you have this much unused JavaScript on your page, your Google Lighthouse score will always be sub-optimal.</p>
+<p><strong>With our setup the average JS load on a page is only 30kb! (excluding google GTM / GA code).</strong></p>
+<h2>How to fix this?</h2>
+<h3>1. Remove all the SXA base theme dependencies out of your theme</h3>
+<p>Remove everything so you start can with a nice clean slate.
+I know that it feels strange to do this. But if you want to unclutter, you have to ask yourself: does it <a href="https://knowyourmeme.com/memes/does-it-spark-joy">spark joy</a>? If it doesn&#39;t, thank Sitecore for all the unused code and trash it!</p>
+<p><img src="/blog/does-it-spark-joy.jpg" alt="alt text" title="Does is spark joy?"></p>
+<p>You can still use the standard components from SXA, but you just need to add (or copy from SXA if you must) the specific component Javascript and CSS.</p>
+<p>For example, we still use the standard cookie component from SXA. So we copied the JavaScript from the SXA Javascript, removed all the jQuery dependencies and added it to our own custom JavaScript bundle.</p>
+<h3>2. Install proper tooling for your frontend builds</h3>
+<p>If you want to use the out of the box tooling from SXA you don&#39;t have access to nice things like Typescript, automatic-tree shaking etc. This is solved by my colleague Serge. Use this repository as a starting point for a good tooling setup:</p>
+<p><a href="https://github.com/macaw-interactive/sxa-umbrella">https://github.com/macaw-interactive/sxa-umbrella</a></p>
+<h3>3. Use Stencil for your components</h3>
+<p>One of the technologies we adopted to create components in the Sitecore SXA worls is <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components">Web Components</a>. Web Components is a suite of different technologies to create reusable custom HTML elements with full support for <a href="https://support.google.com/webmasters/answer/7451184">SEO</a>.
+Web Components have been around for a while, but now Microsoft is quickly killing off it&#39;s legacy browsers (IE11 &amp; the old Edge browser), and Web Components are supported by all the major browsers. This allows us to develop component driven web applications without the need of a view library like React, VUE or Angular.</p>
+<p>The native developer experience for Web Components is not great if you are used to the great tooling and the template language available with React. That&#39;s where <a href="https://stenciljs.com/">Stencil</a> shines! Stencil is a toolchain for developing Web Components with ease. You can write your Stencil components in TSX (The TypeScript version of JSX), and Stencil makes sure that this compiles down to native Web Components your browser will understand. That means that your compiled code does not rely on any dependencies and your compiled code will be nice and lean.</p>
+<p>Usually you need server-side rendering with similar JavaScript frameworks for SEO, and because the HTML won&#39;t be rendered without JavaScript enabled. With Web Components however, both problems can be solved at once because you can add your <code>h1</code> tag or <code>p</code> tags simply to <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_templates_and_slots">slots</a> defined in your Web Component. This way Google will index your site, and you still see something on the screen if your JavaScript falls over.</p>
+<p>We use slots for all the content that&#39;s required for SEO. All the other HTML is in the TSX template. So when you view the source of our accordion component on the page you see this:</p>
+<pre><code class="language-html">&lt;dmp-accordion can-open-multiple&gt;
+  &lt;dmp-accordion-item&gt;
+    &lt;h3 slot=&quot;title&quot;&gt;Import title for SEO&lt;/h3&gt;
+    &lt;div slot=&quot;content&quot;&gt;
+      &lt;p&gt;Import text for SEO&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/dmp-accordion-item&gt;
+&lt;/dmp-accordion&gt;
+</code></pre>
+<p>So when Google indexer goes over your page, all the information is there for a successful indexation.</p>
+<p>How does Stencil help you with the performance? You get <strong>code splitting</strong> and <strong>lazy loading</strong> out of the box. So it doesn&#39;t matter if your theme contains 10 or 500 components, it will only load the JavaScript for the components that are actually on the page. From our experience you have about <strong>30kb</strong> of JavaScript on a page with a handful of components instead of the <strong>1MB+</strong> with the standard SXA theme switched on, quite a difference!</p>
+<p>Stencil also provides things like <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_templates_and_slots">data-binding</a>, <a href="https://stenciljs.com/docs/properties">properties</a>, and <a href="https://stenciljs.com/docs/state#state-decorator">state management</a>. So no need for libraries like <a href="https://backbonejs.org/">Backbone.js</a> which is included in the standard SXA theme for all the search components.</p>
+<h3>CSS building</h3>
+<p>We use <a href="https://purgecss.com/"><strong>PurgeCSS</strong></a> for removing unused CSS. You run the PurgeCSS tooling after your SCSS compiler, so we included this in our PostCSS config. You supply PurgeCSS with all the HTML your application uses, and PurgeCSS ensures that all the CSS is removed that will not affect the given HTML. Especially for <a href="https://getbootstrap.com/docs/4.0/utilities/spacing/">spacing helpers</a> across multiple breakpoints you can save a lot of unused bytes here.</p>
+<p>Because we try to manage all the components in Sitecore Scriban templates and Stencil components we know what HTML we use and don&#39;t use.</p>
+<p>This is out postcss setup to ensure our CSS is lean and mean:</p>
+<pre><code class="language-javascript">require(&quot;@fullhuman/postcss-purgecss&quot;)({
+  content: [&quot;./**/*.scriban&quot;, &quot;./**/*.tsx&quot;, &quot;./stencil/src/**/*.js&quot;],
+  safelist: {
+    greedy: [/pagemode-edit$/],
+  },
+});
+</code></pre>
+<p>The result of this is that our CSS bundle is <strong>14kb</strong>, compared to the <strong>140kb</strong> when using the standard SXA theme. This won&#39;t be the biggest game changer, but if you add up all the marginal gains you get big gains!</p>
+<h2>Final result</h2>
+<p>This is the lighthouse report on the latest <a href="https://jaaah.nl/">SXA Website</a> we built.</p>
+<p><img src="/blog/final-result.jpg" alt="alt text" title="Fast!"></p>
+<p>With a combined CSS/JS footprint of less then 50kb it&#39;s almost <strong>25 times</strong> more lightweight than the standard SXA theme!</p>
+]]></description>
+            <pubDate>Thu, 12 Nov 2020 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Exploring the apollo graphql stack ]]></title>
+            <link>https://erwinsmit.com/blog/getting-started-with-apollo-federation</link>
+            <guid>https://erwinsmit.com/blog/getting-started-with-apollo-federation</guid>
+            <description><![CDATA[<h2>Why?</h2>
+<p>At a project I&#39;m working on we have to build a single page application with authentication that needs to query data from multiple data services.</p>
+<p>There are also a lot of examples where we need to &#39;stitch&#39; these services together. Let&#39;s have a look at the domain model and the corresponding services:</p>
+<p><img src="/blog/spaData.jpg" alt="alt text" title="data setup"></p>
+<p>Note that I&#39;m not really a pro drawing things with draw.io...
+But you get the point, if we fetch service requests for example. We also have to get the related entity &amp; portfolio for every single service request. Currently we do this with separate api calls and it works but it complicates loading states and it makes the frontend application harder to work with.</p>
+<p>Would it not be nice to get a list of service requests, without having to create 3 api calls from the frontend? Of course this can all be done on the server, but if the requirements change all needs to be updated. For example, if the business decides it doesn&#39;t want entity information on a service request we can remove it from the frontend but the server will still fetch all the data, what a waste! This is where graphql shines, there is a clear connection between the client and the server on the data it actually needs.</p>
+<p>Graphql provides a nice query language for querying the date you want with nested objects supported as well.</p>
+<p>A query for fetching service requests with the related entities and portfolios would look like this:</p>
+<pre><code class="language-graphql">query getServiceRequests {
+  ServiceRequests {
+    entity {
+      name
+      address
+    }
+    portfolio {
+      name
+      address
+    }
+    name
+  }
+}
+</code></pre>
+<p>This query will return a list with the service requests but with the entity and portfolio objects already embedded, nice!</p>
+<p>To actually perform this query and stitch all the data together we can use &quot;Apollo Federation&quot;:
+<a href="https://www.apollographql.com/docs/apollo-server/federation/introduction/">https://www.apollographql.com/docs/apollo-server/federation/introduction/</a></p>
+<h2>Watchlist sideproject</h2>
+<p>I decided to have a play with this using a hobby project. This project called &quot;watchlist&quot; allows me to search for films and add them to my watchlist. I would like to expand it with ratings and sharing functionality but that&#39;s for later.</p>
+<p>I decided on using themoviedb.org as a source for the films and firebase.google.com for saving films to my watchlist.</p>
+<p>The watchlist items are saved in firebase in this structure:</p>
+<p><img src="/blog/firebase.png" alt="alt text" title="data setup"></p>
+<p>Firebase is using a folder structure, userId is used to group all the watchlist items under the correct user. This way I can simply query everything from a specific directory knowing that it&#39;s all scoped to the correct user.</p>
+<p>Eventually I would like to query films and find out from each film if it&#39;s added to watchlist yet.</p>
+<p>The other way round I want to query my watchlist and have all the film information embbeded without having to query the filmservice separately.</p>
+<h2>Setting up the apollo gateway</h2>
+<p>To use Apollo federation you have to create separate services which can be tied together with a &quot;gateway&quot;.</p>
+<p>The gateway looks like this:</p>
+<pre><code class="language-javascript">const gateway = new ApolloGateway({
+  serviceList: [
+    { name: &quot;watchListItems&quot;, url: &quot;http://localhost:5002&quot; },
+    { name: &quot;films&quot;, url: &quot;http://localhost:5003&quot; },
+  ],
+  buildService({ name, url }) {
+    return new AuthenticatedDataSource({ url });
+  },
+});
+</code></pre>
+<p>Because I can only return watchlistitems if the user is authenticated I have to pass an Auth token from my frontend application. In the gateway this token is translated into a userId. The userId is placed on the context, context is a mechanism that allows apollo server to add variables to a global scope which can be accessed anywhere within the scope of the request.</p>
+<pre><code class="language-javascript">const server = new ApolloServer({
+  gateway,
+  context: async ({ req, context }) =&gt; {
+    const token = req.headers.authorization || &quot;&quot;;
+    try {
+      const user = await firebaseApp.auth().verifyIdToken(token);
+      return {
+        userId: user.user_id,
+      };
+    } catch (e) {
+      console.error(e);
+      return {
+        userId: undefined,
+      };
+    }
+  },
+  subscriptions: false,
+});
+</code></pre>
+<p>The context only lives within the &#39;gateway&#39; not in the underlying services. So after the userId is extracted from the token we pass it through using the http headers.</p>
+<pre><code class="language-javascript">class AuthenticatedDataSource extends RemoteGraphQLDataSource {
+  willSendRequest({ request, context }) {
+    if (context.userId) {
+      request.http.headers.set(&quot;userid&quot;, context.userId);
+    }
+  }
+}
+</code></pre>
+<h2>Creating the films service</h2>
+<p>The typedefs for this service are as follows:</p>
+<pre><code class="language-graphql">type Film @key(fields: &quot;id&quot;) {
+  id: ID!
+  posterPath: String
+  title: String!
+  watchListItem: WatchListItem @provides(fields: &quot;filmId&quot;)
+}
+
+extend type WatchListItem @key(fields: &quot;filmId&quot;) {
+  filmId: String! @external
+  id: ID! @external
+}
+
+type Query {
+  films: [Film]
+}
+</code></pre>
+<p>By adding @key(fields: &quot;id&quot;) to Film we ensure this type will be able to referenced by other services.
+In the Film type there is a reference to WatchListItem, because this will be resolved by other services we add the @provides keyword with the field &quot;filmId&quot; which can be used to resolve the type.</p>
+<p>The WatchListItem item lives in another service, so we need to create an extension in this services. That&#39;s done by the &quot;extend type&quot; keyword.</p>
+<p>Resolvers:</p>
+<pre><code class="language-javascript">const resolvers = {
+  Query: {
+    films(parentValue, args, { dataSources }) {
+      return dataSources.filmsApi.getTrendingFilms();
+    },
+  },
+  Film: {
+    __resolveReference(reference, { dataSources }) {
+      return dataSources.filmsApi.getFilmById(reference.id);
+    },
+    watchListItem(film, args) {
+      return { __typename: &quot;WatchListItem&quot;, filmId: film.id, userId: args.userId };
+    },
+  },
+};
+</code></pre>
+<p>To resolve the watchListItem type we need to add a resolver that provides the correct fields to the external service. That&#39;s done with the this line <code>return { __typename: &quot;WatchListItem&quot;, filmId: film.id, userId: args.userId };</code></p>
+<p>If we want other services to consume the Film type we need the __resolveReference method within the type resolver. Within this method the related dataservice method is attached.</p>
+<p>After the types and the resolvers are set up correctly the federated service is created:</p>
+<pre><code class="language-javascript">const server = new ApolloServer({
+  dataSources: () =&gt; {
+    return {
+      filmsApi: new FilmsApi(),
+    };
+  },
+  schema: buildFederatedSchema([
+    {
+      typeDefs,
+      resolvers,
+    },
+  ]),
+});
+</code></pre>
+<h2>Creating the watchlist service</h2>
+<p>Because we need the userId within this service we get the userId from the requestHeaders and add it to the context. This ensures it&#39;s always available within all the resolvers.</p>
+<pre><code class="language-javascript">const server = new ApolloServer({
+  dataSources: () =&gt; {
+    return {
+      watchListApi: new WatchListApi(),
+    };
+  },
+  schema: buildFederatedSchema([{ typeDefs, resolvers }]),
+  context: async ({ req }) =&gt; {
+    const userId = req.headers.userid;
+
+    return {
+      userId: userId,
+    };
+  },
+});
+</code></pre>
+<p>In the typedefs an external reference to type Film is added using the @provides keyword. In the external type we only set the @external id. Note that within the query it&#39;s possible to also request all the other fields within the Film type.</p>
+<pre><code class="language-javascript">  type WatchListItem @key(fields: &quot;id&quot;) {
+    id: ID!
+    filmId: String!
+    film: Film @provides(fields: &quot;id&quot;)
+  }
+
+  extend type Film @key(fields: &quot;id&quot;) {
+    id: ID! @external
+  }
+
+  type Query {
+    watchListItems: [WatchListItem]
+  }
+</code></pre>
+<p>Within the resolvers we specify how the WatchListItem is resolved when it&#39;s requested from another service. Within the film type we tell the resolver to try to get it from another service by only returning <code>{ __typename: &quot;Film&quot;, id: watchListItem.filmId };</code></p>
+<pre><code class="language-javascript">const resolvers = {
+  Query: {
+    watchListItems: async (parentValue, args, { dataSources, userId }) =&gt; {
+      return dataSources.watchListApi.getWatchListItems(userId);
+    },
+  },
+  WatchListItem: {
+    async __resolveReference({ filmId }, context) {
+      return context.dataSources.watchListApi.getWatchListItemByFilmId(context.userId, filmId);
+    },
+    film(watchListItem) {
+      return { __typename: &quot;Film&quot;, id: watchListItem.filmId };
+    },
+  },
+};
+</code></pre>
+<p>Now with this setup we can execute queries that will consume both services (see below for some examples). When using the graphql explorer we add the auth token to the http header to get the results we want.
+<img src="/blog/getFilms.png" alt="alt text" title="get films"></p>
+<p><img src="/blog/getWatchlistitems.png" alt="alt text" title="get watchlistitems"></p>
+<p>In future blogposts I would like to dive deeper into the apollo-client and optimising the dataservices. Explore the caching options both on the client and on the server.</p>
+<p>For now the rest of the source code is available on:
+<a href="https://github.com/erwinsmit/watchlist">https://github.com/erwinsmit/watchlist</a></p>
+]]></description>
+            <pubDate>Sat, 15 Feb 2020 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Creating local npm package for sharing between multiple react applications ]]></title>
+            <link>https://erwinsmit.com/blog/local-npm-package-to-share-between-react-apps</link>
+            <guid>https://erwinsmit.com/blog/local-npm-package-to-share-between-react-apps</guid>
+            <description><![CDATA[<h2>The usecase</h2>
+<p>At the project I&#39;m working on currently we have multiple react apps running alongside of each other. These apps are using &quot;Create react app&quot;, we like using CRA because of all the best practices it enforces on the user and the fact that it&#39;s well maintained by people that know their way around a webpack configuration. </p>
+<p>One of the best practices it enforces is that you are not allowed to include files from outside of the src directory. 
+So if you want to share code between multiple react applications the only (non-hacky) way is to create npm packages that contain transpiled code. The code has to be transpiled because CRA will only do the compile step on npm packages. </p>
+<h3>Tools</h3>
+<p>To achieve this we use LernaJS to link all the dependencies to the correct react applications. Maybe I will write another blog post about this later but for now I will simply list the directory structure:</p>
+<ul>
+<li>CRA application 1</li>
+<li>CRA application 2</li>
+<li>ClientCore (our local npm package)</li>
+</ul>
+<p>In the react applications we can include the &quot;ClientCore&quot; dependency in the package.json. When we run <code>lerna bootstrap</code> it will create symlinks in the &quot;node_modules&quot; directory to our local package.</p>
+<p>The tool we use to transpile our &quot;ClientCore&quot; package is Rollup. Let&#39;s get started with that!</p>
+<h3>Rollup config</h3>
+<p>I prefer to set all the rollup configuration in a separate file and link to it in your package.json.</p>
+<pre><code class="language-json">&quot;scripts&quot;: {
+    &quot;transpile&quot;: &quot;rollup --config ./rollup.config.js&quot;
+},
+</code></pre>
+<p>The basic rollup configuration can look like this</p>
+<pre><code class="language-javascript">export default {
+    input: &#39;index.ts&#39;,
+    output: [
+        {
+            file: &#39;dist/index.js&#39; ,
+            format: &#39;cjs&#39;,
+        },
+        {
+            file: &#39;dist/index.es.js&#39;
+            format: &#39;esm&#39;
+        }
+    ]
+}
+</code></pre>
+<p>This is all you need to transpile your bundle to CommonJS and ES modules. I find this enough because I don&#39;t need to support applications that want a UMD/IFFE build which can load straight into the browser. If you are writing a NPM module for the whole world to use you can consider adding these formats as well. </p>
+<p>Next add the pointer to the dist map to the package.json file:</p>
+<pre><code class="language-json">  &quot;main&quot;: &quot;dist/index.js&quot;,
+  &quot;module&quot;: &quot;dist/index.es.js&quot;,
+</code></pre>
+<p>Main refers to the CJS build and module to the ES build.</p>
+<h3>Typescript support</h3>
+<p>Because we use typescript we also need a plugin to transpile this correctly and give us errors when make a mistake. To add typescript support you can add this to the top of the configuration file (and install the dependency).</p>
+<p><code>import typescript from &#39;rollup-plugin-typescript2&#39;</code></p>
+<p>Next you add a new entry to the rollup config to specify the plugins.</p>
+<pre><code class="language-javascript">plugins: [ typescript() ] 
+</code></pre>
+<p>To also automatically generate type definitions (d.ts files) add these two lines to your tsconfig.json:</p>
+<pre><code class="language-json">&quot;declaration&quot;: true,
+&quot;declarationDir&quot;: &quot;./dist&quot; 
+</code></pre>
+<h3>Gotcha&#39;s - lazy loading &amp; commonJS</h3>
+<p>When using a client side application the only reason to use the CJS build is for dynamic imports (lazy loading) as far as I&#39;m aware. The big difference between the CJS and ES build is that everything will always be imported. </p>
+<p>For example, when your module exports 2 functions:</p>
+<pre><code class="language-typescript">export function test() {
+    return &#39;testing 12&#39;
+}
+
+export default () =&gt; {
+    return &#39;default&#39;
+}
+</code></pre>
+<p>And in your react application you import test</p>
+<pre><code class="language-typescript">const test = require(&#39;ClientCore&#39;).test
+</code></pre>
+<p>You also get the all the other stuff from that javascript file. But when you import <code>test</code> using ES modules you only get the code you actually need.</p>
+<pre><code class="language-typescript">import { test } from &#39;ClientCore&#39;
+</code></pre>
+<p>So always keep this in mind when you want to lazy-load javascript or when you are changing modules that could be lazy loaded somewhere! A misplaced import could suddenly make your lazy loading strategy worthless.</p>
+<h3>Gotcha&#39;s - circular dependencies</h3>
+<p>What&#39;s a circular dependency? The most simple case of a circular dependecy looks like this:</p>
+<pre><code class="language-typescript">- Dep1.ts
+
+import { dep2Function } from &#39;./dep2.ts&#39;
+
+export function dep1Function() {
+
+}
+
+
+- Dep2.ts
+
+import { dep1Function  } from &#39;./dep2.ts&#39;
+
+export function dep2Function() {
+
+}
+</code></pre>
+<p>This is the most simple case of circular dependency. You should of course avoid to write code like this but there are also much more complicated cases of circular dependencies. Rollup will give you warnings about this and rightly so. Circular dependencies can create very hard to track down bugs when the dependencies hold some state or when they extend classes. </p>
+<p>To tackle these bugs I found this great <a href="https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de">blogpost</a> that explains how to use the <code>internal module pattern</code> to resolve this.</p>
+<p>Basically all you have to do is to handle all the exports / imports using an internal.ts file.</p>
+<p>So to fix our case from above the code should be:</p>
+<pre><code class="language-typescript">- Dep1.ts
+
+import { dep2Function } from &#39;./internal.ts&#39;
+
+export function dep1Function() {
+
+}
+
+- Dep2.ts
+
+import { dep1Function  } from &#39;./internal.ts&#39;
+
+export function dep2Function() {
+
+}
+
+- internal.ts
+export * from &#39;./dep1.ts&#39;
+export * from &#39;./dep2.ts&#39;
+</code></pre>
+]]></description>
+            <pubDate>Mon, 16 Sep 2019 00:00:00 GMT</pubDate>
+          </item>
+        
+          <item>
+            <title><![CDATA[ Azure devops create pipeline "Cannot read property 'childFolders' of undefined" ]]></title>
+            <link>https://erwinsmit.com/blog/azure-devops-create-pipeline-error</link>
+            <guid>https://erwinsmit.com/blog/azure-devops-create-pipeline-error</guid>
+            <description><![CDATA[<h2>Problems creating a new release pipeline in Azure Devops</h2>
+<p>Currently I&#39;m working on a project that uses a monorepo using LernaJS for building several microsites.
+Because of this setup we have quite a lot of release pipelines setup in Azure Devops, I&#39;m not sure if it&#39;s because of our setup but recently we couldn&#39;t create new pipelines anymore because of a runtime javascript error.</p>
+<p><img src="/blog/runtime-error.png" alt="Runtime error"></p>
+<p>Now this was really annoying because it stopped our progress on the project, so I spend some time on creating a &#39;hackery&#39; workaround for this. I thought if I could find the bit of code responsible for this and inject this fix using Fiddler we can continue working on releasing our microsites.</p>
+<ol>
+<li>Download the javascript file responsible for the runtime error.
+The file is currently located on <a href="https://cdn.vsassets.io/bundles/vss-bundle-ext-vYSocdSQRIBJBFuCNPJzPBVskXpssC5hGD4GQk8iu_sI=">https://cdn.vsassets.io/bundles/vss-bundle-ext-vYSocdSQRIBJBFuCNPJzPBVskXpssC5hGD4GQk8iu_sI=</a></li>
+</ol>
+<p>Please note that this url will probably change soon, hopefully this error will be gone than anyway.</p>
+<p>Download the file and beautify the javascript using your favourite &#39;beautifier&#39;. Now the code should be readable-ish.</p>
+<p>In the beautified code there is a function called &#39;createFoldersStructure&#39;.</p>
+<p>At the bottom of the function there is a bit of code that looks like this:</p>
+<pre><code class="language-jsx">}, o[p.toLowerCase()].childFolders.push(c), o[l.toLowerCase()] = c), v++
+</code></pre>
+<p>All I did to stop this line of code from causing an error is adding some defensive programming:</p>
+<pre><code class="language-jsx">}, o[p.toLowerCase()] ? o[p.toLowerCase()].childFolders.push(c) : null, o[l.toLowerCase()] = c), v++
+</code></pre>
+<p>Now to actually get this fix implemented let&#39;s set up Fiddler.</p>
+<ol start="2">
+<li>Set up the fiddler autoresponder.
+Make sure your fiddler autoresponder configuration looks like this:</li>
+</ol>
+<p><img src="/blog/autoresponder.png" alt="Fiddler autoresponder"></p>
+<p>If you haven&#39;t used fiddler over https before you might have to configure the certificate to allow fiddler to work on https calls.</p>
+<p>Make sure your settings look like this, when you click the &#39;decrypt&#39; checkbox fiddler automatically adds a SSL certificate for you.</p>
+<p><img src="/blog/fiddler-https-settings.png" alt="Fiddler https settings"></p>
+<p>I think you can also do similar stuff using the chrome devtools now, but I always find Fiddler great for fixing and debugging issues like this.</p>
+<p>Hope this helps anyone that experiences the same issue!. We did log this issue <a href="https://developercommunity.visualstudio.com/content/problem/610555/cannot-saveclone-release-definition.html">here</a>, so hopefully it will be resolved soon.</p>
+]]></description>
+            <pubDate>Fri, 21 Jun 2019 00:00:00 GMT</pubDate>
+          </item>
+        
+      </channel>
+    </rss>
