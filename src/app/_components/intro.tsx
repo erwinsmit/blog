@@ -54,7 +54,12 @@ export function Intro() {
             <p className="text-gray-600 mb-8 text-lg text-center">
               My main focus is contracting for companies that need help with their frontend development. I also do
               shorter, smaller projects (and sometimes non-profit). Feel free to{" "}
-              <a className="underline text-blue-600 hover:text-blue-800" href="#connect">
+              <a
+                href="https://www.linkedin.com/in/erwin-smit-40957840/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline text-blue-600 hover:text-blue-800"
+              >
                 reach out
               </a>{" "}
               if you need help.
