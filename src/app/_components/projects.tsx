@@ -1,5 +1,6 @@
 import Image from "next/image";
 import * as Tooltip from "@radix-ui/react-tooltip";
+import TooltipOverwrite from "./tool-tip-overwrite";
 
 interface Project {
   title: string;
@@ -171,10 +172,10 @@ export default function PortfolioTimeline() {
             <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
               Other Clients I've worked for over the years
             </h2>
-            <Tooltip.Provider>
+            <Tooltip.Provider delayDuration={0}>
               <div className="flex flex-wrap gap-4 justify-center">
                 {otherClients.map((client, index) => (
-                  <Tooltip.Root key={index}>
+                  <TooltipOverwrite key={index}>
                     <Tooltip.Trigger asChild>
                       <div className="w-40 h-40 flex items-center justify-center p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer">
                         <div className="relative w-full h-full">
@@ -197,7 +198,7 @@ export default function PortfolioTimeline() {
                         <Tooltip.Arrow className="fill-gray-800" />
                       </Tooltip.Content>
                     </Tooltip.Portal>
-                  </Tooltip.Root>
+                  </TooltipOverwrite>
                 ))}
               </div>
             </Tooltip.Provider>

@@ -4,7 +4,7 @@
     "dev": "next dev --turbopack",
     "build": "ts-node src/scripts/generate-rss.ts && next build",
     "start": "npx serve@latest out",
-    "publish": "next build && cpx CNAME dist && gh-pages -b gh-pages -d dist --nojekyll"
+    "publish": "next build && cpx CNAME dist && cpx .nojekyll dist && gh-pages -b gh-pages -d dist"
   },
   "dependencies": {
     "@radix-ui/react-tooltip": "^1.1.6",

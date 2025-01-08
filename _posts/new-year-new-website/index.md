@@ -28,11 +28,13 @@ Unfortunately, static Next.js [can't optimize the images](https://nextjs.org/doc
 
 ```json
 "scripts": {
-    "publish": "next build && cpx CNAME dist && gh-pages -b gh-pages -d dist"
+    "publish": "next build && cpx CNAME dist && cpx .nojekyll dist && gh-pages -b gh-pages -d dist"
 }
 ```
 
-This script builds the website, copies the CNAME file to the dist directory and pushes the dist directory to the gh-pages branch.
+This script builds the website, copies the CNAME and .nojekyll file to the dist directory and pushes the dist directory to the gh-pages branch.
+
+Without the .nojekyll file github pages does not serve the \_next folder correctly.
 
 3. **Create GitHub action**
 
